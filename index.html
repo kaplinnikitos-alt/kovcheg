@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ковчег: Последний рейс</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=PT+Sans+Narrow:wght@400;700&family=Russo+One&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#171210;--paper:#f2e5c6;--card:#fbf3e2;--teal:#347078;--orange:#d45522;--olive:#5d6b3b;--muted:#746b5d}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#35291f,#120e0c);font-family:'PT Sans Narrow',sans-serif;color:var(--ink);padding:18px}
+button,input,select{font:inherit}button{cursor:pointer}.wrap{max-width:1180px;margin:auto;background:var(--paper);border:4px solid var(--ink);border-radius:18px;padding:20px;box-shadow:8px 8px 0 #0008;background-image:radial-gradient(#d7c8a5 1px,transparent 1px);background-size:8px 8px}
+header{display:flex;justify-content:space-between;align-items:center;gap:15px;border-bottom:3px dashed var(--ink);padding-bottom:14px;margin-bottom:18px}.logo{font:clamp(24px,4vw,38px) 'Russo One';color:#c85a26;text-shadow:2px 2px 0 var(--ink);letter-spacing:.3px}.sub{font-weight:bold;color:#514538}.stamp{background:#b74629;color:white;padding:9px 13px;border:2px solid var(--ink);border-radius:6px;font:14px 'Russo One';transform:rotate(1deg)}
+.panel{background:var(--card);border:3px solid var(--ink);border-radius:12px;padding:20px;box-shadow:4px 4px 0 var(--ink)}.hero{max-width:760px;margin:30px auto}.eyebrow{font:13px 'Russo One';color:var(--teal);letter-spacing:1px}.heading{font:clamp(22px,3vw,30px) 'Russo One';margin:7px 0 16px}.field{margin:12px 0}.field label{display:block;font-weight:bold;margin-bottom:5px}.field input,.field select{width:100%;padding:12px;border:2.5px solid var(--ink);border-radius:7px;background:#fffaf0;font-weight:bold;font-size:17px}.field .choice-select{cursor:pointer}.field .custom-number{margin-top:8px}.field .custom-number:not(.hidden){display:block}.field .choice-select{appearance:auto;cursor:pointer}.field .custom-number{margin-top:8px}.field .custom-number:not(.hidden){display:block}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.btn{border:3px solid var(--ink);border-radius:9px;padding:13px 18px;font:16px 'Russo One';box-shadow:3px 3px 0 var(--ink);transition:.12s}.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}.primary{background:var(--teal);color:white}.olive{background:var(--olive);color:white}.paperbtn{background:#fff7e7}.wide{width:100%;margin-top:10px}.note{color:var(--muted);font-size:14px;line-height:1.35}.hidden{display:none!important}.error{background:transparent;border:0;color:var(--muted);padding:4px 0;font-weight:bold;margin:8px 0}.success{background:#d9ead8;border:2px solid #416c43;padding:10px;border-radius:7px;margin:12px 0}.lobby-head{display:flex;justify-content:space-between;gap:15px;align-items:center;flex-wrap:wrap}.room-code{font:clamp(32px,7vw,54px) 'Russo One';letter-spacing:7px;color:var(--orange);background:#fff8e8;border:3px dashed var(--ink);border-radius:10px;padding:10px 18px;text-align:center}.invite{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}.invite input{flex:1;min-width:180px;padding:10px;border:2px solid var(--ink);border-radius:7px;background:white;font-weight:bold}.players{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin:15px 0}.player{background:#fff8e8;border:2px solid var(--ink);border-radius:9px;padding:12px;min-height:88px;box-shadow:2px 2px 0 #000}.player strong{display:block;font:16px 'Russo One';margin-bottom:5px;overflow-wrap:anywhere}.ready{color:#3d6a36;font-weight:bold}.waiting{color:#a45a20;font-weight:bold}.count{font:24px 'Russo One';color:var(--teal)}.section-title{font:18px 'Russo One';margin:20px 0 8px}.footerline{border-top:2px dashed #8b7c61;margin-top:18px;padding-top:12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+@media(max-width:650px){body{padding:7px}.wrap{padding:12px}.two{grid-template-columns:1fr}header{align-items:flex-start;flex-direction:column}.panel{padding:14px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><div><div class="logo">КОВЧЕГ: ПОСЛЕДНИЙ РЕЙС</div><div class="sub">Интерактивный триллер-сериал на выживание и дедукцию · 6–30 человек</div></div><div class="stamp">РЕЙС № 07 · НАБОР ЭКИПАЖА</div></header>
+<main id="app"></main>
+</div>
+<script>
+const API_PATH='/api/kovcheg';
+const $ = s => document.querySelector(s);
+let room=null, me=null, poller=null, tok=localStorage.getItem('kovcheg_tok');
+const params=new URLSearchParams(location.search), incoming=(params.get('room')||'').toUpperCase();
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uuid=()=>(crypto.randomUUID?crypto.randomUUID():'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=crypto.getRandomValues(new Uint8Array(1))[0]%16;return (c==='x'?r:(r&3|8)).toString(16)}));
+const code=()=>Array.from(crypto.getRandomValues(new Uint8Array(5)),x=>'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[x%32]).join('');
+function showError(msg){const e=$('#error');if(e){e.textContent=msg;e.classList.remove('hidden')}}
+function home(){ $('#app').innerHTML=`
+<section class="panel hero">
+<div class="eyebrow">ПОДГОТОВКА К МЕЖПЛАНЕТНОМУ ПЕРЕЛЁТУ</div>
+<h1 class="heading">СОЗДАТЬ КОМНАТУ ОЖИДАНИЯ</h1>
+<p class="note">Создайте свой Ковчег, пригласите друзей и дождитесь, пока весь экипаж будет готов. Персонажи создаются уже внутри комнаты.</p>
+<div id="error" class="error hidden"></div>
+<div class="field"><label>Ваше имя · капитан</label><input id="hostName" maxlength="24" placeholder="Например, Капитан Громов"></div>
+<div class="field"><label>Название Ковчега</label><input id="arkTitle" maxlength="32" value="Ковчег «Надежда-7»"></div>
+<div class="two">
+<div class="field"><label>Количество игроков · от 6 до 30</label>
+<select id="maxPlayersSelect" class="choice-select">${Array.from({length:25},(_,i)=>`<option value="${i+6}" ${i+6===12?'selected':''}>${i+6} игроков</option>`).join('')}<option value="custom">Своё значение…</option></select>
+<input id="maxPlayersCustom" class="custom-number hidden" type="number" min="6" max="30" step="1" placeholder="Введите от 6 до 30"></div>
+<div class="field"><label>Дней до планеты · от 4 до 10</label>
+<select id="targetDaysSelect" class="choice-select">${Array.from({length:7},(_,i)=>`<option value="${i+4}" ${i+4===6?'selected':''}>${i+4} дней</option>`).join('')}<option value="custom">Своё значение…</option></select>
+<input id="targetDaysCustom" class="custom-number hidden" type="number" min="4" max="10" step="1" placeholder="Введите от 4 до 10"></div>
+</div>
+<button class="btn primary wide" id="createBtn">СОЗДАТЬ КОМНАТУ ►</button>
+<p class="note">После создания появятся код и ссылка-приглашение. Персонажи создаются внутри комнаты ожидания.</p>
+</section>`;$('#maxPlayersSelect').onchange=e=>$('#maxPlayersCustom').classList.toggle('hidden',e.target.value!=='custom');
+$('#targetDaysSelect').onchange=e=>$('#targetDaysCustom').classList.toggle('hidden',e.target.value!=='custom');
+$('#createBtn').onclick=createRoom}
+function joinScreen(){ $('#app').innerHTML=`
+<section class="panel hero"><div class="eyebrow">ДОБРО ПОЖАЛОВАТЬ НА БОРТ</div><h1 class="heading">ВХОД В КОМНАТУ</h1><div id="error" class="error hidden"></div>
+<div class="field"><label>Код комнаты</label><input id="roomCodeInput" maxlength="5" value="${esc(incoming)}" style="text-transform:uppercase" placeholder="ABCDE"></div>
+<div class="field"><label>Ваше имя</label><input id="guestName" maxlength="24" placeholder="Как вас зовут?"></div>
+<button id="joinBtn" class="btn olive wide">ВОЙТИ В КОМНАТУ ►</button>
+<p class="note">После входа вы сможете выбрать образ и характер персонажа.</p></section>`;$('#joinBtn').onclick=()=>joinRoom($('#roomCodeInput').value.trim().toUpperCase(),$('#guestName').value.trim())}
+let lobbyBuilt=false, busy=false;
+function copyText(t,msg){const done=()=>alert(msg);if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(t).then(done).catch(()=>fallback())}else fallback();function fallback(){const i=document.createElement('input');i.value=t;document.body.appendChild(i);i.select();try{document.execCommand('copy');done()}catch(e){prompt('Скопируйте вручную:',t)}i.remove()}}
+const archLabel=a=>a==='pragmatist'?'Запасливый':a==='observer'?'Внимательный':'Смелый';
+function playersHtml(){return room.players.map(p=>`<div class="player"><strong>${esc(p.player_name)} ${p.is_host?'★':''}</strong><div class="note">${p.gender==='female'?'Женщина':'Мужчина'} · ${archLabel(p.archetype)}</div><div class="${p.is_ready?'ready':'waiting'}">${p.is_ready?'● ГОТОВ':'◌ ОЖИДАЕТ'}</div></div>`).join('')}
+function lobby(){
+lobbyBuilt=true;
+$('#app').innerHTML=`
+<section class="panel">
+<div class="lobby-head"><div><div class="eyebrow" id="arkLine"></div><h1 class="heading" style="margin-bottom:4px">ЭКИПАЖ СОБИРАЕТСЯ</h1><div class="note" id="capLine"></div></div><div><div class="note" style="text-align:center">КОД ДЛЯ ВХОДА</div><div class="room-code">${esc(room.code)}</div></div></div>
+<div class="invite"><input id="inviteLink" readonly value="${esc(location.origin+location.pathname+'?room='+room.code)}"><button id="copyBtn" class="btn paperbtn">КОПИРОВАТЬ ССЫЛКУ</button><button id="copyCodeBtn" class="btn paperbtn">КОПИРОВАТЬ КОД</button></div>
+<div class="section-title">ПАССАЖИРЫ <span class="count" id="countBox"></span></div>
+<div class="players" id="playersBox"></div>
+<div class="section-title">ВАШ ПЕРСОНАЖ</div>
+<div class="two"><div class="field"><label>Имя персонажа</label><input id="charName" maxlength="24" value="${esc(me.player_name)}"></div><div class="field"><label>Образ</label><select id="gender"><option value="male">Мужчина</option><option value="female">Женщина</option></select></div></div>
+<div class="field"><label>Характер на борту</label><select id="archetype"><option value="pragmatist">Запасливый · меньше голода и жажды</option><option value="observer">Внимательный · меньше подозрений</option><option value="adventurer">Смелый · бонус в развилках</option></select></div>
+<div class="two"><button id="saveChar" class="btn paperbtn">СОХРАНИТЬ ИМЯ</button><button id="readyBtn" class="btn olive"></button></div>
+<div id="hostBox"></div>
+<div class="footerline"><span class="note" id="roleNote"></span><button id="leaveBtn" class="btn paperbtn">ПОКИНУТЬ КОМНАТУ</button></div>
+<div id="error" class="error hidden"></div>
+</section>`;
+$('#gender').value=me.gender;$('#archetype').value=me.archetype;
+$('#copyBtn').onclick=()=>copyText($('#inviteLink').value,'Ссылка скопирована');
+$('#copyCodeBtn').onclick=()=>copyText(room.code,'Код скопирован');
+$('#saveChar').onclick=saveCharacter;$('#readyBtn').onclick=toggleReady;$('#leaveBtn').onclick=leaveRoom;
+$('#gender').onchange=saveCharacter;$('#archetype').onchange=saveCharacter;
+updateLobby();
+}
+function updateLobby(){
+const host=!!me.is_host;
+$('#arkLine').textContent='КОМНАТА ОЖИДАНИЯ · '+room.ark_title;
+$('#capLine').textContent=`Капитан: ${room.host_name} · До планеты: ${room.target_days} дней · Лимит: ${room.max_players} пассажиров`;
+$('#countBox').textContent=`${room.players.length} / ${room.max_players}`;
+$('#playersBox').innerHTML=playersHtml();
+$('#readyBtn').textContent=me.is_ready?'ОТМЕНИТЬ ГОТОВНОСТЬ':'Я ГОТОВ';
+const g=$('#gender'),a=$('#archetype');
+if(document.activeElement!==g)g.value=me.gender;
+if(document.activeElement!==a)a.value=me.archetype;
+const canStart=room.players.length>=6&&room.players.every(p=>p.is_ready);
+$('#hostBox').innerHTML=host?`<button id="startBtn" class="btn primary wide" ${canStart?'':'disabled title="Нужно минимум 6 игроков и готовность каждого"'}>НАЧАТЬ ИГРУ ►</button><p class="note">Старт доступен, когда собралось минимум 6 игроков и все участники нажали «Я готов».</p>`:'';
+if(host)$('#startBtn').onclick=startGame;
+$('#roleNote').textContent=host?'Вы капитан этой комнаты.':'Ожидайте запуска капитаном.';
+}
+let G=null,V=null,started=false,pulling=false,sendT=null,lastV='';
+const sh=a=>[...a].sort(()=>Math.random()-.5),alive=()=>G.players.filter(p=>p.alive);
+const call=async(a,b)=>{const r=await fetch(API_PATH,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({a,code:room&&room.code,pid:me&&me.player_id,tok,...b})});const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||'Ошибка сервера');return j};
+const mk=(r,ps)=>({...r,id:r.code+r.t,players:ps});
+function act(m){if(me.is_host)handle(m);else call('msg',{m}).catch(()=>{})}
+function hostStart(){
+const sv=localStorage.getItem('kv_G_'+room.id);
+if(sv)G=JSON.parse(sv);else{
+const ps=room.players.map(p=>({id:p.player_id,name:p.player_name,alive:true,role:'p'}));
+const c=ps.length>=20?3:ps.length>=11?2:1;sh(ps).slice(0,c).forEach(p=>p.role='c');
+G={phase:'night',day:1,target:room.target_days,players:ps,votes:{},night:{},log:['Рейс начался. Ночь 1: Людоеды выбирают жертву.'],winner:null};}
+push();
+}
+function viewFor(pid){const m=G.players.find(p=>p.id===pid),end=!!G.winner,day=G.phase==='day';
+return{phase:G.phase,day:G.day,target:G.target,log:G.log.slice(-8),winner:G.winner,me:m?{role:m.role,alive:m.alive}:null,
+mates:m&&m.role==='c'?G.players.filter(p=>p.role==='c'&&p.id!==pid).map(p=>p.name):[],
+players:G.players.map(p=>({id:p.id,name:p.name,alive:p.alive,role:(end||!p.alive)?p.role:null})),
+my:(day?G.votes[pid]:G.night[pid])||null,done:Object.keys(day?G.votes:G.night).length,
+need:day?alive().length:alive().filter(p=>p.role==='c').length}}
+function push(){localStorage.setItem('kv_G_'+room.id,JSON.stringify(G));V=viewFor(me.player_id);renderGame();clearTimeout(sendT);sendT=setTimeout(()=>{const views={};G.players.forEach(p=>views[p.id]=viewFor(p.id));call('views',{views}).catch(()=>{})},150)}
+function nm(id){return G.players.find(p=>p.id===id).name}
+function handle(m){
+if(m.t==='hello')return push();
+if(G.winner)return;
+if(m.t==='force'&&m.from===me.player_id)return endPhase();
+const f=G.players.find(p=>p.id===m.from);if(!f||!f.alive)return;
+if(m.t==='vote'&&G.phase==='day'){if(m.to!=='skip'&&!(G.players.find(p=>p.id===m.to)||{}).alive)return;G.votes[m.from]=m.to;if(alive().every(p=>G.votes[p.id]))return endPhase()}
+if(m.t==='night'&&G.phase==='night'&&f.role==='c'){const t=G.players.find(p=>p.id===m.to);if(!t||!t.alive||t.role==='c')return;G.night[m.from]=m.to;if(alive().filter(p=>p.role==='c').every(p=>G.night[p.id]))return endPhase()}
+push();
+}
+function leader(o){const c={};Object.values(o).forEach(v=>{if(v!=='skip')c[v]=(c[v]||0)+1});const mx=Math.max(0,...Object.values(c)),w=Object.keys(c).filter(k=>c[k]===mx);return mx?{id:w[Math.floor(Math.random()*w.length)],tie:w.length>1}:null}
+function endPhase(){
+if(G.phase==='night'){const t=leader(G.night);if(t){const p=G.players.find(x=>x.id===t.id);p.alive=false;G.log.push(`Утро ${G.day}: ночью пропал ${p.name}. Он был Пассажиром.`)}else G.log.push(`Утро ${G.day}: ночь прошла тихо, никто не пропал.`);G.night={};G.phase='day'}
+else{const t=leader(G.votes);if(t&&!t.tie){const p=G.players.find(x=>x.id===t.id);p.alive=false;G.log.push(`Суд ${G.day}: изгнан ${p.name}. Он был ${p.role==='c'?'ЛЮДОЕДОМ':'Пассажиром'}.`)}else G.log.push(`Суд ${G.day}: голоса разделились или все воздержались, никого не изгнали.`);G.votes={};G.day++;G.phase='night';if(!G.winner&&G.day<=G.target)G.log.push(`Ночь ${G.day}: Людоеды выбирают жертву.`)}
+const c=alive().filter(p=>p.role==='c').length,h=alive().length-c;
+if(c===0){G.winner='p';G.log.push('Все Людоеды изгнаны. Пассажиры победили!')}
+else if(c>=h){G.winner='c';G.log.push('Людоедов стало не меньше, чем пассажиров. Победа Людоедов!')}
+else if(G.day>G.target){G.winner='p';G.log.push('Ковчег достиг планеты! Пассажиры победили!')}
+push();
+}
+function renderGame(){
+if(!V){$('#app').innerHTML='<section class="panel hero"><h1 class="heading">РЕЙС НАЧАЛСЯ</h1><p class="note">Подключаемся к игре… Если висит больше 10 секунд, капитан должен держать страницу открытой.</p></section>';return}
+const v=V,isC=v.me&&v.me.role==='c',aliveMe=v.me&&v.me.alive,day=v.phase==='day',host=me.is_host;
+const title=v.winner?(v.winner==='p'?'ПОБЕДА ПАССАЖИРОВ':'ПОБЕДА ЛЮДОЕДОВ'):(day?`ДЕНЬ ${v.day} · СУД`:`НОЧЬ ${v.day}`);
+const canAct=!v.winner&&aliveMe&&(day||isC);
+const btns=p=>{if(!canAct||!p.alive||p.id===me.player_id)return '';if(!day&&p.role==='c')return '';return `<button class="btn ${v.my===p.id?'primary':'paperbtn'}" data-id="${p.id}">${day?(v.my===p.id?'ВАШ ГОЛОС':'ГОЛОСОВАТЬ'):(v.my===p.id?'ЖЕРТВА ВЫБРАНА':'ВЫБРАТЬ ЖЕРТВУ')}</button>`};
+const mates=v.mates.length?` · союзники: ${v.mates.map(esc).join(', ')}`:'';
+$('#app').innerHTML=`<section class="panel"><div class="eyebrow">РЕЙС · ДОЛЕТЕТЬ НУЖНО ДО ДНЯ ${v.target}</div><h1 class="heading">${title}</h1>
+<div class="player"><strong>Ваша роль: ${isC?'ЛЮДОЕД 🍖':'ПАССАЖИР'}${aliveMe?'':' (вы выбыли)'}</strong><div class="note">${isC?'Ночью выбирайте жертву, днём притворяйтесь пассажиром'+esc(mates):'Днём ищите Людоедов и голосуйте за изгнание'}</div></div>
+${!v.winner?`<p class="note">${day?'Обсудите вслух, затем голосуйте':'Ночь: Людоеды выбирают жертву, остальные ждут'}. Выбрали: ${v.done} из ${v.need}</p>`:''}
+<div class="players">${v.players.map(p=>`<div class="player" style="${p.alive?'':'opacity:.55'}"><strong>${esc(p.name)}${p.id===me.player_id?' (вы)':''}</strong><div class="note">${p.alive?'на борту':'выбыл'}${p.role?' · '+(p.role==='c'?'Людоед':'Пассажир'):''}</div>${btns(p)}</div>`).join('')}</div>
+${canAct&&day?`<button class="btn paperbtn wide" id="skipVote">${v.my==='skip'?'ВЫ ВОЗДЕРЖАЛИСЬ':'ВОЗДЕРЖАТЬСЯ'}</button>`:''}
+<div class="section-title">ХРОНИКА</div>${v.log.map(l=>`<p class="note">${esc(l)}</p>`).join('')}
+${host&&!v.winner?'<button class="btn paperbtn wide" id="forceBtn">ЗАВЕРШИТЬ ФАЗУ ДОСРОЧНО</button>':''}</section>`;
+document.querySelectorAll('#app .player [data-id]').forEach(b=>b.onclick=()=>act({t:day?'vote':'night',from:me.player_id,to:b.dataset.id}));
+const sk=$('#skipVote');if(sk)sk.onclick=()=>act({t:'vote',from:me.player_id,to:'skip'});
+const fb=$('#forceBtn');if(fb)fb.onclick=()=>act({t:'force',from:me.player_id});
+}
+async function createRoom(){
+if(busy)return;
+const host=$('#hostName').value.trim(),title=$('#arkTitle').value.trim(),max=Number($('#maxPlayersSelect').value==='custom'?$('#maxPlayersCustom').value:$('#maxPlayersSelect').value),days=Number($('#targetDaysSelect').value==='custom'?$('#targetDaysCustom').value:$('#targetDaysSelect').value);
+if(!host||!title)return showError('Укажите имя капитана и название Ковчега.');
+if(!Number.isInteger(max)||max<6||max>30)return showError('Количество игроков должно быть от 6 до 30.');
+if(!Number.isInteger(days)||days<4||days>10)return showError('Количество дней должно быть от 4 до 10.');
+busy=true;$('#createBtn').disabled=true;
+try{const j=await call('create',{host,title,max,days});tok=j.tok;me=j.me;room=mk(j.room,[]);await enterRoom()}
+catch(e){room=null;me=null;showError(e.message||'Ошибка соединения')}
+finally{busy=false;const b=$('#createBtn');if(b)b.disabled=false}
+}
+async function joinRoom(c,n){
+if(busy)return;
+if(!/^[A-Z0-9]{5}$/.test(c)||!n)return showError('Введите корректный код комнаты и своё имя.');
+busy=true;$('#joinBtn').disabled=true;
+try{const j=await call('join',{code:c,name:n});tok=j.tok;me=j.me;room=mk(j.room,[]);await enterRoom()}
+catch(e){room=null;me=null;showError(e.message||'Ошибка соединения')}
+finally{busy=false;const b=$('#joinBtn');if(b)b.disabled=false}
+}
+async function enterRoom(){
+localStorage.setItem('kovcheg_room',room.code);localStorage.setItem('kovcheg_pid',me.player_id);localStorage.setItem('kovcheg_tok',tok);
+history.replaceState({},'',`?room=${room.code}`);
+clearInterval(poller);lobbyBuilt=false;started=false;lastV='';
+await refreshRoom();
+poller=setInterval(refreshRoom,me.is_host?1200:2500);
+}
+async function refreshRoom(){
+if(!room||!me||pulling)return;
+pulling=true;const code=room.code;
+try{
+const r=await fetch(`${API_PATH}?code=${code}&pid=${me.player_id}&tok=${tok}`),j=await r.json();
+if(!room||room.code!==code)return;
+if(!r.ok){if(r.status===404||r.status===403){forgetRoom();joinScreen()}return}
+room=mk(j.room,j.players);me=j.me;
+if(room.status==='started'){
+if(me.is_host){if(!started){started=true;lobbyBuilt=false;hostStart()}(j.msgs||[]).forEach(handle)}
+else{started=true;lobbyBuilt=false;const k=JSON.stringify(j.view);if(k!==lastV||!V){lastV=k;V=j.view;renderGame()}}
+}else{if(!lobbyBuilt)lobby();else updateLobby()}
+}catch(e){}finally{pulling=false}
+}
+function forgetRoom(){clearInterval(poller);poller=null;room=null;me=null;G=null;V=null;started=false;lobbyBuilt=false;tok=null;['kovcheg_room','kovcheg_pid','kovcheg_tok'].forEach(k=>localStorage.removeItem(k))}
+async function saveCharacter(){
+const name=$('#charName').value.trim()||me.player_name;
+try{await call('upd',{name,gender:$('#gender').value,archetype:$('#archetype').value});$('#charName').value=name;await refreshRoom()}catch(e){showError(e.message)}
+}
+async function toggleReady(){try{await call('upd',{ready:!me.is_ready});await refreshRoom()}catch(e){showError(e.message)}}
+async function startGame(){if(!me.is_host)return;try{await call('start',{});await refreshRoom()}catch(e){showError(e.message)}}
+async function leaveRoom(){try{await call('leave',{})}catch(e){}forgetRoom();history.replaceState({},'',location.pathname);home()}
+async function resume(){
+const c=incoming||localStorage.getItem('kovcheg_room'),pid=localStorage.getItem('kovcheg_pid');tok=localStorage.getItem('kovcheg_tok');
+if(!c||!pid||!tok)return incoming?joinScreen():home();
+try{const r=await fetch(`${API_PATH}?code=${c}&pid=${pid}&tok=${tok}`);const j=await r.json();
+if(!r.ok)return incoming?joinScreen():home();
+room=mk(j.room,j.players);me=j.me;await enterRoom()}catch(e){home()}
+}
+resume();
+</script>
+</body></html>
