@@ -16,6 +16,17 @@ const norm = c => String(c || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
 const vals = a => (a || []).filter((_, i) => i % 2).map(x => JSON.parse(x));
 const pub = p => { const { tok, ...x } = p; return x; };
 const AR = ['pragmatist', 'observer', 'adventurer'];
+const oneOf = (v, ok, d) => ok.includes(v) ? v : d;
+// «Критерии партии», которые выбирает ведущий
+const cleanCfg = (c = {}) => ({
+  cannibals: [0, 1, 2, 3].includes(+c.cannibals) ? +c.cannibals : 0,   // 0 = авто по числу игроков
+  accomplice: oneOf(c.accomplice, ['auto', 'on', 'off'], 'auto'),
+  supplies: oneOf(c.supplies, ['low', 'normal', 'high'], 'normal'),
+  dayMin: [0, 3, 5, 10, 15].includes(+c.dayMin) ? +c.dayMin : 0,       // 0 = без таймера дня
+  bonds: !(c.bonds === false || c.bonds === 'off'),
+});
+// игрокам не отдаём секретные настройки (число людоедов, сообщник)
+const pubRoom = (room, isHost) => { if (isHost) return room; const { cfg, ...r } = room; return { ...r, cfg: { supplies: cfg && cfg.supplies, dayMin: cfg && cfg.dayMin, bonds: cfg ? cfg.bonds : true } }; };
 const mkP = (n, h) => ({ player_id: rid(), tok: rid(), player_name: n, gender: 'male', archetype: 'pragmatist', is_host: h, is_ready: false, t: Date.now() });
 const saveP = (c, p) => pipe([['HSET', K(c, 'p'), p.player_id, JSON.stringify(p)], ['EXPIRE', K(c, 'p'), TTL]]);
 const saveR = (c, r) => pipe([['SET', K(c, 'r'), JSON.stringify(r), 'EX', TTL]]);
@@ -40,7 +51,7 @@ const A = {
     const L = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
     for (let i = 0; i < 8; i++) {
       let c = ''; for (let j = 0; j < 5; j++) c += L[crypto.randomInt(32)];
-      const room = { code: c, host_name: host, ark_title: title, max_players: max, target_days: days, status: 'waiting', t: Date.now() };
+      const room = { code: c, host_name: host, ark_title: title, max_players: max, target_days: days, cfg: cleanCfg(b.cfg), status: 'waiting', t: Date.now() };
       const [ok] = await pipe([['SET', K(c, 'r'), JSON.stringify(room), 'EX', TTL, 'NX']]);
       if (ok === 'OK') { const pl = mkP(host, true); await saveP(c, pl); return { room, me: pub(pl), tok: pl.tok }; }
     }
@@ -51,9 +62,9 @@ const A = {
     if (!n) throw new E('Введите своё имя.');
     if (room.status !== 'waiting') throw new E('Комната не найдена или игра уже началась.');
     const [len] = await pipe([['HLEN', K(c, 'p')]]);
-    if (len >= room.max_players) throw new E('В комнате уже нет свободных мест.');
+    if (len - 1 >= room.max_players) throw new E('В комнате уже нет свободных мест.');
     const pl = mkP(n, false); await saveP(c, pl);
-    return { room, me: pub(pl), tok: pl.tok };
+    return { room: pubRoom(room, false), me: pub(pl), tok: pl.tok };
   },
   async upd(b) {
     const { c, room, pl } = await auth(b);
@@ -67,21 +78,52 @@ const A = {
     return { ok: 1 };
   },
   async leave(b) {
-    const { c, room, pl } = await auth(b);
-    await pipe([['HDEL', K(c, 'p'), pl.player_id]]);
-    if (pl.is_host && room.status === 'waiting') {
-      const [all] = await pipe([['HGETALL', K(c, 'p')]]);
-      const ps = vals(all).sort((a, b) => a.t - b.t);
-      if (ps[0]) { ps[0].is_host = true; room.host_name = ps[0].player_name; await saveP(c, ps[0]); await saveR(c, room); }
-    }
+    const { c, pl } = await auth(b);
+    // ведущий закрывает комнату целиком, игрок просто выходит
+    if (pl.is_host) await pipe([['DEL', K(c, 'r')], ['DEL', K(c, 'p')], ['DEL', K(c, 'v')], ['DEL', K(c, 'q')], ['DEL', K(c, 's')]]);
+    else await pipe([['HDEL', K(c, 'p'), pl.player_id]]);
     return { ok: 1 };
   },
   async start(b) {
     const { c, room, pl } = await auth(b);
     if (!pl.is_host) throw new E('Только капитан может начать игру', 403);
-    const [all] = await pipe([['HGETALL', K(c, 'p')]]); const ps = vals(all);
-    if (ps.length < 6 || !ps.every(p => p.is_ready)) throw new E('Нужно минимум 6 игроков и готовность каждого.');
-    room.status = 'started'; await saveR(c, room); return { ok: 1 };
+    const [all] = await pipe([['HGETALL', K(c, 'p')]]); const ps = vals(all).filter(p => !p.is_host);
+    if (room.status !== 'waiting') throw new E('Игра уже идёт');
+    if (ps.length < 6) throw new E('Нужно минимум 6 игроков.');
+    room.status = 'started'; await saveR(c, room); return { ok: 1, room };
+  },
+  async cfg(b) { // ведущий меняет критерии партии до старта
+    const { c, room, pl } = await auth(b);
+    if (!pl.is_host) throw new E('Только ведущий', 403);
+    if (room.status !== 'waiting') throw new E('Игра уже началась');
+    const [len] = await pipe([['HLEN', K(c, 'p')]]);
+    if (b.title !== undefined) { const t = S(b.title, 32); if (t) room.ark_title = t; }
+    if (b.max !== undefined) {
+      const m = +b.max;
+      if (!(m >= 6 && m <= 30)) throw new E('Количество игроков должно быть от 6 до 30.');
+      if (m < len - 1) throw new E('Сейчас в комнате уже больше игроков (' + (len - 1) + ').');
+      room.max_players = m;
+    }
+    if (b.days !== undefined) { const d = +b.days; if (!(d >= 4 && d <= 10)) throw new E('Количество дней должно быть от 4 до 10.'); room.target_days = d; }
+    if (b.cfg) room.cfg = cleanCfg({ ...(room.cfg || {}), ...b.cfg });
+    await saveR(c, room); return { ok: 1, room };
+  },
+  async kick(b) { // ведущий убирает игрока из комнаты
+    const { c, room, pl } = await auth(b);
+    if (!pl.is_host) throw new E('Только ведущий', 403);
+    if (room.status !== 'waiting') throw new E('Игра уже началась');
+    const id = String(b.target || '');
+    if (!id || id === pl.player_id) throw new E('Нельзя убрать себя');
+    await pipe([['HDEL', K(c, 'p'), id], ['HDEL', K(c, 'v'), id]]);
+    return { ok: 1 };
+  },
+  async snap(b) { // ведущий сохраняет «слепок» партии, чтобы пережить обновление страницы
+    const { c, pl } = await auth(b);
+    if (!pl.is_host) throw new E('Только ведущий', 403);
+    const s = String(b.s || '');
+    if (!s || s.length > 800000) throw new E('Слишком большой слепок партии');
+    await pipe([['SET', K(c, 's'), s, 'EX', TTL]]);
+    return { ok: 1 };
   },
   async views(b) { // капитан публикует персональные «виды» игры для каждого игрока
     const { c, pl } = await auth(b);
@@ -100,7 +142,7 @@ const A = {
 };
 async function state(q) {
   const c = norm(q.code), pid = String(q.pid || '-');
-  const [r, p, v] = await pipe([['GET', K(c, 'r')], ['HGET', K(c, 'p'), pid], ['HGET', K(c, 'v'), pid]]);
+  const [r, p, v] = await pipe([['GET', K(c, 'r')], ['HGET', K(c, 'p'), pid], ['HMGET', K(c, 'v'), pid, '*']]);
   if (!r) throw new E('Комната не найдена', 404);
   if (!p) throw new E('Игрок не найден', 403);
   const room = JSON.parse(r), pl = JSON.parse(p);
@@ -108,7 +150,9 @@ async function state(q) {
   let players = [], msgs = [];
   if (room.status === 'waiting' || pl.is_host) { const [all] = await pipe([['HGETALL', K(c, 'p')]]); players = vals(all).sort((a, b) => a.t - b.t).map(pub); }
   if (room.status === 'started' && pl.is_host) { const [m] = await pipe([['LPOP', K(c, 'q'), 100]]); msgs = (m || []).map(x => JSON.parse(x)); }
-  return { room, players, me: pub(pl), view: v ? JSON.parse(v) : null, msgs }; // игрок получает только свой «вид»
+  let snap = null;
+  if (pl.is_host && room.status === 'started' && q.snap === '1') { const [s] = await pipe([['GET', K(c, 's')]]); snap = s || null; }
+  return { room: pubRoom(room, pl.is_host), players, me: pub(pl), snap, view: v && v[1] ? { p: v[0] ? JSON.parse(v[0]) : {}, c: JSON.parse(v[1]) } : null, msgs }; // игрок получает только свой «вид»
 }
 module.exports = async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');

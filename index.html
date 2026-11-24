@@ -1,215 +1,3060 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ковчег: Последний рейс</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=PT+Sans+Narrow:wght@400;700&family=Russo+One&display=swap" rel="stylesheet">
-<style>
-:root{--ink:#171210;--paper:#f2e5c6;--card:#fbf3e2;--teal:#347078;--orange:#d45522;--olive:#5d6b3b;--muted:#746b5d}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#35291f,#120e0c);font-family:'PT Sans Narrow',sans-serif;color:var(--ink);padding:18px}
-button,input,select{font:inherit}button{cursor:pointer}.wrap{max-width:1180px;margin:auto;background:var(--paper);border:4px solid var(--ink);border-radius:18px;padding:20px;box-shadow:8px 8px 0 #0008;background-image:radial-gradient(#d7c8a5 1px,transparent 1px);background-size:8px 8px}
-header{display:flex;justify-content:space-between;align-items:center;gap:15px;border-bottom:3px dashed var(--ink);padding-bottom:14px;margin-bottom:18px}.logo{font:clamp(24px,4vw,38px) 'Russo One';color:#c85a26;text-shadow:2px 2px 0 var(--ink);letter-spacing:.3px}.sub{font-weight:bold;color:#514538}.stamp{background:#b74629;color:white;padding:9px 13px;border:2px solid var(--ink);border-radius:6px;font:14px 'Russo One';transform:rotate(1deg)}
-.panel{background:var(--card);border:3px solid var(--ink);border-radius:12px;padding:20px;box-shadow:4px 4px 0 var(--ink)}.hero{max-width:760px;margin:30px auto}.eyebrow{font:13px 'Russo One';color:var(--teal);letter-spacing:1px}.heading{font:clamp(22px,3vw,30px) 'Russo One';margin:7px 0 16px}.field{margin:12px 0}.field label{display:block;font-weight:bold;margin-bottom:5px}.field input,.field select{width:100%;padding:12px;border:2.5px solid var(--ink);border-radius:7px;background:#fffaf0;font-weight:bold;font-size:17px}.field .choice-select{cursor:pointer}.field .custom-number{margin-top:8px}.field .custom-number:not(.hidden){display:block}.field .choice-select{appearance:auto;cursor:pointer}.field .custom-number{margin-top:8px}.field .custom-number:not(.hidden){display:block}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.btn{border:3px solid var(--ink);border-radius:9px;padding:13px 18px;font:16px 'Russo One';box-shadow:3px 3px 0 var(--ink);transition:.12s}.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}.primary{background:var(--teal);color:white}.olive{background:var(--olive);color:white}.paperbtn{background:#fff7e7}.wide{width:100%;margin-top:10px}.note{color:var(--muted);font-size:14px;line-height:1.35}.hidden{display:none!important}.error{background:transparent;border:0;color:var(--muted);padding:4px 0;font-weight:bold;margin:8px 0}.success{background:#d9ead8;border:2px solid #416c43;padding:10px;border-radius:7px;margin:12px 0}.lobby-head{display:flex;justify-content:space-between;gap:15px;align-items:center;flex-wrap:wrap}.room-code{font:clamp(32px,7vw,54px) 'Russo One';letter-spacing:7px;color:var(--orange);background:#fff8e8;border:3px dashed var(--ink);border-radius:10px;padding:10px 18px;text-align:center}.invite{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}.invite input{flex:1;min-width:180px;padding:10px;border:2px solid var(--ink);border-radius:7px;background:white;font-weight:bold}.players{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin:15px 0}.player{background:#fff8e8;border:2px solid var(--ink);border-radius:9px;padding:12px;min-height:88px;box-shadow:2px 2px 0 #000}.player strong{display:block;font:16px 'Russo One';margin-bottom:5px;overflow-wrap:anywhere}.ready{color:#3d6a36;font-weight:bold}.waiting{color:#a45a20;font-weight:bold}.count{font:24px 'Russo One';color:var(--teal)}.section-title{font:18px 'Russo One';margin:20px 0 8px}.footerline{border-top:2px dashed #8b7c61;margin-top:18px;padding-top:12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
-@media(max-width:650px){body{padding:7px}.wrap{padding:12px}.two{grid-template-columns:1fr}header{align-items:flex-start;flex-direction:column}.panel{padding:14px}}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>КОВЧЕГ: ПОСЛЕДНИЙ РЕЙС — Мультиплеер для группы</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=PT+Sans+Narrow:wght@400;700&family=Russo+One&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #171210;
+      --paper: #f2e5c6;
+      --paper-dark: #dccba4;
+      --card: #fbf3e2;
+      --mustard: #e3a329;
+      --teal: #347078;
+      --orange: #d45522;
+      --olive: #5d6b3b;
+      --danger: #b82525;
+      --blood: #7d1717;
+      --indigo: #242938;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      background: radial-gradient(circle at top, #2e241e 0%, #120e0c 100%);
+      color: var(--ink);
+      font-family: 'PT Sans Narrow', sans-serif;
+      font-size: 16px;
+    }
+
+    .paper-grain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.055;
+      background-image: radial-gradient(#000 1px, transparent 0), radial-gradient(#3a2818 1px, transparent 0);
+      background-size: 16px 16px;
+      background-position: 0 0, 8px 8px;
+    }
+
+    .shell {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 14px 14px 70px;
+    }
+
+    .comic-box {
+      background: var(--paper);
+      border: 4px solid var(--ink);
+      border-radius: 10px 18px 12px 16px;
+      box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.72);
+      padding: 18px;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .comic-btn {
+      font-family: 'Russo One', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      background: var(--mustard);
+      color: var(--ink);
+      border: 3px solid var(--ink);
+      border-radius: 6px 12px 5px 10px;
+      box-shadow: 3px 3px 0px var(--ink);
+      padding: 9px 15px;
+      cursor: pointer;
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.15s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 13.5px;
+    }
+    .comic-btn:hover:not(:disabled) {
+      transform: translate(-1.5px, -1.5px);
+      box-shadow: 5px 5px 0px var(--ink);
+      background: #efb338;
+    }
+    .comic-btn:active:not(:disabled) {
+      transform: translate(1.5px, 1.5px);
+      box-shadow: 1px 1px 0px var(--ink);
+    }
+    .comic-btn:disabled {
+      opacity: 0.48;
+      cursor: not-allowed;
+      filter: grayscale(0.45);
+    }
+    .comic-btn.orange { background: var(--orange); color: #fff8eb; }
+    .comic-btn.teal { background: var(--teal); color: #fff8eb; }
+    .comic-btn.olive { background: var(--olive); color: #fff8eb; }
+    .comic-btn.danger { background: var(--danger); color: #fff8eb; }
+    .comic-btn.paper { background: var(--card); color: var(--ink); }
+    .comic-btn.indigo { background: var(--indigo); color: #f2e5c6; }
+    .comic-btn.small { padding: 5px 10px; font-size: 12px; }
+
+    .header-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 3px dashed var(--ink);
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+    }
+
+    .logo-title {
+      font-family: 'Russo One', sans-serif;
+      font-size: clamp(22px, 3.4vw, 35px);
+      color: var(--orange);
+      text-shadow: 2px 2px 0px var(--ink), -1px -1px 0px var(--ink), 1px -1px 0px var(--ink), -1px 1px 0px var(--ink);
+      line-height: 1.05;
+    }
+
+    .stamp-badge {
+      background: var(--ink);
+      color: var(--mustard);
+      font-family: 'Oswald', sans-serif;
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 14px;
+      letter-spacing: 1px;
+      transform: rotate(-1deg);
+      display: inline-block;
+    }
+    .stamp-badge.blood { background: var(--danger); color: #fff8eb; }
+    .stamp-badge.teal { background: var(--teal); color: #fff8eb; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    @media (max-width: 780px) {
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+
+    .field { margin-bottom: 11px; }
+    .field label {
+      display: block;
+      font-family: 'Russo One', sans-serif;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+    .field input, .field select {
+      width: 100%;
+      padding: 9px 12px;
+      border: 3px solid var(--ink);
+      border-radius: 6px;
+      background: var(--card);
+      color: var(--ink);
+      font-family: 'PT Sans Narrow', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      outline: none;
+    }
+
+    .res-bar {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 9px;
+      margin-bottom: 14px;
+    }
+    @media (max-width: 760px) {
+      .res-bar { grid-template-columns: repeat(2, 1fr); }
+    }
+    .res-pill {
+      background: var(--card);
+      border: 3px solid var(--ink);
+      border-radius: 8px;
+      padding: 7px 10px;
+      box-shadow: 3px 3px 0px var(--ink);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .res-pill b { font-family: 'Russo One', sans-serif; font-size: 19px; }
+    .res-pill span { font-size: 12.5px; font-weight: 700; text-transform: uppercase; }
+
+    /* Детальный Canvas Ковчега */
+    .ark-stage {
+      width: 100%;
+      border: 4px solid var(--ink);
+      border-radius: 12px;
+      background: #141a21;
+      overflow: hidden;
+      margin-bottom: 14px;
+      box-shadow: 6px 6px 0px var(--ink);
+      position: relative;
+    }
+    canvas#arkCanvas {
+      display: block;
+      width: 100%;
+      height: 360px;
+    }
+
+    /* Сюжетная развилка дня (сериальный эпизод) */
+    .episode-card {
+      background: linear-gradient(135deg, #fff5d6 0%, #f5dfb0 100%);
+      border: 3.5px solid var(--ink);
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 14px;
+      box-shadow: 5px 5px 0px var(--ink);
+    }
+    .episode-title {
+      font-family: 'Russo One', sans-serif;
+      font-size: 17px;
+      color: var(--blood);
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .choice-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 9px;
+      margin-top: 10px;
+    }
+    .choice-btn {
+      text-align: left;
+      background: var(--card);
+      border: 2.5px solid var(--ink);
+      border-radius: 8px;
+      padding: 10px 12px;
+      cursor: pointer;
+      font-family: 'PT Sans Narrow', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      box-shadow: 3px 3px 0px var(--ink);
+      transition: transform 0.1s, background 0.15s;
+    }
+    .choice-btn:hover:not(:disabled) {
+      background: #ffe69c;
+      transform: translate(-1px, -1px);
+    }
+    .choice-btn.picked {
+      background: var(--olive);
+      color: #fff;
+    }
+
+    /* Личное досье игрока */
+    .dossier-card {
+      background: #ffe9a8;
+      border: 3px solid var(--ink);
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 14px;
+      box-shadow: 4px 4px 0px var(--ink);
+    }
+    .dossier-card.cannibal { background: #f5c2c2; border-color: var(--blood); }
+    .dossier-card.accomplice { background: #f5d4b3; }
+
+    /* Карточки участников */
+    .crew-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 12px;
+    }
+    .crew-card {
+      background: var(--card);
+      border: 3px solid var(--ink);
+      border-radius: 8px 14px 8px 12px;
+      box-shadow: 4px 4px 0px var(--ink);
+      padding: 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      position: relative;
+    }
+    .crew-card.dead { background: #cdc4b2; opacity: 0.74; }
+    .crew-card.is-cannibal { border-color: var(--danger); background: #fae0e0; }
+    .crew-role-tag {
+      display: inline-block;
+      background: var(--teal);
+      color: #fff;
+      font-weight: 700;
+      font-size: 12px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      border: 1.5px solid var(--ink);
+    }
+    .secret-pill {
+      background: #efe2c4;
+      border-left: 3px solid var(--orange);
+      padding: 4px 7px;
+      font-size: 13px;
+      border-radius: 0 4px 4px 0;
+    }
+    .crew-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: auto;
+      padding-top: 7px;
+      border-top: 2px dashed rgba(26,20,18,0.25);
+    }
+
+    .notebook-list {
+      background: #fbf4e4;
+      border: 3px solid var(--ink);
+      border-radius: 8px;
+      padding: 12px;
+      background-image: linear-gradient(rgba(74, 108, 128, 0.13) 1px, transparent 1px);
+      background-size: 100% 25px;
+    }
+    .notebook-list li { margin-bottom: 6px; line-height: 1.35; font-weight: 700; }
+
+    .reactions-bar {
+      position: fixed;
+      bottom: 12px;
+      right: 12px;
+      display: flex;
+      gap: 6px;
+      background: var(--paper);
+      border: 3px solid var(--ink);
+      border-radius: 99px;
+      padding: 6px 10px;
+      box-shadow: 4px 4px 0px var(--ink);
+      z-index: 50;
+    }
+    .react-btn {
+      background: var(--card);
+      border: 2px solid var(--ink);
+      border-radius: 50%;
+      width: 34px;
+      height: 34px;
+      font-size: 17px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .fly-emoji {
+      position: fixed;
+      bottom: 60px;
+      font-size: 28px;
+      pointer-events: none;
+      animation: flyUp 2.2s ease-out forwards;
+      z-index: 60;
+    }
+    @keyframes flyUp {
+      0% { transform: translateY(0) scale(0.8); opacity: 1; }
+      100% { transform: translateY(-280px) scale(1.3); opacity: 0; }
+    }
+
+
+    .choice-votes {
+      margin-top: 6px;
+      font-size: 12.5px;
+      font-family: 'Russo One', sans-serif;
+      color: var(--blood);
+      background: rgba(255,255,255,0.72);
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 4px;
+      border: 1.5px solid var(--ink);
+    }
+    .choice-btn.picked .choice-votes {
+      color: #fff8eb;
+      background: rgba(23,18,16,0.45);
+    }
+
+    .char-picker {
+      background: #fff6df;
+      border: 3px solid var(--ink);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      box-shadow: 3px 3px 0px var(--ink);
+    }
+    .gender-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 6px;
+    }
+    .bond-box {
+      background: #f3e4f7;
+      border: 2px solid var(--ink);
+      border-radius: 6px;
+      padding: 6px 8px;
+      font-size: 12.8px;
+      line-height: 1.32;
+    }
+
+    .trait-box {
+      background: #f5ebd2;
+      border: 2px solid var(--ink);
+      border-radius: 6px;
+      padding: 6px 8px;
+      font-size: 12.8px;
+      line-height: 1.3;
+    }
+    .overlay-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 8, 7, 0.78);
+      z-index: 300;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .death-modal {
+      max-width: 540px;
+      width: 100%;
+      background: var(--paper);
+      border: 4px solid var(--ink);
+      border-radius: 12px;
+      box-shadow: 10px 10px 0px var(--blood);
+      padding: 20px;
+      text-align: center;
+      animation: popIn 0.2s ease-out;
+    }
+    .timer-modal {
+      max-width: 440px;
+      width: 100%;
+      background: #212533;
+      color: var(--paper);
+      border: 4px solid var(--mustard);
+      border-radius: 12px;
+      box-shadow: 10px 10px 0px rgba(0,0,0,0.85);
+      padding: 22px;
+      text-align: center;
+    }
+    .timer-num {
+      font-family: 'Russo One', sans-serif;
+      font-size: 46px;
+      color: var(--mustard);
+      margin: 10px 0;
+    }
+    @keyframes popIn {
+      from { transform: scale(0.92); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .toast {
+      position: fixed;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--ink);
+      color: var(--mustard);
+      border: 3px solid var(--mustard);
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-family: 'Russo One', sans-serif;
+      font-size: 14px;
+      z-index: 200;
+    }
+      body.player-mode [data-act="ration"], body.admin-mode [data-act="suspect"] { display: none !important; }
+  </style>
 </head>
 <body>
-<div class="wrap">
-<header><div><div class="logo">КОВЧЕГ: ПОСЛЕДНИЙ РЕЙС</div><div class="sub">Интерактивный триллер-сериал на выживание и дедукцию · 6–30 человек</div></div><div class="stamp">РЕЙС № 07 · НАБОР ЭКИПАЖА</div></header>
-<main id="app"></main>
-</div>
-<script>
-const API_PATH='/api/kovcheg';
-const $ = s => document.querySelector(s);
-let room=null, me=null, poller=null, tok=localStorage.getItem('kovcheg_tok');
-const params=new URLSearchParams(location.search), incoming=(params.get('room')||'').toUpperCase();
-const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const uuid=()=>(crypto.randomUUID?crypto.randomUUID():'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=crypto.getRandomValues(new Uint8Array(1))[0]%16;return (c==='x'?r:(r&3|8)).toString(16)}));
-const code=()=>Array.from(crypto.getRandomValues(new Uint8Array(5)),x=>'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[x%32]).join('');
-function showError(msg){const e=$('#error');if(e){e.textContent=msg;e.classList.remove('hidden')}}
-function home(){ $('#app').innerHTML=`
-<section class="panel hero">
-<div class="eyebrow">ПОДГОТОВКА К МЕЖПЛАНЕТНОМУ ПЕРЕЛЁТУ</div>
-<h1 class="heading">СОЗДАТЬ КОМНАТУ ОЖИДАНИЯ</h1>
-<p class="note">Создайте свой Ковчег, пригласите друзей и дождитесь, пока весь экипаж будет готов. Персонажи создаются уже внутри комнаты.</p>
-<div id="error" class="error hidden"></div>
-<div class="field"><label>Ваше имя · капитан</label><input id="hostName" maxlength="24" placeholder="Например, Капитан Громов"></div>
-<div class="field"><label>Название Ковчега</label><input id="arkTitle" maxlength="32" value="Ковчег «Надежда-7»"></div>
-<div class="two">
-<div class="field"><label>Количество игроков · от 6 до 30</label>
-<select id="maxPlayersSelect" class="choice-select">${Array.from({length:25},(_,i)=>`<option value="${i+6}" ${i+6===12?'selected':''}>${i+6} игроков</option>`).join('')}<option value="custom">Своё значение…</option></select>
-<input id="maxPlayersCustom" class="custom-number hidden" type="number" min="6" max="30" step="1" placeholder="Введите от 6 до 30"></div>
-<div class="field"><label>Дней до планеты · от 4 до 10</label>
-<select id="targetDaysSelect" class="choice-select">${Array.from({length:7},(_,i)=>`<option value="${i+4}" ${i+4===6?'selected':''}>${i+4} дней</option>`).join('')}<option value="custom">Своё значение…</option></select>
-<input id="targetDaysCustom" class="custom-number hidden" type="number" min="4" max="10" step="1" placeholder="Введите от 4 до 10"></div>
-</div>
-<button class="btn primary wide" id="createBtn">СОЗДАТЬ КОМНАТУ ►</button>
-<p class="note">После создания появятся код и ссылка-приглашение. Персонажи создаются внутри комнаты ожидания.</p>
-</section>`;$('#maxPlayersSelect').onchange=e=>$('#maxPlayersCustom').classList.toggle('hidden',e.target.value!=='custom');
-$('#targetDaysSelect').onchange=e=>$('#targetDaysCustom').classList.toggle('hidden',e.target.value!=='custom');
-$('#createBtn').onclick=createRoom}
-function joinScreen(){ $('#app').innerHTML=`
-<section class="panel hero"><div class="eyebrow">ДОБРО ПОЖАЛОВАТЬ НА БОРТ</div><h1 class="heading">ВХОД В КОМНАТУ</h1><div id="error" class="error hidden"></div>
-<div class="field"><label>Код комнаты</label><input id="roomCodeInput" maxlength="5" value="${esc(incoming)}" style="text-transform:uppercase" placeholder="ABCDE"></div>
-<div class="field"><label>Ваше имя</label><input id="guestName" maxlength="24" placeholder="Как вас зовут?"></div>
-<button id="joinBtn" class="btn olive wide">ВОЙТИ В КОМНАТУ ►</button>
-<p class="note">После входа вы сможете выбрать образ и характер персонажа.</p></section>`;$('#joinBtn').onclick=()=>joinRoom($('#roomCodeInput').value.trim().toUpperCase(),$('#guestName').value.trim())}
-let lobbyBuilt=false, busy=false;
-function copyText(t,msg){const done=()=>alert(msg);if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(t).then(done).catch(()=>fallback())}else fallback();function fallback(){const i=document.createElement('input');i.value=t;document.body.appendChild(i);i.select();try{document.execCommand('copy');done()}catch(e){prompt('Скопируйте вручную:',t)}i.remove()}}
-const archLabel=a=>a==='pragmatist'?'Запасливый':a==='observer'?'Внимательный':'Смелый';
-function playersHtml(){return room.players.map(p=>`<div class="player"><strong>${esc(p.player_name)} ${p.is_host?'★':''}</strong><div class="note">${p.gender==='female'?'Женщина':'Мужчина'} · ${archLabel(p.archetype)}</div><div class="${p.is_ready?'ready':'waiting'}">${p.is_ready?'● ГОТОВ':'◌ ОЖИДАЕТ'}</div></div>`).join('')}
-function lobby(){
-lobbyBuilt=true;
-$('#app').innerHTML=`
-<section class="panel">
-<div class="lobby-head"><div><div class="eyebrow" id="arkLine"></div><h1 class="heading" style="margin-bottom:4px">ЭКИПАЖ СОБИРАЕТСЯ</h1><div class="note" id="capLine"></div></div><div><div class="note" style="text-align:center">КОД ДЛЯ ВХОДА</div><div class="room-code">${esc(room.code)}</div></div></div>
-<div class="invite"><input id="inviteLink" readonly value="${esc(location.origin+location.pathname+'?room='+room.code)}"><button id="copyBtn" class="btn paperbtn">КОПИРОВАТЬ ССЫЛКУ</button><button id="copyCodeBtn" class="btn paperbtn">КОПИРОВАТЬ КОД</button></div>
-<div class="section-title">ПАССАЖИРЫ <span class="count" id="countBox"></span></div>
-<div class="players" id="playersBox"></div>
-<div class="section-title">ВАШ ПЕРСОНАЖ</div>
-<div class="two"><div class="field"><label>Имя персонажа</label><input id="charName" maxlength="24" value="${esc(me.player_name)}"></div><div class="field"><label>Образ</label><select id="gender"><option value="male">Мужчина</option><option value="female">Женщина</option></select></div></div>
-<div class="field"><label>Характер на борту</label><select id="archetype"><option value="pragmatist">Запасливый · меньше голода и жажды</option><option value="observer">Внимательный · меньше подозрений</option><option value="adventurer">Смелый · бонус в развилках</option></select></div>
-<div class="two"><button id="saveChar" class="btn paperbtn">СОХРАНИТЬ ИМЯ</button><button id="readyBtn" class="btn olive"></button></div>
-<div id="hostBox"></div>
-<div class="footerline"><span class="note" id="roleNote"></span><button id="leaveBtn" class="btn paperbtn">ПОКИНУТЬ КОМНАТУ</button></div>
-<div id="error" class="error hidden"></div>
-</section>`;
-$('#gender').value=me.gender;$('#archetype').value=me.archetype;
-$('#copyBtn').onclick=()=>copyText($('#inviteLink').value,'Ссылка скопирована');
-$('#copyCodeBtn').onclick=()=>copyText(room.code,'Код скопирован');
-$('#saveChar').onclick=saveCharacter;$('#readyBtn').onclick=toggleReady;$('#leaveBtn').onclick=leaveRoom;
-$('#gender').onchange=saveCharacter;$('#archetype').onchange=saveCharacter;
-updateLobby();
-}
-function updateLobby(){
-const host=!!me.is_host;
-$('#arkLine').textContent='КОМНАТА ОЖИДАНИЯ · '+room.ark_title;
-$('#capLine').textContent=`Капитан: ${room.host_name} · До планеты: ${room.target_days} дней · Лимит: ${room.max_players} пассажиров`;
-$('#countBox').textContent=`${room.players.length} / ${room.max_players}`;
-$('#playersBox').innerHTML=playersHtml();
-$('#readyBtn').textContent=me.is_ready?'ОТМЕНИТЬ ГОТОВНОСТЬ':'Я ГОТОВ';
-const g=$('#gender'),a=$('#archetype');
-if(document.activeElement!==g)g.value=me.gender;
-if(document.activeElement!==a)a.value=me.archetype;
-const canStart=room.players.length>=6&&room.players.every(p=>p.is_ready);
-$('#hostBox').innerHTML=host?`<button id="startBtn" class="btn primary wide" ${canStart?'':'disabled title="Нужно минимум 6 игроков и готовность каждого"'}>НАЧАТЬ ИГРУ ►</button><p class="note">Старт доступен, когда собралось минимум 6 игроков и все участники нажали «Я готов».</p>`:'';
-if(host)$('#startBtn').onclick=startGame;
-$('#roleNote').textContent=host?'Вы капитан этой комнаты.':'Ожидайте запуска капитаном.';
-}
-let G=null,V=null,started=false,pulling=false,sendT=null,lastV='';
-const sh=a=>[...a].sort(()=>Math.random()-.5),alive=()=>G.players.filter(p=>p.alive);
-const call=async(a,b)=>{const r=await fetch(API_PATH,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({a,code:room&&room.code,pid:me&&me.player_id,tok,...b})});const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||'Ошибка сервера');return j};
-const mk=(r,ps)=>({...r,id:r.code+r.t,players:ps});
-function act(m){if(me.is_host)handle(m);else call('msg',{m}).catch(()=>{})}
-function hostStart(){
-const sv=localStorage.getItem('kv_G_'+room.id);
-if(sv)G=JSON.parse(sv);else{
-const ps=room.players.map(p=>({id:p.player_id,name:p.player_name,alive:true,role:'p'}));
-const c=ps.length>=20?3:ps.length>=11?2:1;sh(ps).slice(0,c).forEach(p=>p.role='c');
-G={phase:'night',day:1,target:room.target_days,players:ps,votes:{},night:{},log:['Рейс начался. Ночь 1: Людоеды выбирают жертву.'],winner:null};}
-push();
-}
-function viewFor(pid){const m=G.players.find(p=>p.id===pid),end=!!G.winner,day=G.phase==='day';
-return{phase:G.phase,day:G.day,target:G.target,log:G.log.slice(-8),winner:G.winner,me:m?{role:m.role,alive:m.alive}:null,
-mates:m&&m.role==='c'?G.players.filter(p=>p.role==='c'&&p.id!==pid).map(p=>p.name):[],
-players:G.players.map(p=>({id:p.id,name:p.name,alive:p.alive,role:(end||!p.alive)?p.role:null})),
-my:(day?G.votes[pid]:G.night[pid])||null,done:Object.keys(day?G.votes:G.night).length,
-need:day?alive().length:alive().filter(p=>p.role==='c').length}}
-function push(){localStorage.setItem('kv_G_'+room.id,JSON.stringify(G));V=viewFor(me.player_id);renderGame();clearTimeout(sendT);sendT=setTimeout(()=>{const views={};G.players.forEach(p=>views[p.id]=viewFor(p.id));call('views',{views}).catch(()=>{})},150)}
-function nm(id){return G.players.find(p=>p.id===id).name}
-function handle(m){
-if(m.t==='hello')return push();
-if(G.winner)return;
-if(m.t==='force'&&m.from===me.player_id)return endPhase();
-const f=G.players.find(p=>p.id===m.from);if(!f||!f.alive)return;
-if(m.t==='vote'&&G.phase==='day'){if(m.to!=='skip'&&!(G.players.find(p=>p.id===m.to)||{}).alive)return;G.votes[m.from]=m.to;if(alive().every(p=>G.votes[p.id]))return endPhase()}
-if(m.t==='night'&&G.phase==='night'&&f.role==='c'){const t=G.players.find(p=>p.id===m.to);if(!t||!t.alive||t.role==='c')return;G.night[m.from]=m.to;if(alive().filter(p=>p.role==='c').every(p=>G.night[p.id]))return endPhase()}
-push();
-}
-function leader(o){const c={};Object.values(o).forEach(v=>{if(v!=='skip')c[v]=(c[v]||0)+1});const mx=Math.max(0,...Object.values(c)),w=Object.keys(c).filter(k=>c[k]===mx);return mx?{id:w[Math.floor(Math.random()*w.length)],tie:w.length>1}:null}
-function endPhase(){
-if(G.phase==='night'){const t=leader(G.night);if(t){const p=G.players.find(x=>x.id===t.id);p.alive=false;G.log.push(`Утро ${G.day}: ночью пропал ${p.name}. Он был Пассажиром.`)}else G.log.push(`Утро ${G.day}: ночь прошла тихо, никто не пропал.`);G.night={};G.phase='day'}
-else{const t=leader(G.votes);if(t&&!t.tie){const p=G.players.find(x=>x.id===t.id);p.alive=false;G.log.push(`Суд ${G.day}: изгнан ${p.name}. Он был ${p.role==='c'?'ЛЮДОЕДОМ':'Пассажиром'}.`)}else G.log.push(`Суд ${G.day}: голоса разделились или все воздержались, никого не изгнали.`);G.votes={};G.day++;G.phase='night';if(!G.winner&&G.day<=G.target)G.log.push(`Ночь ${G.day}: Людоеды выбирают жертву.`)}
-const c=alive().filter(p=>p.role==='c').length,h=alive().length-c;
-if(c===0){G.winner='p';G.log.push('Все Людоеды изгнаны. Пассажиры победили!')}
-else if(c>=h){G.winner='c';G.log.push('Людоедов стало не меньше, чем пассажиров. Победа Людоедов!')}
-else if(G.day>G.target){G.winner='p';G.log.push('Ковчег достиг планеты! Пассажиры победили!')}
-push();
-}
-function renderGame(){
-if(!V){$('#app').innerHTML='<section class="panel hero"><h1 class="heading">РЕЙС НАЧАЛСЯ</h1><p class="note">Подключаемся к игре… Если висит больше 10 секунд, капитан должен держать страницу открытой.</p></section>';return}
-const v=V,isC=v.me&&v.me.role==='c',aliveMe=v.me&&v.me.alive,day=v.phase==='day',host=me.is_host;
-const title=v.winner?(v.winner==='p'?'ПОБЕДА ПАССАЖИРОВ':'ПОБЕДА ЛЮДОЕДОВ'):(day?`ДЕНЬ ${v.day} · СУД`:`НОЧЬ ${v.day}`);
-const canAct=!v.winner&&aliveMe&&(day||isC);
-const btns=p=>{if(!canAct||!p.alive||p.id===me.player_id)return '';if(!day&&p.role==='c')return '';return `<button class="btn ${v.my===p.id?'primary':'paperbtn'}" data-id="${p.id}">${day?(v.my===p.id?'ВАШ ГОЛОС':'ГОЛОСОВАТЬ'):(v.my===p.id?'ЖЕРТВА ВЫБРАНА':'ВЫБРАТЬ ЖЕРТВУ')}</button>`};
-const mates=v.mates.length?` · союзники: ${v.mates.map(esc).join(', ')}`:'';
-$('#app').innerHTML=`<section class="panel"><div class="eyebrow">РЕЙС · ДОЛЕТЕТЬ НУЖНО ДО ДНЯ ${v.target}</div><h1 class="heading">${title}</h1>
-<div class="player"><strong>Ваша роль: ${isC?'ЛЮДОЕД 🍖':'ПАССАЖИР'}${aliveMe?'':' (вы выбыли)'}</strong><div class="note">${isC?'Ночью выбирайте жертву, днём притворяйтесь пассажиром'+esc(mates):'Днём ищите Людоедов и голосуйте за изгнание'}</div></div>
-${!v.winner?`<p class="note">${day?'Обсудите вслух, затем голосуйте':'Ночь: Людоеды выбирают жертву, остальные ждут'}. Выбрали: ${v.done} из ${v.need}</p>`:''}
-<div class="players">${v.players.map(p=>`<div class="player" style="${p.alive?'':'opacity:.55'}"><strong>${esc(p.name)}${p.id===me.player_id?' (вы)':''}</strong><div class="note">${p.alive?'на борту':'выбыл'}${p.role?' · '+(p.role==='c'?'Людоед':'Пассажир'):''}</div>${btns(p)}</div>`).join('')}</div>
-${canAct&&day?`<button class="btn paperbtn wide" id="skipVote">${v.my==='skip'?'ВЫ ВОЗДЕРЖАЛИСЬ':'ВОЗДЕРЖАТЬСЯ'}</button>`:''}
-<div class="section-title">ХРОНИКА</div>${v.log.map(l=>`<p class="note">${esc(l)}</p>`).join('')}
-${host&&!v.winner?'<button class="btn paperbtn wide" id="forceBtn">ЗАВЕРШИТЬ ФАЗУ ДОСРОЧНО</button>':''}</section>`;
-document.querySelectorAll('#app .player [data-id]').forEach(b=>b.onclick=()=>act({t:day?'vote':'night',from:me.player_id,to:b.dataset.id}));
-const sk=$('#skipVote');if(sk)sk.onclick=()=>act({t:'vote',from:me.player_id,to:'skip'});
-const fb=$('#forceBtn');if(fb)fb.onclick=()=>act({t:'force',from:me.player_id});
-}
-async function createRoom(){
-if(busy)return;
-const host=$('#hostName').value.trim(),title=$('#arkTitle').value.trim(),max=Number($('#maxPlayersSelect').value==='custom'?$('#maxPlayersCustom').value:$('#maxPlayersSelect').value),days=Number($('#targetDaysSelect').value==='custom'?$('#targetDaysCustom').value:$('#targetDaysSelect').value);
-if(!host||!title)return showError('Укажите имя капитана и название Ковчега.');
-if(!Number.isInteger(max)||max<6||max>30)return showError('Количество игроков должно быть от 6 до 30.');
-if(!Number.isInteger(days)||days<4||days>10)return showError('Количество дней должно быть от 4 до 10.');
-busy=true;$('#createBtn').disabled=true;
-try{const j=await call('create',{host,title,max,days});tok=j.tok;me=j.me;room=mk(j.room,[]);await enterRoom()}
-catch(e){room=null;me=null;showError(e.message||'Ошибка соединения')}
-finally{busy=false;const b=$('#createBtn');if(b)b.disabled=false}
-}
-async function joinRoom(c,n){
-if(busy)return;
-if(!/^[A-Z0-9]{5}$/.test(c)||!n)return showError('Введите корректный код комнаты и своё имя.');
-busy=true;$('#joinBtn').disabled=true;
-try{const j=await call('join',{code:c,name:n});tok=j.tok;me=j.me;room=mk(j.room,[]);await enterRoom()}
-catch(e){room=null;me=null;showError(e.message||'Ошибка соединения')}
-finally{busy=false;const b=$('#joinBtn');if(b)b.disabled=false}
-}
-async function enterRoom(){
-localStorage.setItem('kovcheg_room',room.code);localStorage.setItem('kovcheg_pid',me.player_id);localStorage.setItem('kovcheg_tok',tok);
-history.replaceState({},'',`?room=${room.code}`);
-clearInterval(poller);lobbyBuilt=false;started=false;lastV='';
-await refreshRoom();
-poller=setInterval(refreshRoom,me.is_host?1200:2500);
-}
-async function refreshRoom(){
-if(!room||!me||pulling)return;
-pulling=true;const code=room.code;
-try{
-const r=await fetch(`${API_PATH}?code=${code}&pid=${me.player_id}&tok=${tok}`),j=await r.json();
-if(!room||room.code!==code)return;
-if(!r.ok){if(r.status===404||r.status===403){forgetRoom();joinScreen()}return}
-room=mk(j.room,j.players);me=j.me;
-if(room.status==='started'){
-if(me.is_host){if(!started){started=true;lobbyBuilt=false;hostStart()}(j.msgs||[]).forEach(handle)}
-else{started=true;lobbyBuilt=false;const k=JSON.stringify(j.view);if(k!==lastV||!V){lastV=k;V=j.view;renderGame()}}
-}else{if(!lobbyBuilt)lobby();else updateLobby()}
-}catch(e){}finally{pulling=false}
-}
-function forgetRoom(){clearInterval(poller);poller=null;room=null;me=null;G=null;V=null;started=false;lobbyBuilt=false;tok=null;['kovcheg_room','kovcheg_pid','kovcheg_tok'].forEach(k=>localStorage.removeItem(k))}
-async function saveCharacter(){
-const name=$('#charName').value.trim()||me.player_name;
-try{await call('upd',{name,gender:$('#gender').value,archetype:$('#archetype').value});$('#charName').value=name;await refreshRoom()}catch(e){showError(e.message)}
-}
-async function toggleReady(){try{await call('upd',{ready:!me.is_ready});await refreshRoom()}catch(e){showError(e.message)}}
-async function startGame(){if(!me.is_host)return;try{await call('start',{});await refreshRoom()}catch(e){showError(e.message)}}
-async function leaveRoom(){try{await call('leave',{})}catch(e){}forgetRoom();history.replaceState({},'',location.pathname);home()}
-async function resume(){
-const c=incoming||localStorage.getItem('kovcheg_room'),pid=localStorage.getItem('kovcheg_pid');tok=localStorage.getItem('kovcheg_tok');
-if(!c||!pid||!tok)return incoming?joinScreen():home();
-try{const r=await fetch(`${API_PATH}?code=${c}&pid=${pid}&tok=${tok}`);const j=await r.json();
-if(!r.ok)return incoming?joinScreen():home();
-room=mk(j.room,j.players);me=j.me;await enterRoom()}catch(e){home()}
-}
-resume();
-</script>
-</body></html>
+  <div class="paper-grain"></div>
+  <div class="shell" id="app"></div>
+
+  <script>
+    // =========================================================================
+    // 1. АТМОСФЕРНЫЙ САУНД-ДИЗАЙН НА WEB AUDIO API (БЕЗ КРИНЖА И ВНЕШНИХ ФАЙЛОВ)
+    // =========================================================================
+    const SoundFX = (() => {
+      let ctx = null;
+      let muted = false;
+      let droneOsc = null;
+      let droneGain = null;
+      let currentMood = null;
+
+      function ensureCtx() {
+        if (muted) return null;
+        if (!ctx) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (!AudioCtx) return null;
+          ctx = new AudioCtx();
+        }
+        if (ctx.state === 'suspended') ctx.resume();
+        return ctx;
+      }
+
+      // Мягкий фоновый эмбиент Ковчега (тихий гул корпуса и глубина океана)
+      function setAmbient(mood) {
+        if (muted || currentMood === mood) return;
+        const c = ensureCtx();
+        if (!c) return;
+        currentMood = mood;
+
+        try {
+          if (droneOsc) {
+            droneOsc.stop();
+            droneOsc.disconnect();
+          }
+        } catch (e) {}
+
+        const osc = c.createOscillator();
+        const filter = c.createBiquadFilter();
+        const gain = c.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.value = mood === 'night' ? 54 : 68;
+
+        filter.type = 'lowpass';
+        filter.frequency.value = mood === 'night' ? 110 : 145;
+
+        gain.gain.setValueAtTime(0.001, c.currentTime);
+        gain.gain.exponentialRampToValueAtTime(mood === 'night' ? 0.032 : 0.022, c.currentTime + 1.2);
+
+        osc.connect(filter);
+        filter.connect(gain);
+        gain.connect(c.destination);
+        osc.start();
+
+        droneOsc = osc;
+        droneGain = gain;
+      }
+
+      function toggleMute() {
+        muted = !muted;
+        if (muted && droneGain && ctx) {
+          droneGain.gain.setValueAtTime(0.0001, ctx.currentTime);
+          currentMood = null;
+        } else if (!muted) {
+          setAmbient(S?.phase === 'night' ? 'night' : 'day');
+          playClick();
+        }
+        return muted;
+      }
+
+      // Тактильный бумажно-деревянный щелчок интерфейса
+      function playClick() {
+        const c = ensureCtx();
+        if (!c) return;
+        const now = c.currentTime;
+        const osc = c.createOscillator();
+        const gain = c.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(340, now);
+        osc.frequency.exponentialRampToValueAtTime(120, now + 0.045);
+        gain.gain.setValueAtTime(0.07, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+        osc.connect(gain);
+        gain.connect(c.destination);
+        osc.start(now);
+        osc.stop(now + 0.055);
+      }
+
+      // Выдача пайка / воды
+      function playRation(kind) {
+        const c = ensureCtx();
+        if (!c) return;
+        const now = c.currentTime;
+        const osc = c.createOscillator();
+        const gain = c.createGain();
+        osc.type = 'sine';
+        if (kind === 'water') {
+          osc.frequency.setValueAtTime(420, now);
+          osc.frequency.exponentialRampToValueAtTime(640, now + 0.09);
+        } else {
+          osc.frequency.setValueAtTime(240, now);
+          osc.frequency.exponentialRampToValueAtTime(310, now + 0.08);
+        }
+        gain.gain.setValueAtTime(0.065, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.11);
+        osc.connect(gain);
+        gain.connect(c.destination);
+        osc.start(now);
+        osc.stop(now + 0.12);
+      }
+
+      // Глухой удар печати / голосование за казнь
+      function playStamp() {
+        const c = ensureCtx();
+        if (!c) return;
+        const now = c.currentTime;
+        const osc = c.createOscillator();
+        const gain = c.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(145, now);
+        osc.frequency.exponentialRampToValueAtTime(48, now + 0.16);
+        gain.gain.setValueAtTime(0.14, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+        osc.connect(gain);
+        gain.connect(c.destination);
+        osc.start(now);
+        osc.stop(now + 0.19);
+      }
+
+      // Наступление ночи (низкий кинематографичный саспенс-аккорд)
+      function playNightFall() {
+        const c = ensureCtx();
+        if (!c) return;
+        setAmbient('night');
+        const now = c.currentTime;
+        [110, 130.81, 164.81].forEach((freq, i) => {
+          const osc = c.createOscillator();
+          const gain = c.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now + i * 0.06);
+          osc.frequency.exponentialRampToValueAtTime(freq * 0.92, now + 0.9);
+          gain.gain.setValueAtTime(0.001, now);
+          gain.gain.linearRampToValueAtTime(0.045, now + 0.15);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.95);
+          osc.connect(gain);
+          gain.connect(c.destination);
+          osc.start(now);
+          osc.stop(now + 1.0);
+        });
+      }
+
+      // Рассвет / тревожное открытие новой серии
+      function playDawn() {
+        const c = ensureCtx();
+        if (!c) return;
+        setAmbient('day');
+        const now = c.currentTime;
+        [220, 277.18, 329.63].forEach((freq, i) => {
+          const osc = c.createOscillator();
+          const gain = c.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + i * 0.08);
+          gain.gain.setValueAtTime(0.001, now + i * 0.08);
+          gain.gain.linearRampToValueAtTime(0.045, now + i * 0.08 + 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.75);
+          osc.connect(gain);
+          gain.connect(c.destination);
+          osc.start(now + i * 0.08);
+          osc.stop(now + 0.8);
+        });
+      }
+
+      // Драматичный поворот / обнаружение улики
+      function playTwist() {
+        const c = ensureCtx();
+        if (!c) return;
+        const now = c.currentTime;
+        const osc = c.createOscillator();
+        const gain = c.createGain();
+        osc.type = 'sawtooth';
+        const filter = c.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(520, now);
+        filter.frequency.exponentialRampToValueAtTime(140, now + 0.45);
+
+        osc.frequency.setValueAtTime(196, now);
+        osc.frequency.exponentialRampToValueAtTime(98, now + 0.45);
+
+        gain.gain.setValueAtTime(0.06, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.48);
+
+        osc.connect(filter);
+        filter.connect(gain);
+        gain.connect(c.destination);
+        osc.start(now);
+        osc.stop(now + 0.5);
+      }
+
+      return {
+        isMuted: () => muted,
+        toggleMute,
+        setAmbient,
+        playClick,
+        playRation,
+        playStamp,
+        playNightFall,
+        playDawn,
+        playTwist
+      };
+    })();
+
+    // =========================================================================
+    // 2. БАЗОВЫЕ ПЕРЕМЕННЫЕ И СЕССИЯ
+    // =========================================================================
+    const API = '/api/kovcheg';
+    const STORAGE_KEY = 'kovcheg_session_v2';
+
+    let ses = null;
+    try {
+      const rawSes = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+      if (rawSes) {
+        ses = rawSes;
+      } else {
+        localStorage.removeItem(STORAGE_KEY);
+      }
+    } catch (e) {}
+    const urlRoom = new URLSearchParams(location.search).get('room');
+
+    let S = null;
+    let err = '';
+    let selectedNightTarget = null;
+    let selectedCannibalMode = 'stealth';
+    let seenReactions = new Set();
+    let animFrameId = null;
+
+    function saveSes() {
+      if (ses) localStorage.setItem(STORAGE_KEY, JSON.stringify(ses));
+      else localStorage.removeItem(STORAGE_KEY);
+    }
+
+    function esc(s) {
+      return String(s ?? '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+    }
+
+    function toast(msg) {
+      const d = document.createElement('div');
+      d.className = 'toast';
+      d.textContent = msg;
+      document.body.appendChild(d);
+      setTimeout(() => d.remove(), 2400);
+    }
+
+    // состояние партии (живёт во вкладке ведущего) — объявлено здесь, чтобы было видно и из опроса, и из движка
+    let demoMeta = null, demoVotes = {}, demoNightActions = {}, demoSuspectedByMe = {}, demoStolenByMe = {};
+    let lobbyData = null, lobbyKey = '', pulling = false, lastViewKey = '', lastReact = -1, dlEnd = 0, deadlineAt = 0, sendT = null, lastDeathId = null;
+    async function call(a, b) {
+      const r = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ a, code: ses && ses.room, pid: ses && ses.pid, tok: ses && ses.tok, ...b }) });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(j.error || 'Ошибка сервера');
+      return j;
+    }
+    function forget() { ses = null; S = null; lobbyData = null; lastViewKey = ''; lobbyKey = ''; saveSes(); history.replaceState({}, '', location.pathname); }
+    async function createRoom() {
+      const title = document.getElementById('arkTitle')?.value.trim() || 'Ковчег «Надежда-7»';
+      const max = Number(document.getElementById('maxPlayers')?.value), days = Number(document.getElementById('targetDays')?.value);
+      try {
+        const j = await call('create', { host: 'Ведущий', title, max, days });
+        ses = { room: j.room.code, pid: j.me.player_id, tok: j.tok, admin: true }; saveSes(); err = '';
+        lobbyData = { room: j.room, players: [j.me], me: j.me };
+        history.replaceState({}, '', '?room=' + j.room.code); render();
+      } catch (e) { err = e.message; render(); }
+    }
+    async function joinRoom() {
+      const code = (document.getElementById('joinCode')?.value || '').trim().toUpperCase();
+      const name = document.getElementById('joinName')?.value.trim();
+      if (!/^[A-Z0-9]{5}$/.test(code) || !name) { err = 'Введите код комнаты (5 символов) и имя персонажа.'; render(); return; }
+      try {
+        const j = await call('join', { code, name });
+        ses = { room: j.room.code, pid: j.me.player_id, tok: j.tok, admin: false }; saveSes(); err = '';
+        await call('upd', { gender: chosenGender, archetype: chosenArchetype });
+        history.replaceState({}, '', '?room=' + j.room.code); await poll();
+      } catch (e) { err = e.message; render(); }
+    }
+    async function toggleReady() { try { await call('upd', { ready: !(lobbyData && lobbyData.me && lobbyData.me.is_ready) }); await poll(); } catch (e) { toast(e.message); } }
+    async function saveCfg() {
+      const v = id => document.getElementById(id)?.value;
+      try {
+        await call('cfg', { title: v('cfgTitle'), max: Number(v('cfgMax')), days: Number(v('cfgDays')),
+          cfg: { cannibals: Number(v('cfgCan')), accomplice: v('cfgAcc'), supplies: v('cfgSup'), dayMin: Number(v('cfgDayMin')), bonds: v('cfgBonds') === 'on' } });
+        toast('Критерии сохранены');
+      } catch (e) { toast(e.message); }
+      lobbyKey = ''; await poll();
+    }
+    async function kickPlayer(id) {
+      try { await call('kick', { target: id }); } catch (e) { toast(e.message); }
+      lobbyKey = ''; await poll();
+    }
+    async function startGameBtn() {
+      try {
+        await poll();
+        const ps0 = lobbyData.players.filter(p => !p.is_host);
+        const notReady = ps0.filter(p => !p.is_ready).length;
+        if (notReady && !confirm('Не все игроки нажали «Я готов» (' + notReady + '). Начать всё равно?')) return;
+        await call('start', {});
+        const ps = lobbyData.players.filter(p => !p.is_host);
+        lobbyData.room.status = 'started'; startAdminGame(ps, lobbyData.room);
+      } catch (e) { toast(e.message); }
+    }
+    async function leaveAll() {
+      if (roundTimerInterval) clearInterval(roundTimerInterval);
+      roundTimerInfo = null; deathModalData = null; demoMeta = null; deadlineAt = 0;
+      try { await call('leave', {}); } catch (e) {}
+      forget(); render();
+    }
+    function onNewS() {
+      if (S.death && S.death.id !== lastDeathId) { lastDeathId = S.death.id; deathModalData = S.death; }
+      dlEnd = S.dlLeft != null ? Date.now() + S.dlLeft * 1000 : 0;
+      const rs = S.reactions || [], mx = Math.max(0, ...rs.map(x => x.i));
+      if (lastReact < 0) lastReact = mx;
+      else { rs.filter(x => x.i > lastReact && x.f !== (ses && ses.pid)).forEach(x => spawnReaction(x.e)); lastReact = Math.max(lastReact, mx); }
+      document.body.classList.toggle('player-mode', !S.host);
+      document.body.classList.toggle('admin-mode', !!S.host);
+    }
+    async function poll() {
+      if (!ses || !ses.room || pulling) return;
+      pulling = true;
+      try {
+        const wantSnap = ses.admin && !demoMeta ? '&snap=1' : '';
+        const r = await fetch(`${API}?code=${encodeURIComponent(ses.room)}&pid=${encodeURIComponent(ses.pid)}&tok=${encodeURIComponent(ses.tok)}${wantSnap}`);
+        const j = await r.json();
+        if (!r.ok) { if (r.status === 404 || r.status === 403) { forget(); err = 'Комната закрыта или недоступна.'; render(); } return; }
+        lobbyData = { room: j.room, players: j.players, me: j.me };
+        if (j.room.status === 'started') {
+          if (ses.admin) {
+            if (!demoMeta && j.snap) { try { window.restoreHostState(j.snap); toast('Партия восстановлена'); } catch (e) { console.error(e); } }
+            if (demoMeta) (j.msgs || []).forEach(applyRemote);
+            else if (!S) render();
+          }
+          else if (j.view && j.view.c) {
+            const k = JSON.stringify(j.view);
+            if (k !== lastViewKey) { lastViewKey = k; S = compose(j.view.c, j.view.p); onNewS(); render(); }
+          } else if (!S) render();
+        } else {
+          const k = JSON.stringify([j.room, j.players]);
+          if (k !== lobbyKey || !document.getElementById('lobbyRoot')) { lobbyKey = k; render(); }
+        }
+      } catch (e) {} finally { pulling = false; }
+    }
+    setInterval(poll, 2000);
+    setInterval(() => {
+      if (demoMeta && demoMeta.phase !== 'day') deadlineAt = 0;
+      if (demoMeta && deadlineAt && Date.now() >= deadlineAt && !roundTimerInfo) { deadlineAt = 0; handleAct('endDay', { dataset: {} }, null); }
+      const b = document.getElementById('dlBadge');
+      if (b && dlEnd) { const t = Math.max(0, Math.round((dlEnd - Date.now()) / 1000)); b.textContent = '⏱ ' + Math.floor(t / 60) + ':' + String(t % 60).padStart(2, '0'); }
+    }, 500);
+    
+    function spawnReaction(emoji) {
+      const el = document.createElement('div');
+      el.className = 'fly-emoji';
+      el.textContent = emoji;
+      el.style.right = (20 + Math.random() * 140) + 'px';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 2200);
+    }
+
+    // =========================================================================
+    // 3. ДЕТАЛИЗИРОВАННАЯ ПРОРИСОВКА КОМНАТ КОВЧЕГА И УЧАСТНИКОВ (CANVAS)
+    // =========================================================================
+    function startArkAnimation() {
+      if (animFrameId) cancelAnimationFrame(animFrameId);
+      function loop(ts) {
+        drawArkCanvas(ts || 0);
+        animFrameId = requestAnimationFrame(loop);
+      }
+      animFrameId = requestAnimationFrame(loop);
+    }
+
+    function drawArkCanvas(ts) {
+      const canvas = document.getElementById('arkCanvas');
+      if (!canvas || !S || !S.players) return;
+
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const cssW = canvas.clientWidth || 1000;
+      const cssH = 360;
+      if (canvas.width !== Math.floor(cssW * dpr) || canvas.height !== Math.floor(cssH * dpr)) {
+        canvas.width = Math.floor(cssW * dpr);
+        canvas.height = Math.floor(cssH * dpr);
+      }
+
+      const ctx = canvas.getContext('2d');
+      ctx.save();
+      ctx.scale(dpr, dpr);
+
+      const w = cssW;
+      const h = cssH;
+      const isNight = S.phase === 'night';
+      const t = ts * 0.002;
+
+      // 1. Небо и грозовые облака за бортом
+      const skyGrad = ctx.createLinearGradient(0, 0, 0, h);
+      if (isNight) {
+        skyGrad.addColorStop(0, '#0a0f18');
+        skyGrad.addColorStop(1, '#182436');
+      } else {
+        skyGrad.addColorStop(0, '#466875');
+        skyGrad.addColorStop(1, '#79999e');
+      }
+      ctx.fillStyle = skyGrad;
+      ctx.fillRect(0, 0, w, h);
+
+      // Звёзды ночью или облака днём
+      if (isNight) {
+        ctx.fillStyle = 'rgba(255, 245, 210, 0.65)';
+        for (let i = 0; i < 28; i++) {
+          const sx = ((i * 137) % w);
+          const sy = ((i * 53) % 90) + 6;
+          const r = (i % 3 === 0) ? 1.6 : 1;
+          ctx.beginPath();
+          ctx.arc(sx, sy, r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      // 2. Многослойные анимированные волны океана
+      ctx.fillStyle = isNight ? '#0c1824' : '#264c59';
+      ctx.beginPath();
+      ctx.moveTo(0, h);
+      for (let x = 0; x <= w; x += 20) {
+        const wy = h - 42 + Math.sin(x * 0.025 + t) * 5;
+        ctx.lineTo(x, wy);
+      }
+      ctx.lineTo(w, h);
+      ctx.closePath();
+      ctx.fill();
+
+      // Лёгкая качка корпуса Ковчега на волнах
+      const bobY = Math.sin(t * 0.9) * 2.2;
+      ctx.save();
+      ctx.translate(0, bobY);
+
+      const pad = 18;
+      const hullX = pad;
+      const hullY = 14;
+      const hullW = w - pad * 2;
+      const hullH = h - 54;
+
+      // Тень корпуса
+      ctx.fillStyle = 'rgba(0,0,0,0.42)';
+      ctx.beginPath();
+      ctx.roundRect(hullX + 6, hullY + 6, hullW, hullH, 16);
+      ctx.fill();
+
+      // Внешняя стальная обшивка корпуса
+      ctx.fillStyle = isNight ? '#252329' : '#cbb68c';
+      ctx.beginPath();
+      ctx.roundRect(hullX, hullY, hullW, hullH, 16);
+      ctx.fill();
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = '#14100e';
+      ctx.stroke();
+
+      // Заклёпки по периметру корпуса
+      ctx.fillStyle = isNight ? '#5c544d' : '#7a684b';
+      for (let rx = hullX + 16; rx < hullX + hullW - 12; rx += 26) {
+        ctx.beginPath(); ctx.arc(rx, hullY + 7, 1.8, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(rx, hullY + hullH - 7, 1.8, 0, Math.PI * 2); ctx.fill();
+      }
+
+      // 4 ДЕТАЛЬНО ПРОРИСОВАННЫЕ КОМНАТЫ / ОТСЕКА
+      const rooms = [
+        { key: 'bridge', title: 'I. МОСТИК И РАДИО', bgDay: '#d7cab0', bgNight: '#1d2430', accent: '#347078' },
+        { key: 'galley', title: 'II. КАМБУЗ И КАЮТЫ', bgDay: '#e3cfa6', bgNight: '#29211e', accent: '#d45522' },
+        { key: 'medbay', title: 'III. МЕДОТСЕК И САД', bgDay: '#cfe0cf', bgNight: '#1b2924', accent: '#5d6b3b' },
+        { key: 'engine', title: 'IV. РЕАКТОР И ТРЮМ', bgDay: '#cfc4b6', bgNight: '#261e24', accent: '#e3a329' }
+      ];
+
+      const innerX = hullX + 10;
+      const innerY = hullY + 14;
+      const innerW = hullW - 20;
+      const innerH = hullH - 26;
+      const secW = innerW / 4;
+
+      rooms.forEach((rm, i) => {
+        const sx = innerX + i * secW;
+        const sy = innerY;
+        const sw = secW;
+        const sh = innerH;
+
+        // Фон комнаты
+        ctx.fillStyle = isNight ? rm.bgNight : rm.bgDay;
+        ctx.fillRect(sx, sy, sw, sh);
+
+        // Пол с настилом
+        ctx.fillStyle = isNight ? '#151317' : '#8a7353';
+        ctx.fillRect(sx, sy + sh - 22, sw, 22);
+        ctx.strokeStyle = '#171210';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(sx, sy + sh - 22);
+        ctx.lineTo(sx + sw, sy + sh - 22);
+        ctx.stroke();
+
+        // Индивидуальный интерьер каждой комнаты!
+        ctx.save();
+        if (rm.key === 'bridge') {
+          // Иллюминатор с видом на море
+          ctx.fillStyle = isNight ? '#0d192b' : '#79b4c2';
+          ctx.beginPath(); ctx.arc(sx + sw * 0.28, sy + 64, 18, 0, Math.PI * 2); ctx.fill();
+          ctx.lineWidth = 3; ctx.strokeStyle = '#3d332a'; ctx.stroke();
+          // Пульт управления и радар с бегущим лучом
+          ctx.fillStyle = '#2d353b';
+          ctx.fillRect(sx + sw * 0.52, sy + 52, sw * 0.36, 36);
+          ctx.strokeRect(sx + sw * 0.52, sy + 52, sw * 0.36, 36);
+          ctx.fillStyle = '#193b2d';
+          ctx.beginPath(); ctx.arc(sx + sw * 0.7, sy + 70, 12, 0, Math.PI * 2); ctx.fill();
+          ctx.strokeStyle = '#4be38a';
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.moveTo(sx + sw * 0.7, sy + 70);
+          ctx.lineTo(sx + sw * 0.7 + Math.cos(t * 2) * 11, sy + 70 + Math.sin(t * 2) * 11);
+          ctx.stroke();
+        } else if (rm.key === 'galley') {
+          // Подвесная тёплая лампа
+          ctx.strokeStyle = '#171210';
+          ctx.beginPath(); ctx.moveTo(sx + sw * 0.5, sy + 24); ctx.lineTo(sx + sw * 0.5, sy + 42); ctx.stroke();
+          ctx.fillStyle = '#e3a329';
+          ctx.beginPath(); ctx.arc(sx + sw * 0.5, sy + 46, 9, Math.PI, 0); ctx.fill();
+          // Свет лампы
+          ctx.fillStyle = isNight ? 'rgba(255, 195, 90, 0.12)' : 'rgba(255, 220, 130, 0.22)';
+          ctx.beginPath();
+          ctx.moveTo(sx + sw * 0.44, sy + 46);
+          ctx.lineTo(sx + sw * 0.18, sy + sh - 22);
+          ctx.lineTo(sx + sw * 0.82, sy + sh - 22);
+          ctx.closePath();
+          ctx.fill();
+          // Котёл камбуза и полки с банками
+          ctx.fillStyle = '#423d3a';
+          ctx.fillRect(sx + sw * 0.16, sy + sh - 54, 34, 32);
+          ctx.strokeRect(sx + sw * 0.16, sy + sh - 54, 34, 32);
+          // Пар над котлом
+          ctx.strokeStyle = 'rgba(255,255,255,0.45)';
+          ctx.beginPath();
+          ctx.arc(sx + sw * 0.16 + 17, sy + sh - 62 - (Math.sin(t * 2) * 3), 6, 0, Math.PI);
+          ctx.stroke();
+        } else if (rm.key === 'medbay') {
+          // Красный крест медотсека на стене
+          ctx.fillStyle = '#b82525';
+          ctx.fillRect(sx + sw * 0.24 - 4, sy + 46, 8, 22);
+          ctx.fillRect(sx + sw * 0.24 - 11, sy + 53, 22, 8);
+          // Оранжерея: фитолампа и растения
+          ctx.fillStyle = '#3e5e32';
+          ctx.fillRect(sx + sw * 0.55, sy + sh - 46, sw * 0.34, 24);
+          ctx.fillStyle = '#6ba349';
+          for (let px = 0; px < 3; px++) {
+            ctx.beginPath();
+            ctx.arc(sx + sw * 0.61 + px * 16, sy + sh - 50, 9, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        } else if (rm.key === 'engine') {
+          // Пульсирующий реактор и ящики с припасами
+          const pulse = 0.75 + Math.sin(t * 3) * 0.25;
+          ctx.fillStyle = '#333036';
+          ctx.fillRect(sx + sw * 0.56, sy + 44, sw * 0.3, sh - 66);
+          ctx.strokeRect(sx + sw * 0.56, sy + 44, sw * 0.3, sh - 66);
+          ctx.fillStyle = isNight ? `rgba(235, 95, 45, ${pulse})` : `rgba(230, 163, 41, ${pulse})`;
+          ctx.beginPath();
+          ctx.arc(sx + sw * 0.71, sy + 76, 12, 0, Math.PI * 2);
+          ctx.fill();
+          // Ящики трюма
+          ctx.fillStyle = '#9c7848';
+          ctx.fillRect(sx + sw * 0.14, sy + sh - 48, 28, 26);
+          ctx.strokeRect(sx + sw * 0.14, sy + sh - 48, 28, 26);
+        }
+        ctx.restore();
+
+        // Переборка между отсеками с гермодверью
+        if (i > 0) {
+          ctx.strokeStyle = '#171210';
+          ctx.lineWidth = 4;
+          ctx.beginPath();
+          ctx.moveTo(sx, sy);
+          ctx.lineTo(sx, sy + sh);
+          ctx.stroke();
+
+          // Гермошлюз внизу переборки
+          ctx.fillStyle = '#47423e';
+          ctx.fillRect(sx - 6, sy + sh - 66, 12, 44);
+          ctx.strokeRect(sx - 6, sy + sh - 66, 12, 44);
+        }
+
+        // Табличка названия отсека сверху
+        ctx.fillStyle = '#171210';
+        ctx.fillRect(sx + 6, sy + 4, sw - 12, 20);
+        ctx.fillStyle = '#f2e5c6';
+        ctx.font = '700 11px "Russo One", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(rm.title, sx + sw / 2, sy + 18);
+      });
+
+      // 3. ДЕТАЛЬНАЯ ПРОРИСОВКА УЧАСТНИКОВ (6–30 ЧЕЛОВЕК) ПО ИХ ОТСЕКАМ
+      const deckToRoomIdx = {
+        'Мостик': 0, 'Радиорубка': 0,
+        'Камбуз': 1, 'Каюты': 1, 'Кают-компания': 1, 'VIP-каюта': 1,
+        'Медотсек': 2, 'Оранжерея': 2, 'Часовня': 2,
+        'Машинное': 3, 'Трюм': 3, 'Арсенал': 3, 'Холодильник': 3, 'Лаборатория': 3, 'Палуба': 0
+      };
+
+      const byRoom = [[], [], [], []];
+      S.players.forEach((p, idx) => {
+        const rIdx = deckToRoomIdx[p.deck] ?? (idx % 4);
+        byRoom[rIdx].push({ ...p, globalIdx: idx });
+      });
+
+      const coatPalette = ['#d45522', '#347078', '#5d6b3b', '#c98a22', '#7a4463', '#435b82', '#8f5236', '#3d6e66'];
+      const hairPalette = ['#1f1916', '#5c3824', '#c99b42', '#8c3b2b', '#7d7873', '#2e2927'];
+
+      byRoom.forEach((list, rIdx) => {
+        const sx = innerX + rIdx * secW;
+        const count = list.length;
+        list.forEach((p, localIdx) => {
+          const row = Math.floor(localIdx / 4);
+          const col = localIdx % 4;
+          const colsInRow = Math.min(4, count - row * 4);
+          const spacing = (secW - 28) / Math.max(1, colsInRow);
+          const px = sx + 14 + spacing * (col + 0.5);
+          const py = (row === 0) ? (innerY + innerH - 22) : (innerY + innerH - 96);
+
+          ctx.save();
+          ctx.translate(px, py);
+
+          if (!p.alive) {
+            // Силуэт выбывшего / меловой контур и табличка
+            ctx.fillStyle = 'rgba(23, 18, 16, 0.25)';
+            ctx.beginPath();
+            ctx.ellipse(0, -4, 16, 5, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.strokeStyle = '#b82525';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(-9, -24); ctx.lineTo(9, -6);
+            ctx.moveTo(9, -24); ctx.lineTo(-9, -6);
+            ctx.stroke();
+          } else {
+            // Лёгкое живое дыхание персонажа
+            const breathe = Math.sin(t * 2.4 + p.globalIdx) * 1.1;
+            const isRevealedCan = p.alignment === 'cannibal' && (S.phase === 'end' || S.me?.alignment === 'cannibal');
+            const coat = isRevealedCan ? '#b82525' : coatPalette[p.globalIdx % coatPalette.length];
+            const hair = hairPalette[p.globalIdx % hairPalette.length];
+            const gType = p.gender || 'male';
+
+            // Тень под ногами
+            ctx.fillStyle = 'rgba(0,0,0,0.32)';
+            ctx.beginPath();
+            ctx.ellipse(0, 0, 12, 3.5, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Ноги / ботинки
+            ctx.fillStyle = '#1f1b18';
+            ctx.fillRect(-7, -11, 5, 11);
+            ctx.fillRect(2, -11, 5, 11);
+
+            // Туловище / китель с учётом выбранного образа
+            ctx.fillStyle = coat;
+            ctx.beginPath();
+            if (gType === 'female') {
+              ctx.roundRect(-9.5, -34 + breathe, 19, 24, 6);
+
+            } else {
+              ctx.roundRect(-12, -34 + breathe, 24, 24, 4);
+            }
+            ctx.fill();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#171210';
+            ctx.stroke();
+
+            // Воротник и пуговицы
+            ctx.fillStyle = '#f2e5c6';
+            ctx.beginPath();
+            ctx.moveTo(-4, -34 + breathe);
+            ctx.lineTo(0, -28 + breathe);
+            ctx.lineTo(4, -34 + breathe);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.fillStyle = '#171210';
+            ctx.fillRect(-1, -24 + breathe, 2, 2);
+            ctx.fillRect(-1, -19 + breathe, 2, 2);
+
+            // Голова
+            ctx.fillStyle = p.hunger > 70 ? '#d9c5a7' : '#f2c89b';
+            ctx.beginPath();
+            ctx.arc(0, -44 + breathe, 10, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+
+            // Причёска / образ по полу
+            ctx.fillStyle = hair;
+            ctx.beginPath();
+            if (gType === 'female') {
+              ctx.arc(0, -46 + breathe, 10.8, Math.PI * 0.85, Math.PI * 2.15);
+              ctx.fillRect(-10.5, -46 + breathe, 4, 14);
+              ctx.fillRect(6.5, -46 + breathe, 4, 14);
+
+            } else {
+              ctx.arc(0, -47 + breathe, 10.2, Math.PI, 0);
+            }
+            ctx.fill();
+
+            // Выразительные глаза и брови (реагируют на голод / ночь / страх)
+            ctx.fillStyle = '#171210';
+            ctx.beginPath();
+            ctx.arc(-3.5, -44 + breathe, 1.5, 0, Math.PI * 2);
+            ctx.arc(3.5, -44 + breathe, 1.5, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Брови
+            ctx.lineWidth = 1.6;
+            ctx.beginPath();
+            if (isRevealedCan || p.hunger > 65 || isNight) {
+              ctx.moveTo(-6, -48 + breathe); ctx.lineTo(-2, -46.5 + breathe);
+              ctx.moveTo(6, -48 + breathe); ctx.lineTo(2, -46.5 + breathe);
+            } else {
+              ctx.moveTo(-6, -47 + breathe); ctx.lineTo(-2, -47.5 + breathe);
+              ctx.moveTo(6, -47 + breathe); ctx.lineTo(2, -47.5 + breathe);
+            }
+            ctx.stroke();
+
+            // Индикатор пайка над головой днём
+            if (S.phase === 'day' && (p.ration?.food || p.ration?.water)) {
+              ctx.fillStyle = '#171210';
+              ctx.fillRect(-12, -66, 24, 11);
+              ctx.fillStyle = '#e3a329';
+              ctx.font = '700 9px sans-serif';
+              ctx.textAlign = 'center';
+              ctx.fillText((p.ration.food ? '🍲' : '') + (p.ration.water ? '💧' : ''), 0, -57);
+            }
+
+            // Метка «ВЫ» для самого игрока
+            if (p.id === S.me?.id) {
+              ctx.fillStyle = '#e3a329';
+              ctx.strokeStyle = '#171210';
+              ctx.lineWidth = 1.5;
+              ctx.beginPath();
+              ctx.moveTo(0, -57 + breathe);
+              ctx.lineTo(-5, -64 + breathe);
+              ctx.lineTo(5, -64 + breathe);
+              ctx.closePath();
+              ctx.fill();
+              ctx.stroke();
+            }
+          }
+
+          // Плашка с именем под персонажем
+          const label = p.name.replace(/^Вы \(|\)$/g, '').slice(0, 10);
+          ctx.fillStyle = p.alive ? 'rgba(23, 18, 16, 0.84)' : 'rgba(90, 82, 74, 0.75)';
+          ctx.beginPath();
+          ctx.roundRect(-26, 2, 52, 13, 3);
+          ctx.fill();
+
+          ctx.fillStyle = p.alive ? '#fbf3e2' : '#d6cfc2';
+          ctx.font = '700 10px "PT Sans Narrow", sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(label, 0, 11.5);
+
+          ctx.restore();
+        });
+      });
+
+      ctx.restore(); // конец качки корпуса
+      ctx.restore(); // конец dpr
+    }
+
+    // =========================================================================
+    // 4. ЭКРАНЫ ИНТЕРФЕЙСА, ВЫБОР ПЕРСОНАЖА, ТАЙМЕР И МИНИ-ЭКРАН СМЕРТИ
+    // =========================================================================
+    let roundTimerInfo = null;
+    let roundTimerInterval = null;
+    let deathModalData = null;
+    let chosenGender = 'male'; // 'male' | 'female' | 'nonbinary'
+    let chosenArchetype = 'pragmatist'; // 'pragmatist' | 'observer' | 'adventurer'
+
+    function genderLabel(g) {
+      return g === 'female' ? 'Женщина' : 'Мужчина';
+    }
+
+    function openDeathModal(data) {
+      deathModalData = data;
+      SoundFX.playTwist();
+      render();
+    }
+
+    function closeDeathModal() {
+      deathModalData = null;
+      SoundFX.playClick();
+      render();
+    }
+
+    function startRoundTimer(label, seconds, onDone) {
+      if (roundTimerInterval) clearInterval(roundTimerInterval);
+      roundTimerInfo = { label, secondsLeft: seconds, onDone };
+      render();
+      publishSoon();
+      roundTimerInterval = setInterval(() => {
+        if (!roundTimerInfo) {
+          clearInterval(roundTimerInterval);
+          return;
+        }
+        roundTimerInfo.secondsLeft -= 1;
+        if (roundTimerInfo.secondsLeft <= 0) {
+          const cb = roundTimerInfo.onDone;
+          clearInterval(roundTimerInterval);
+          roundTimerInfo = null;
+          if (typeof cb === 'function') cb();
+          else render();
+        } else {
+          render();
+        }
+      }, 1000);
+    }
+
+    function skipRoundTimer() {
+      if (!roundTimerInfo) return;
+      const cb = roundTimerInfo.onDone;
+      clearInterval(roundTimerInterval);
+      roundTimerInfo = null;
+      SoundFX.playClick();
+      if (typeof cb === 'function') cb();
+      else render();
+    }
+
+    function renderSoundButton() {
+      const muted = SoundFX.isMuted();
+      return `<button class="comic-btn paper small" data-act="toggleSound">${muted ? '🔇 ЗВУК: ВЫКЛ' : '🔊 ЗВУК: ВКЛ'}</button>`;
+    }
+
+    function renderOverlays() {
+      let html = '';
+      if (roundTimerInfo) {
+        html += `
+          <div class="overlay-backdrop">
+            <div class="timer-modal">
+              <div class="stamp-badge">ПЕРЕХОД ЭТАПА</div>
+              <h3 style="font-family:'Russo One',sans-serif; margin:10px 0 4px;">${esc(roundTimerInfo.label)}</h3>
+              <div style="font-size:14px; opacity:0.85;">Подготовка отсеков и смена обстановки на Ковчеге...</div>
+              <div class="timer-num">${roundTimerInfo.secondsLeft}с</div>
+              <button class="comic-btn mustard small" data-act="skipTimer">ПРОПУСТИТЬ ОТСЧЁТ ►</button>
+            </div>
+          </div>
+        `;
+      }
+      if (!roundTimerInfo && S && S.timer) {
+        html += `<div class="overlay-backdrop"><div class="timer-modal"><div class="stamp-badge">ПЕРЕХОД ЭТАПА</div><h3 style="font-family:'Russo One',sans-serif; margin:10px 0 4px;">${esc(S.timer.label)}</h3><div style="font-size:14px; opacity:0.85;">Ведущий переключает этап...</div></div></div>`;
+      }
+      if (deathModalData) {
+        html += `
+          <div class="overlay-backdrop">
+            <div class="death-modal">
+              <span class="stamp-badge blood">ХРОНИКА ПОТЕРЬ • СЕРИЯ ${esc(deathModalData.day || '?')}</span>
+              <h2 style="font-family:'Russo One',sans-serif; color:var(--blood); margin:10px 0 6px;">${esc(deathModalData.title)}</h2>
+              <div style="font-weight:700; font-size:15px; color:#3d2f25; margin-bottom:10px;">${esc(deathModalData.subtitle || '')}</div>
+              <div style="background:#fff6df; border:2.5px solid var(--ink); border-radius:8px; padding:12px; font-weight:700; font-size:15.5px; margin-bottom:14px;">
+                ${esc(deathModalData.reason)}
+              </div>
+              <button class="comic-btn danger" data-act="closeDeathModal">ПРИНЯТЬ К СВЕДЕНИЮ ►</button>
+            </div>
+          </div>
+        `;
+      }
+      return html;
+    }
+
+    function renderHome() {
+      return `
+        <div class="comic-box">
+          <div class="header-bar">
+            <div>
+              <div class="logo-title">КОВЧЕГ: ПОСЛЕДНИЙ РЕЙС</div>
+              <div style="font-weight:700; color:#4a3c31;">Мультиплеер для группы (6–30 человек). Ведущий создаёт комнату и наблюдает, игроки заходят по QR-коду.</div>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center;">${renderSoundButton()}<span class="stamp-badge blood">КУРС: БЛИЖАЙШАЯ ПЛАНЕТА</span></div>
+          </div>
+          ${err ? `<div style="background:#f7c5c5; border:2px solid #8f1d1d; padding:10px; border-radius:6px; margin-bottom:12px; font-weight:700;">${esc(err)}</div>` : ''}
+          <div class="grid-2">
+            <div style="background:var(--card); border:3px solid var(--ink); border-radius:8px; padding:14px;">
+              <h3 style="font-family:'Russo One',sans-serif; margin-top:0;">ВЕДУЩИЙ: СОЗДАТЬ КОМНАТУ</h3>
+              <div style="font-size:14px; margin-bottom:8px;">Вы не играете: вы ведущий-администратор. Создаёте комнату, выбираете критерии партии, запускаете игру и управляете ею: видите роли всех, раздаёте пайки, выбираете развилки, завершаете дни и ночи.</div>
+              <div class="field"><label>Название Ковчега</label><input id="arkTitle" value="Ковчег «Надежда-7»" /></div>
+              <div class="grid-2">
+                <div class="field"><label>Макс. игроков (6–30)</label><input id="maxPlayers" type="number" min="6" max="30" value="16" /></div>
+                <div class="field"><label>Дней до планеты (4–10)</label><input id="targetDays" type="number" min="4" max="10" value="6" /></div>
+              </div>
+              <button class="comic-btn teal" style="width:100%;" data-act="create">СОЗДАТЬ КОМНАТУ ►</button>
+            </div>
+            <div style="background:var(--card); border:3px solid var(--ink); border-radius:8px; padding:14px;">
+              <h3 style="font-family:'Russo One',sans-serif; margin-top:0;">ИГРОК: ВОЙТИ В КОМНАТУ</h3>
+              <div class="field"><label>Код комнаты (5 символов)</label><input id="joinCode" placeholder="X7K9P" value="${esc(urlRoom || '')}" style="text-transform:uppercase;" /></div>
+              <div class="field"><label>Имя персонажа</label><input id="joinName" placeholder="Например: Алексей" /></div>
+              ${renderCharPicker()}
+              <button class="comic-btn olive" style="width:100%; margin-top:8px;" data-act="join">ВОЙТИ В ШЛЮЗ ►</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderCharPicker() {
+      return `
+        <div class="gender-pills" style="margin-bottom:6px;">
+          <button type="button" class="comic-btn small ${chosenGender === 'male' ? 'orange' : 'paper'}" data-act="pickGender" data-g="male">Мужчина</button>
+          <button type="button" class="comic-btn small ${chosenGender === 'female' ? 'orange' : 'paper'}" data-act="pickGender" data-g="female">Женщина</button>
+        </div>
+        <div class="gender-pills">
+          <button type="button" class="comic-btn small ${chosenArchetype === 'pragmatist' ? 'teal' : 'paper'}" data-act="pickArch" data-a="pragmatist">Запасливый (−10% голода и жажды)</button>
+          <button type="button" class="comic-btn small ${chosenArchetype === 'observer' ? 'teal' : 'paper'}" data-act="pickArch" data-a="observer">Внимательный (−12% подозрения)</button>
+          <button type="button" class="comic-btn small ${chosenArchetype === 'adventurer' ? 'teal' : 'paper'}" data-act="pickArch" data-a="adventurer">Смелый (+1 припас в развилках)</button>
+        </div>`;
+    }
+
+    function renderLobby() {
+      const L = lobbyData, room = L.room, ps = L.players.filter(p => !p.is_host);
+      const ready = ps.filter(p => p.is_ready).length, can = ps.length >= 6;
+      const cfg = room.cfg || {};
+      const opt = (list, cur) => list.map(([v, l]) => `<option value="${v}" ${String(cur) === String(v) ? 'selected' : ''}>${l}</option>`).join('');
+      const SUP = { low: 'Скудные', normal: 'Обычные', high: 'Богатые' };
+      const cfgPanel = ses.admin ? `
+        <div style="background:var(--card); border:3px solid var(--ink); border-radius:8px; padding:12px; margin-bottom:14px;">
+          <div style="font-family:'Russo One',sans-serif; margin-bottom:8px;">КРИТЕРИИ ПАРТИИ (меняются до старта, сохраняются сразу)</div>
+          <div class="grid-2">
+            <div class="field"><label>Название Ковчега</label><input id="cfgTitle" data-cfg="1" maxlength="32" value="${esc(room.ark_title)}" /></div>
+            <div class="field"><label>Макс. игроков (6–30)</label><input id="cfgMax" data-cfg="1" type="number" min="6" max="30" value="${room.max_players}" /></div>
+            <div class="field"><label>Дней до берега</label><select id="cfgDays" data-cfg="1">${opt([4,5,6,7,8,9,10].map(x => [x, x + ' дн.']), room.target_days)}</select></div>
+            <div class="field"><label>Таймер дня (авто-конец дня)</label><select id="cfgDayMin" data-cfg="1">${opt([[0,'Без таймера'],[3,'3 минуты'],[5,'5 минут'],[10,'10 минут'],[15,'15 минут']], cfg.dayMin || 0)}</select></div>
+            <div class="field"><label>Людоедов</label><select id="cfgCan" data-cfg="1">${opt([[0,'Авто (1 / 2 / 3 по числу игроков)'],[1,'1'],[2,'2'],[3,'3']], cfg.cannibals || 0)}</select></div>
+            <div class="field"><label>Тайный Сообщник</label><select id="cfgAcc" data-cfg="1">${opt([['auto','Авто (от 16 игроков)'],['on','Включён'],['off','Выключен']], cfg.accomplice || 'auto')}</select></div>
+            <div class="field"><label>Запасы еды и воды</label><select id="cfgSup" data-cfg="1">${opt([['low','Скудные (тяжело)'],['normal','Обычные'],['high','Богатые (легко)']], cfg.supplies || 'normal')}</select></div>
+            <div class="field"><label>Тайные связи между пассажирами</label><select id="cfgBonds" data-cfg="1">${opt([['on','Включены'],['off','Выключены']], cfg.bonds === false ? 'off' : 'on')}</select></div>
+          </div>
+        </div>` : `
+        <div style="margin-bottom:10px; font-weight:700;">Условия партии: ${room.target_days} дн. до берега • запасы: ${esc(SUP[cfg.supplies] || 'Обычные')} • ${cfg.dayMin ? 'таймер дня ' + cfg.dayMin + ' мин' : 'без таймера дня'}</div>`;
+      const link = location.origin + location.pathname + '?room=' + room.code;
+      const me = L.me;
+      return `
+        <div class="comic-box" id="lobbyRoot">
+          <div class="header-bar">
+            <div>
+              <div class="logo-title">${esc(room.ark_title)}</div>
+              <div style="font-weight:700;">Комната ожидания • код <b>${esc(room.code)}</b> • игроков ${ps.length}/${room.max_players} • готовы ${ready}</div>
+            </div>
+            <div style="display:flex; gap:8px;">${renderSoundButton()}<button class="comic-btn paper small" data-act="leave">${ses.admin ? 'ЗАКРЫТЬ КОМНАТУ' : 'ВЫЙТИ'}</button></div>
+          </div>
+          ${ses.admin ? `
+            <div class="grid-2" style="margin-bottom:14px;">
+              <div style="text-align:center;">
+                <div id="qrBox" style="display:inline-block; background:#fff; padding:10px; border:3px solid var(--ink); border-radius:6px;"></div>
+                <div style="font-size:13px; word-break:break-all; margin-top:6px;">${esc(link)}</div>
+              </div>
+              <div>
+                <div style="font-weight:700; margin-bottom:8px;">Вы ведущий-наблюдатель: сами не играете, а управляете партией. Покажите QR на экране, выберите критерии ниже и нажмите старт, когда соберётся минимум 6 игроков (готовых: ${ready} из ${ps.length}).</div>
+                <button class="comic-btn teal" data-act="startGame" ${can ? '' : 'disabled'}>НАЧАТЬ ПАРТИЮ ► (${ps.length})</button>
+              </div>
+            </div>` : `
+            <div style="margin-bottom:14px;">
+              <div style="font-family:'Russo One',sans-serif; margin-bottom:6px;">ВАШ ПЕРСОНАЖ: ${esc(me ? me.player_name : '')}</div>
+              ${renderCharPicker()}
+              <button class="comic-btn ${me && me.is_ready ? 'olive' : 'orange'}" style="margin-top:8px;" data-act="ready">${me && me.is_ready ? '✓ Я ГОТОВ (нажмите, чтобы отменить)' : 'Я ГОТОВ ►'}</button>
+              <div style="margin-top:6px; font-weight:700;">Ждём, пока ведущий начнёт партию…</div>
+            </div>`}
+          ${cfgPanel}
+          <div class="crew-grid">
+            ${ps.map(p => `<div class="crew-card"><strong>${esc(p.player_name)}</strong><div style="font-size:13px;">${esc(genderLabel(p.gender))} • ${p.is_ready ? '✓ готов' : 'ожидает'}</div>${ses.admin ? `<button class="comic-btn paper small" style="margin-top:6px;" data-act="kick" data-id="${esc(p.player_id)}">УБРАТЬ</button>` : ''}</div>`).join('') || '<div>Пока никого. Ждём игроков…</div>'}
+          </div>
+        </div>`;
+    }
+
+    function renderGame() {
+      const r = S.resources;
+      const me = S.me;
+      const isDay = S.phase === 'day';
+      const alivePlayers = S.players.filter(p => p.alive);
+      const ep = S.currentEpisode;
+
+      let episodeHTML = '';
+      if (isDay && ep) {
+        const voteCounts = ep.anonVotes || [0, 0, 0, 0];
+        episodeHTML = `
+          <div class="episode-card">
+            <div class="episode-title">
+              <span>СЮЖЕТНЫЙ ПОВОРОТ • ДЕНЬ ${S.day}: «${esc(ep.title)}»</span>
+              <span class="stamp-badge ${ep.resolved ? 'teal' : 'blood'}">${ep.resolved ? 'РЕШЕНИЕ ПРИНЯТО' : (S.host ? 'ВАШ ВЫБОР ПОСЛЕ ОБСУЖДЕНИЯ' : 'ВЫБИРАЕТ ВЕДУЩИЙ ПО ИТОГАМ ОБСУЖДЕНИЯ')}</span>
+            </div>
+            <div style="font-size:15.5px; line-height:1.4; font-weight:700; color:#2b2119;">
+              ${esc(ep.text)}
+            </div>
+            <div class="choice-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+              ${ep.choices.map((ch, idx) => {
+                const cnt = voteCounts[idx] ?? 0;
+                const showVotes = ep.resolved || ep.pickedIdx !== null;
+                return `
+                  <button class="choice-btn ${ep.pickedIdx === idx ? 'picked' : ''}" data-act="episodeChoice" data-idx="${idx}" ${ep.resolved || !S.host ? 'disabled' : ''}>
+                    <div>${esc(ch.label)}</div>
+                    <div style="font-size:13px; opacity:0.88; margin-top:3px;">${esc(ch.hint)}</div>
+                    ${showVotes ? `<div class="choice-votes">🕶️ Анонимно проголосовало: ${cnt} чел.</div>` : `<div class="choice-votes">🕶️ Голоса скрыты до выбора</div>`}
+                  </button>
+                `;
+              }).join('')}
+            </div>
+            ${ep.outcomeText ? `
+              <div style="margin-top:10px; padding:8px 10px; background:#fff9e6; border:2px solid var(--ink); border-radius:6px; font-weight:700;">
+                ИТОГ РАЗВИЛКИ: ${esc(ep.outcomeText)}
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }
+
+      let myCardHTML = '';
+      if (me) {
+        const isCan = me.alignment === 'cannibal';
+        const isAcc = me.alignment === 'accomplice';
+        myCardHTML = `
+          <div class="dossier-card ${isCan ? 'cannibal' : (isAcc ? 'accomplice' : '')}">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+              <div style="font-family:'Russo One',sans-serif; font-size:17px;">
+                ВАШЕ ДОСЬЕ: ${esc(me.name)} • ${esc(genderLabel(me.gender))} — ${esc(me.role.name)}
+              </div>
+              <span class="stamp-badge ${isCan ? 'blood' : ''}">
+                ${isCan ? 'ВЫ — ЛЮДОЕД! ЗАМЕТАЙТЕ СЛЕДЫ' : (isAcc ? 'ВЫ — СООБЩНИК ЛЮДОЕДА' : 'МИРНЫЙ ПАССАЖИР')}
+              </span>
+            </div>
+            <div style="margin-top:6px; font-size:15px;">
+              <b>Характер:</b> ${esc(me.archLabel || 'Обычный')} | <b>Отсек:</b> ${esc(me.role.deck)} | <b>Предмет:</b> ${esc(me.role.item)}<br>
+              ${me.role.synergy ? `<b>Связка ролей:</b> ${esc(me.role.synergy)}<br>` : ''}
+              ${me.role.nightPerk ? `<b>Ночная пассивка людоеда:</b> ${esc(me.role.nightPerk)}<br>` : ''}
+              <b>Личная тайна:</b> <i>${esc(me.secret || me.role.flaw)}</i>
+            </div>
+            ${me.trait ? `
+              <div class="trait-box" style="margin-top:8px;">
+                <div><span style="color:#2d5a27;"><b>+ Плюс:</b></span> ${esc(me.trait.plus)}</div>
+                <div><span style="color:var(--danger);"><b>− Минус:</b></span> ${esc(me.trait.minus)}</div>
+              </div>
+            ` : ''}
+            ${me.bondInfo ? `
+              <div class="bond-box" style="margin-top:8px;">
+                <b>🔗 Нить привязанности:</b> ${esc(me.bondInfo)}
+              </div>
+            ` : ''}
+            ${(() => {
+              const alerts = [];
+              if ((me.hunger ?? 0) >= 55) alerts.push(`Сильный голод (${me.hunger}%) — нужен суп!`);
+              if ((me.thirst ?? 0) >= 55) alerts.push(`Сильная жажда (${me.thirst}%) — нужна вода!`);
+              if ((r.food ?? 0) <= 2) alerts.push(`Мало провизии в отсеке (${r.food} ед.)!`);
+              if ((r.water ?? 0) <= 2) alerts.push(`Мало пресной воды в отсеке (${r.water} ед.)!`);
+              if ((r.hull ?? 100) <= 35) alerts.push(`Корпус Ковчега повреждён (${r.hull}%)!`);
+              if ((r.sanity ?? 100) <= 35) alerts.push(`Рассудок экипажа на грани (${r.sanity}%)!`);
+
+              const canStealFood = isDay && me.alive && ((me.hunger ?? 0) >= 65 || (r.food ?? 0) <= 1);
+              const canStealWater = isDay && me.alive && ((me.thirst ?? 0) >= 65 || (r.water ?? 0) <= 1);
+              const stolenMap = S.stolen || {};
+              const alreadyStoleFood = !!stolenMap[S.day + '_food'];
+              const alreadyStoleWater = !!stolenMap[S.day + '_water'];
+
+              let block = '';
+              if (alerts.length) {
+                block += `
+                  <div style="margin-top:8px; background:#ffe0d6; border:2.5px solid var(--danger); color:#5c1111; padding:8px 10px; border-radius:6px; font-weight:700;">
+                    ⚠️ <b>ПРЕДУПРЕЖДЕНИЕ ДЛЯ ВАШЕГО ПЕРСОНАЖА:</b><br>
+                    ${alerts.map(a => `• ${esc(a)}`).join('<br>')}
+                  </div>
+                `;
+              }
+              if (isDay && me.alive && (canStealFood || canStealWater)) {
+                block += `
+                  <div style="margin-top:8px; background:#fff3d1; border:2.5px solid var(--ink); padding:8px 10px; border-radius:6px;">
+                    <div style="font-family:'Russo One',sans-serif; font-size:12.5px; color:var(--blood); margin-bottom:6px;">
+                      КРИТИЧЕСКИЙ ДЕФИЦИТ — ОТЧАЯННАЯ ВЫЛАЗКА (1 РАЗ В ДЕНЬ НА РЕСУРС):
+                    </div>
+                    <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                      ${canStealFood ? `
+                        <button class="comic-btn small danger" data-act="stealResource" data-kind="food" ${alreadyStoleFood ? 'disabled' : ''}>
+                          ${alreadyStoleFood ? '✓ Суп уже украден сегодня' : '🕵️ Украсть суп (из запаса или у соседа)'}
+                        </button>
+                      ` : ''}
+                      ${canStealWater ? `
+                        <button class="comic-btn small danger" data-act="stealResource" data-kind="water" ${alreadyStoleWater ? 'disabled' : ''}>
+                          ${alreadyStoleWater ? '✓ Вода уже украдена сегодня' : '🕵️ Украсть воду (из запаса или у соседа)'}
+                        </button>
+                      ` : ''}
+                    </div>
+                  </div>
+                `;
+              }
+              return block;
+            })()}
+            ${(S.myPrivateReport || []).length ? `
+              <div style="margin-top:8px; background:#fff8eb; border:2px solid var(--ink); padding:8px; border-radius:6px; font-weight:700;">
+                ЛИЧНЫЕ НАБЛЮДЕНИЯ И УЛИКИ:<br>
+                ${S.myPrivateReport.map(x => `• ${esc(x)}`).join('<br>')}
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }
+
+      let nightPanelHTML = '';
+      if (!isDay && me && me.alive) {
+        const isCan = me.alignment === 'cannibal';
+        const targets = alivePlayers.filter(p => isCan ? p.alignment !== 'cannibal' : true);
+
+        nightPanelHTML = `
+          <div class="comic-box" style="background:#212533; color:#f2e5c6;">
+            <h3 style="font-family:'Russo One',sans-serif; color:var(--mustard); margin-top:0;">
+              НОЧНАЯ СЦЕНА (ДЕНЬ ${S.day}) — ВАШ ТАЙНЫЙ ХОД
+            </h3>
+            <p style="margin-top:0;">
+              ${isCan
+                ? 'Выберите жертву и способ маскировки (от этого зависят утренние улики и подозрения):'
+                : `Действие вашей роли (${esc(me.role.name)}): <b>${esc(me.role.nightLabel)}</b>`}
+            </p>
+
+            ${isCan ? `
+              <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
+                <button class="comic-btn small ${selectedCannibalMode === 'stealth' ? 'orange' : 'paper'}" data-act="setMode" data-mode="stealth">Тихо утащить в вентиляцию</button>
+                <button class="comic-btn small ${selectedCannibalMode === 'feast' ? 'orange' : 'paper'}" data-act="setMode" data-mode="feast">Подкинуть мясо в котёл (+2 еды, яркая улика)</button>
+                <button class="comic-btn small ${selectedCannibalMode === 'frame' ? 'orange' : 'paper'}" data-act="setMode" data-mode="frame">Подбросить вещь другого пассажира</button>
+                <button class="comic-btn small ${selectedCannibalMode === 'overboard' ? 'orange' : 'paper'}" data-act="setMode" data-mode="overboard">Сбросить за борт и смыть следы</button>
+                <button class="comic-btn small ${selectedCannibalMode === 'hallway_ambush' ? 'orange' : 'paper'}" data-act="setMode" data-mode="hallway_ambush">Засада в тёмном коридоре (−12% рассудка)</button>
+                <button class="comic-btn small ${selectedCannibalMode === 'furnace_ash' ? 'orange' : 'paper'}" data-act="setMode" data-mode="furnace_ash">Сжечь улики в топке (−подозрение)</button>
+                <button class="comic-btn small ${selectedCannibalMode === 'sound_mask' ? 'orange' : 'paper'}" data-act="setMode" data-mode="sound_mask">Перебить шум штормом и паром</button>
+              </div>
+            ` : ''}
+
+            <div style="display:flex; flex-wrap:wrap; gap:7px; margin-bottom:12px;">
+              ${targets.map(t => `
+                <button class="comic-btn small ${selectedNightTarget === t.id ? 'danger' : 'paper'}" data-act="pickNight" data-id="${t.id}">
+                  ${esc(t.name)} (${esc(t.roleName)})
+                </button>
+              `).join('')}
+            </div>
+
+            <button class="comic-btn orange" data-act="submitNight" ${!selectedNightTarget ? 'disabled' : ''}>
+              ${S.nightSubmitted ? '✓ ХОД ПОДТВЕРЖДЁН' : 'ПОДТВЕРДИТЬ НОЧНОЙ ВЫБОР ►'}
+            </button>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="comic-box">
+          <div class="header-bar">
+            <div>
+              <div class="logo-title">${esc(S.title)} — ДЕНЬ ${S.day} из ${S.targetDays}</div>
+              <div style="font-weight:700;">
+                ${isDay ? 'ДНЕВНОЙ СОВЕТ: распутывайте интриги, делите пайки и вычисляйте хищника' : 'НОЧЬ НА КОВЧЕГЕ: в отсеках гаснет свет...'}
+              </div>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+              ${renderSoundButton()}
+              <span class="stamp-badge ${isDay ? '' : 'blood'}">${isDay ? 'ФАЗА: ДЕНЬ' : 'ФАЗА: НОЧЬ'}</span>${S.dlLeft != null ? `<span class="stamp-badge blood" id="dlBadge">⏱</span>` : ''}
+              <button class="comic-btn paper small" data-act="leave">В МЕНЮ</button>
+            </div>
+          </div>
+
+          ${(() => {
+            const pct = Math.max(0, Math.min(100, Math.round(((S.day - 1) / Math.max(1, S.targetDays)) * 100)));
+            return `
+              <div style="background:#1c2533; color:#f2e5c6; border:3px solid var(--ink); border-radius:10px; padding:10px 14px; margin-bottom:12px; box-shadow:4px 4px 0 var(--ink);">
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; font-family:'Russo One',sans-serif; font-size:13px; margin-bottom:6px;">
+                  <span>🚀 ПРОГРЕСС ПОЛЁТА К ПЛАНЕТЕ «ЭДЕМ-4»</span>
+                  <span style="color:var(--mustard);">День ${S.day} / ${S.targetDays} (${pct}%)</span>
+                </div>
+                <div style="width:100%; height:14px; background:#0e131b; border:2px solid #f2e5c6; border-radius:99px; overflow:hidden;">
+                  <div style="width:${pct}%; height:100%; background:linear-gradient(90deg, var(--teal), var(--mustard)); transition:width 0.3s ease;"></div>
+                </div>
+                <div style="font-size:12.5px; opacity:0.88; margin-top:5px;">
+                  <b>Победа людей:</b> долететь до ${S.targetDays}-го дня (или обезвредить всех людоедов) • <b>Победа людоедов:</b> сравняться с людьми или оставить минимум выживших.
+                </div>
+              </div>
+            `;
+          })()}
+          <div class="res-bar">
+            <div class="res-pill"><span>Провизия (Суп)</span><b>${r.food}</b></div>
+            <div class="res-pill"><span>Пресная вода</span><b>${r.water}</b></div>
+            <div class="res-pill"><span>Корпус Ковчега</span><b>${r.hull}%</b></div>
+            <div class="res-pill"><span>Рассудок экипажа</span><b>${r.sanity}%</b></div>
+            <div class="res-pill"><span>Доверие команде</span><b>${r.trust ?? 70}%</b></div>
+          </div>
+
+          <div class="ark-stage">
+            <canvas id="arkCanvas"></canvas>
+          </div>
+
+          ${episodeHTML}
+          ${myCardHTML}
+          ${nightPanelHTML}
+
+          ${S.host ? `
+            <div style="background:#ffe79e; border:3px solid var(--ink); border-radius:8px; padding:12px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+              <div>
+                <strong>УПРАВЛЕНИЕ СЕРИЕЙ:</strong>
+                ${isDay
+                  ? `Проголосовало ${S.votedCount} из ${alivePlayers.length} живых.`
+                  : `Готовы к рассвету ${S.nightCount} из ${alivePlayers.length} живых.`}
+                ${isDay ? `<button class="comic-btn small paper" style="margin-left:8px;" data-act="setDeadline" data-min="2">⏱ ТАЙМЕР 2 МИН</button><button class="comic-btn small paper" data-act="setDeadline" data-min="5">⏱ 5 МИН</button><button class="comic-btn small paper" data-act="setDeadline" data-min="0">✕ БЕЗ ТАЙМЕРА</button>` : ''}
+              </div>
+              ${isDay ? `
+                <button class="comic-btn danger" data-act="endDay">ЗАВЕРШИТЬ ДЕНЬ И ПРОВЕСТИ СУД ►</button>
+              ` : `
+                <button class="comic-btn orange" data-act="resolveNight">НАСТУПИТЬ РАССВЕТУ (СЛЕДУЮЩАЯ СЕРИЯ) ►</button>
+              `}
+            </div>
+          ` : ''}
+
+          <div class="grid-2" style="margin-bottom:16px;">
+            <div class="notebook-list">
+              <div style="font-family:'Russo One',sans-serif; color:var(--danger); margin-bottom:6px;">УЛИКИ, СЛУХИ И ЗАЦЕПКИ:</div>
+              <ul style="margin:0; padding-left:18px;">
+                ${(S.clues || []).map(c => `<li>${esc(c)}</li>`).join('')}
+              </ul>
+            </div>
+            <div class="notebook-list">
+              <div style="font-family:'Russo One',sans-serif; color:var(--teal); margin-bottom:6px;">ХРОНИКА СОБЫТИЙ РЕЙСА:</div>
+              <ul style="margin:0; padding-left:18px;">
+                ${(S.log || []).map(l => `<li>${esc(l)}</li>`).join('')}
+              </ul>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+            <h3 style="font-family:'Russo One',sans-serif; margin:0;">
+              ДОСЬЕ ПАССАЖИРОВ (${alivePlayers.length} живы из ${S.players.length})
+            </h3>
+            ${isDay && me && me.alive ? `
+              <button class="comic-btn paper small ${S.myVote === 'skip' ? 'olive' : ''}" data-act="vote" data-id="skip">
+                ${S.myVote === 'skip' ? '✓ ВЫ ВОЗДЕРЖАЛИСЬ ОТ КАЗНИ' : 'ВОЗДЕРЖАТЬСЯ ОТ КАЗНИ'}
+              </button>
+            ` : ''}
+          </div>
+
+          <div class="crew-grid">
+            ${S.players.map(p => {
+              const isKnownCannibal = p.alignment === 'cannibal';
+              const isMyVote = S.myVote === p.id;
+              return `
+                <div class="crew-card ${p.alive ? '' : 'dead'} ${isKnownCannibal ? 'is-cannibal' : ''}">
+                  <div style="display:flex; justify-content:space-between; align-items:center; gap:4px;">
+                    <strong style="font-size:17px;">${esc(p.name)}</strong>
+                    <span class="crew-role-tag">${esc(p.roleName)}</span>
+                  </div>
+                  <div style="font-size:13px; color:#4a3c31;">
+                    ${esc(genderLabel(p.gender))} • Отсек: <b>${esc(p.deck)}</b> • Предмет: <b>${esc(p.item)}</b>
+                    ${p.synergy ? `<div style="margin-top:3px; color:#2b4c52;"><b>Связка:</b> ${esc(p.synergy)}</div>` : ''}
+                  </div>
+                  ${p.alive ? `
+                    <div style="font-size:13px;">
+                      Голод: <b>${p.hunger}%</b> | Жажда: <b>${p.thirst}%</b> | Подозрение: <b>${p.suspicion ?? 20}%</b>
+                    </div>
+                    ${p.trait ? `
+                      <div class="trait-box">
+                        <div><b>+ Плюс:</b> ${esc(p.trait.plus)}</div>
+                        <div><b>− Минус:</b> ${esc(p.trait.minus)}</div>
+                      </div>
+                    ` : ''}
+                    ${p.bondPublicHint ? `
+                      <div class="bond-box">
+                        <b>🔗 Привязанность:</b> ${esc(p.bondPublicHint)}
+                      </div>
+                    ` : ''}
+                    ${p.alibi ? `<div class="secret-pill"><b>Слух / алиби:</b> ${esc(p.alibi)}</div>` : ''}
+                    ${isKnownCannibal ? `<div style="color:var(--danger); font-weight:700;">★ ЛЮДОЕД ★</div>` : ''}
+                    ${p.alignment === 'accomplice' ? `<div style="color:var(--orange); font-weight:700;">◆ СООБЩНИК ◆</div>` : ''}
+                    ${isDay ? `
+                      <div class="crew-actions">
+                        <button class="comic-btn small ${p.ration?.food ? 'orange' : 'paper'}" data-act="ration" data-kind="food" data-id="${p.id}">
+                          ${p.ration?.food ? '✓ Суп' : '+ Суп'}
+                        </button>
+                        <button class="comic-btn small ${p.ration?.water ? 'teal' : 'paper'}" data-act="ration" data-kind="water" data-id="${p.id}">
+                          ${p.ration?.water ? '✓ Вода' : '+ Вода'}
+                        </button>
+                        <button class="comic-btn small ${p.mySuspected ? 'orange' : 'paper'}" data-act="suspect" data-id="${p.id}" title="${p.mySuspected ? 'Убрать ваше подозрение' : 'Отметить подозрение (1 раз)'}">
+                          ${p.mySuspected ? '✓ Подозреваю (снять)' : '+ Подозрение'}
+                        </button>
+                        ${me && me.alive ? `
+                          <button class="comic-btn small ${isMyVote ? 'danger' : 'paper'}" data-act="vote" data-id="${p.id}">
+                            ${isMyVote ? '✓ КАЗНИТЬ' : 'КАЗНИТЬ'}
+                          </button>
+                        ` : ''}
+                      </div>
+                    ` : ''}
+                  ` : `
+                    <div style="color:var(--danger); font-weight:700; font-size:13px;">
+                      ВЫБЫЛ (День ${p.deathDay || '?'}): ${esc(p.deathReason || 'Неизвестно')}
+                    </div>
+                  `}
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+
+        <div class="reactions-bar">
+          ${['😱', '🔪', '🍖', '🕵️', '🔥', '💀'].map(em => `
+            <button class="react-btn" data-act="react" data-emoji="${em}">${em}</button>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function renderEnd() {
+      const end = S.ending || { title: 'ФИНАЛ СЕЗОНА', desc: '' };
+      return `
+        <div class="comic-box">
+          <div class="header-bar">
+            <div>
+              <div class="logo-title">${esc(end.title)}</div>
+              <div style="font-weight:700;">Финал на ${S.day}-й день | Выжило: ${S.players.filter(p => p.alive).length} из ${S.players.length}</div>
+            </div>
+            <div style="display:flex; gap:8px;">
+              ${renderSoundButton()}
+              <button class="comic-btn orange" data-act="leave">НОВЫЙ СЕЗОН ►</button>
+            </div>
+          </div>
+
+          <div style="background:#ffe79e; border:3px solid var(--ink); border-radius:8px; padding:14px; font-size:18px; font-weight:700; margin-bottom:16px;">
+            ${esc(end.desc)}
+          </div>
+
+          <h3 style="font-family:'Russo One',sans-serif; margin:0 0 10px;">РАЗВЯЗКА СУДЕБ, ТАЙНЫЕ УЗЫ И СЕКРЕТЫ ЭКИПАЖА:</h3>
+          <div class="crew-grid" style="margin-bottom:18px;">
+            ${S.players.map(p => `
+              <div class="crew-card ${p.alive ? '' : 'dead'} ${p.alignment === 'cannibal' ? 'is-cannibal' : ''}">
+                <strong>${esc(p.name)} • ${esc(genderLabel(p.gender))} — ${esc(p.roleName)}</strong>
+                <div style="font-weight:700; color:${p.alignment === 'cannibal' ? 'var(--danger)' : (p.alignment === 'accomplice' ? 'var(--orange)' : 'var(--olive)')};">
+                  ${p.alignment === 'cannibal' ? 'ЛЮДОЕД' : (p.alignment === 'accomplice' ? 'СООБЩНИК ЛЮДОЕДА' : 'МИРНЫЙ ПАССАЖИР')}
+                </div>
+                ${p.bondRevealed ? `<div class="bond-box"><b>🔗 Раскрытая связь:</b> ${esc(p.bondRevealed)}</div>` : ''}
+                <div style="font-size:13px;"><b>Тайна:</b> ${esc(p.secret || p.flaw)}</div>
+                <div style="font-size:13px;">${p.alive ? 'Выжил в финале!' : esc(p.deathReason || 'Погиб')}</div>
+              </div>
+            `).join('')}
+          </div>
+
+          <details style="background:var(--card); border:3px solid var(--ink); border-radius:8px; padding:12px;">
+            <summary style="font-family:'Russo One',sans-serif; cursor:pointer;">СПИСОК ВСЕХ 10 КОНЦОВОК РЕЙСА</summary>
+            <div style="margin-top:10px; display:grid; gap:8px;">
+              ${(S.allEndingsCatalog || []).map(e => `
+                <div style="padding:8px; border-bottom:1px dashed var(--ink); background:${e.code === end.code ? '#ffe79e' : 'transparent'};">
+                  <b>${esc(e.title)}</b>: ${esc(e.desc)}
+                </div>
+              `).join('')}
+            </div>
+          </details>
+        </div>
+      `;
+    }
+
+    function render() {
+      const app = document.getElementById('app');
+      if (!ses) {
+        if (animFrameId) cancelAnimationFrame(animFrameId);
+        app.innerHTML = renderHome() + renderOverlays();
+      } else if (!S) {
+        if (animFrameId) cancelAnimationFrame(animFrameId);
+        if (!lobbyData) { app.innerHTML = `<div class="comic-box" style="text-align:center;"><h2>Подключаемся к комнате...</h2></div>`; return; }
+        if (lobbyData.room.status === 'waiting') {
+          app.innerHTML = renderLobby() + renderOverlays();
+          const q = document.getElementById('qrBox');
+          if (ses.admin && q && window.QRCode) new QRCode(q, { text: location.origin + location.pathname + '?room=' + ses.room, width: 160, height: 160 });
+        } else if (ses.admin && !demoMeta) {
+          app.innerHTML = `<div class="comic-box" style="text-align:center;"><h2>Партия прервана</h2><p>Страница ведущего была обновлена, и состояние игры потеряно. Закройте комнату и создайте новую.</p><button class="comic-btn danger" data-act="leave">ЗАКРЫТЬ КОМНАТУ</button></div>`;
+        } else {
+          app.innerHTML = `<div class="comic-box" style="text-align:center;"><h2>Партия идёт, ждём данные от ведущего...</h2></div>`;
+        }
+      } else if (S.phase === 'end') {
+        if (animFrameId) cancelAnimationFrame(animFrameId);
+        app.innerHTML = renderEnd() + renderOverlays();
+      } else {
+        app.innerHTML = renderGame() + renderOverlays();
+        startArkAnimation();
+      }
+    }
+
+    // =========================================================================
+    // 5. СЕРИАЛЬНЫЙ СЮЖЕТНЫЙ ДВИЖОК С ПРИВЯЗАННОСТЯМИ, ВЫБОРОМ ГЕРОЯ И 4-ВАРИАНТНЫМИ РАЗВИЛКАМИ
+    // =========================================================================
+    (function() {
+      const MALE_NAMES = ['Виктор', 'Семён', 'Глеб', 'Артур', 'Лев', 'Фёдор', 'Макс', 'Борис', 'Данил', 'Олег', 'Пётр', 'Илья', 'Вадим', 'Юрий', 'Эрик'];
+      const FEMALE_NAMES = ['Марта', 'Агата', 'Вера', 'Зоя', 'Кира', 'Инга', 'Роза', 'Ева', 'Ника', 'Рита', 'Яна', 'Тамара', 'Алиса', 'Майя', 'Дарья'];
+      const NONBINARY_NAMES = ['Саша', 'Женя', 'Вальтер', 'Кай', 'Люк', 'Ноа', 'Тео', 'Рэй', 'Марс', 'Ари'];
+
+      const ROLES = [
+        { id: 'surgeon', name: 'Хирург', deck: 'Медотсек', item: 'Саквояж', passive: '+защита ночью', nightLabel: 'Спасти пассажира от ночной атаки', clueTag: 'запах медицинского спирта и бинтов', flaw: 'Вздрагивает при упоминании старой клиники' , synergy: 'В связке с Медсестрой и Аптекарем удваивает шанс спасти раненого ночью' },
+        { id: 'chef', name: 'Шеф-повар', deck: 'Камбуз', item: 'Тесак', passive: '+2 супа/день', nightLabel: 'Приготовить горячий паёк (-35% голода)', clueTag: 'пятна пряного соуса и жира', flaw: 'Прячет за прилавком странные специи' , synergy: 'В связке с Поварёнком, Пекарём и Мясником даёт +суп и снижает голод команды' },
+        { id: 'engineer', name: 'Механик', deck: 'Машинное', item: 'Ключ №5', passive: '+7% корпуса/день', nightLabel: 'Укрепить гермодвери (+8% корпуса)', clueTag: 'следы машинного масла', flaw: 'Знает все тайные лазы вентиляции' , synergy: 'В связке со Сварщиком, Плотником и Кочегаром укрепляет корпус и гасит утечки' },
+        { id: 'hydrologist', name: 'Гидролог', deck: 'Водоочистка', item: 'Фильтр', passive: '+2 воды/день', nightLabel: 'Очистить баки (+1 вода, -35% жажды)', clueTag: 'соляные разводы на сапогах', flaw: 'Держит ключ от аварийного клапана' , synergy: 'В связке с Водопроводчиком и Лудильщиком даёт +воду и бережёт баки' },
+        { id: 'detective', name: 'Детектив', deck: 'Каюты', item: 'Лупа', passive: 'Доп. улики', nightLabel: 'Проследить за пассажиром (раскрывает роль/статус)', clueTag: 'пепел сигарет и чернила', flaw: 'Собирает компромат на каждого на борту' , synergy: 'В связке с Архивариусом и Летописцем сопоставляет улики и алиби подозреваемых' },
+        { id: 'guard', name: 'Охранник', deck: 'Арсенал', item: 'Дубинка', passive: 'Сдерживает панику', nightLabel: 'Взять под охрану (сорвёт нападение)', clueTag: 'звон связки ключей и тяжёлый шаг', flaw: 'В прошлом превысил полномочия' , synergy: 'В связке с Комендантом и Спасателем надёжнее прикрывает от ночных засад' },
+        { id: 'psychologist', name: 'Психолог', deck: 'Кают-компания', item: 'Дневник', passive: 'Бережёт рассудок', nightLabel: 'Провести сеанс (+25% рассудка)', clueTag: 'запах лаванды и успокоительных трав', flaw: 'Манипулирует страхами пассажиров' , synergy: 'В связке с Капелланом, Травником и Свечником восстанавливает рассудок экипажа' },
+        { id: 'botanist', name: 'Агроном', deck: 'Оранжерея', item: 'Лампа', passive: '+1 еда/вода раз в 2 дня', nightLabel: 'Собрать урожай (+1 еда)', clueTag: 'сырая земля под ногтями', flaw: 'Выращивает запрещённые грибы' , synergy: 'В связке с Садовником даёт урожай еды и свежую зелень в оранжерее' },
+        { id: 'captain', name: 'Капитан', deck: 'Мостик', item: 'Свисток', passive: 'Голос = 2', nightLabel: 'Осмотреть мостик и защитить цель', clueTag: 'запах дорогого табака', flaw: 'Изменил маршрут Ковчега без приказа' , synergy: 'В связке со Штурманом и Рулевым ведёт Ковчег по курсу и усиливает вес голоса на суде' },
+        { id: 'radioop', name: 'Радист', deck: 'Радиорубка', item: 'Приёмник', passive: 'Пеленг спасения', nightLabel: 'Перехватить радиосигнал (подсказка)', clueTag: 'запах озона и статики', flaw: 'Скрывает принятую вчера шифровку' , synergy: 'В связке с Гидроакустиком, Метеорологом и Сигнальщиком ловит сигналы и шторма' },
+        { id: 'butcher', name: 'Мясник', deck: 'Холодильник', item: 'Крюк', passive: '+1 еда/день', nightLabel: 'Проверить морозильную камеру', clueTag: 'запах сырого мяса и холода', flaw: 'Ночью спускался в рефрижератор' , synergy: 'В связке с Шеф-поваром и Падальщиком влияет на мясные запасы и улики на камбузе' },
+        { id: 'chemist', name: 'Химик', deck: 'Лаборатория', item: 'Реактивы', passive: '+1 вода/день', nightLabel: 'Сделать анализ крови на каннибализм', clueTag: 'следы кислоты на халате', flaw: 'Варит в колбах неизвестный стимулятор' , synergy: 'В связке с Аптекарем и Стеклодувом проверяет пробы и чинит лабораторную посуду' },
+        { id: 'archivist', name: 'Архивариус', deck: 'Мостик', item: 'Папка дел', passive: 'Находит старые досье', nightLabel: 'Поднять архив рейса по пассажиру', clueTag: 'пыль старых бумаг и сургуч', flaw: 'Хранит компромат на весь командный состав' , synergy: 'В связке с Детективом и Ревизором находит нестыковки в делах и расходе пайков' },
+        { id: 'sommelier', name: 'Сомелье', deck: 'Камбуз', item: 'Штопор', passive: 'Тонкое чутьё на примеси', nightLabel: 'Проверить припасы на странный вкус', clueTag: 'винный осадок и пряности', flaw: 'Считает себя главным знатоком ужинов' , synergy: 'В связке с Шеф-поваром и Пекарём распознаёт примеси в еде и питье' },
+        { id: 'welder', name: 'Сварщик', deck: 'Машинное', item: 'Горелка', passive: 'Быстро латает трещины', nightLabel: 'Заварить аварийный люк', clueTag: 'запах жжёного металла и окалина', flaw: 'Искрит даже когда молчит' , synergy: 'В связке с Механиком и Плотником латает трещины корпуса и заваривает люки' },
+        { id: 'chaplain', name: 'Капеллан', deck: 'Часовня', item: 'Чётки', passive: 'Успокаивает споры', nightLabel: 'Выслушать исповедь пассажира', clueTag: 'запах воска и ладана', flaw: 'Знает слишком много чужих грехов' , synergy: 'В связке с Психологом и Свечником гасит панику и выслушивает исповеди' },
+        { id: 'smuggler', name: 'Контрабандист', deck: 'Трюм', item: 'Фальшдно', passive: 'Находит тайники', nightLabel: 'Обшарить тайник в отсеке', clueTag: 'запах дешёвого рома и кожи', flaw: 'Половина его багажа — контрабанда' , synergy: 'В связке с Слесарем и Контрабандой/Трюмом находит скрытые припасы и обходит засовы' },
+        { id: 'meteorologist', name: 'Метеоролог', deck: 'Радиорубка', item: 'Барометр', passive: 'Предсказывает штормы', nightLabel: 'Сверить прогноз погоды по курсу', clueTag: 'запах морского бриза и озона', flaw: 'Спорит с морем даже в штиль' , synergy: 'В связке с Штурманом и Радистом предупреждает о штормах и помогает выбрать курс' },
+        { id: 'navigator', name: 'Штурман', deck: 'Мостик', item: 'Секстант', passive: 'Точный курс до берега', nightLabel: 'Проверить координаты и укрытие от шторма', clueTag: 'чернильные пятна на картах и латунь', flaw: 'Скрывает старую пометку на морской карте' , synergy: 'В связке с Капитаном и Картографом прокладывает безопасный путь к «Эдему-4»' },
+        { id: 'electrician', name: 'Электрик', deck: 'Машинное', item: 'Тестер', passive: 'Стабилизирует свет', nightLabel: 'Переключить цепи питания отсеков', clueTag: 'запах озона и медная стружка', flaw: 'Замыкал щиток в чужом коридоре' , synergy: 'В связке с Сигнальщиком и Котлочистом стабилизирует свет и цепи отсеков' },
+        { id: 'quartermaster', name: 'Квартирмейстер', deck: 'Трюм', item: 'Амбарная книга', passive: 'Учёт каждого пайка', nightLabel: 'Проверить пломбы на ящиках с провизией', clueTag: 'сургучная крошка и запах промасленной ткани', flaw: 'Знает, у кого не сходится расход пайков' , synergy: 'В связке с Ревизором и Такелажником ведёт точный учёт пайков и креплений' },
+        { id: 'lifeguard', name: 'Спасатель', deck: 'Палуба', item: 'Спаскруг', passive: 'Страхует у борта', nightLabel: 'Обследовать спасательные шлюпки и леера', clueTag: 'мокрая соль и верёвочный ворс', flaw: 'В прошлый шторм не успел подать трос' , synergy: 'В связке с Паромщиком, Рыбаком и Такелажником страхует у борта и шлюпок' },
+        { id: 'flesh_stalker', name: 'Ночной ловец (Людоед)', deck: 'Вентиляция', item: 'Крюк с леской', passive: 'Бесшумный подход в темноте', nightLabel: 'Выбрать жертву и способ скрыть следы', clueTag: 'холодный металлический привкус и капли смазки', flaw: 'Слишком хорошо знает план вентиляционных шахт' , synergy: 'Лучше всего сочетается с маскировками в темноте и отсеках — усиливает скрытность', nightPerk: 'Бесшумный шаг: при ночной атаке дополнительно снижает рассудок экипажа на −4% и реже оставляет шум.' },
+        { id: 'meat_cleaver', name: 'Мясник-потрошитель (Людоед)', deck: 'Холодильник', item: 'Тяжёлый тесак', passive: 'Находит лишние припасы на камбузе', nightLabel: 'Выбрать жертву и способ скрыть следы', clueTag: 'резкий запах сырого мяса и соляного рассола', flaw: 'На халате остались тёмные разводы' , synergy: 'Сильнее всего сочетается с подбрасыванием мяса в котёл (+еда) и работой у камбуза', nightPerk: 'Кровавый котёл: при маскировке под котёл даёт +1 лишнюю порцию еды и меньше выдаёт себя.' },
+        { id: 'shadow_saboteur', name: 'Тёмный саботажник (Людоед)', deck: 'Машинное', item: 'Разводной ключ', passive: 'Сеет панику и сбивает со следа', nightLabel: 'Выбрать жертву и способ скрыть следы', clueTag: 'гарь, копоть и запах машинного масла', flaw: 'Часто появляется там, где гаснет свет' , synergy: 'Усиливает засады и шум отсеков, путая следы экипажа в темноте', nightPerk: 'Тёмный саботаж: в темноте сбивает ночной дозор и усиливает эффект шума/топки.' },
+        { id: 'mimic_hunter', name: 'Перевёртыш (Людоед)', deck: 'Каюты', item: 'Чужой пропуск', passive: 'Маскируется под обычного пассажира', nightLabel: 'Выбрать жертву и способ скрыть следы', clueTag: 'чужой одеколон и потёртый бейдж', flaw: 'Иногда путает чужие привычки со своими' , synergy: 'Усиливает подброс чужих вещей и алиби, перекладывая вину на других', nightPerk: 'Чужая личина: при подбросе чужой вещи сильнее наводит подозрение на подставленного пассажира.' },
+        { id: 'ferryman', name: 'Паромщик', deck: 'Палуба', item: 'Багор', passive: 'Удерживает швартовы', nightLabel: 'Проверить бортовые тросы и сходни', clueTag: 'смоляной запах и мокрая пенька', flaw: 'Помнит каждое судно, ушедшее на дно' , synergy: 'В связке со Спасателем и Такелажником удерживает швартовы и тросы у борта' },
+        { id: 'cook_mate', name: 'Поварёнок', deck: 'Камбуз', item: 'Шумовка', passive: 'Экономит крупу', nightLabel: 'Перебрать сухари и специи на полках', clueTag: 'мучная пыль и запах корицы', flaw: 'Тайком слизывал пенку с чужого котла' , synergy: 'В связке с Шеф-поваром и Пекарём экономит крупу и муку на камбузе' },
+        { id: 'plumber', name: 'Водопроводчик', deck: 'Водоочистка', item: 'Газовый ключ', passive: 'Предотвращает утечки', nightLabel: 'Проверить стыки труб в трюме', clueTag: 'ржавая капля и запах резиновых прокладок', flaw: 'Знает, где можно перекрыть воду в отсеке' , synergy: 'В связке с Гидрологом и Лудильщиком не даёт уйти пресной воде через трещины' },
+        { id: 'nurse', name: 'Медсестра', deck: 'Медотсек', item: 'Жгут', passive: 'Снимает панику раненых', nightLabel: 'Перевязать уставшего пассажира', clueTag: 'запах камфоры и ваты', flaw: 'Держит под замком ампулы с сильным средством' , synergy: 'В связке с Хирургом и Аптекарем помогает выхаживать ослабевших пассажиров' },
+        { id: 'carpenter', name: 'Плотник', deck: 'Трюм', item: 'Стамеска', passive: 'Латает переборки', nightLabel: 'Подпереть расшатанную дверь брусом', clueTag: 'свежая древесная стружка и запах сосны', flaw: 'Заметил трещину, о которой молчит' , synergy: 'В связке с Механиком и Сварщиком подпирает двери и укрепляет переборки' },
+        { id: 'sonar_op', name: 'Гидроакустик', deck: 'Радиорубка', item: 'Наушники', passive: 'Слышит глубинный шум', nightLabel: 'Прислушаться к шумам за бортом', clueTag: 'лёгкий треск контактов и запах меди', flaw: 'Ночами слышит шаги там, где никого нет' , synergy: 'В связке с Радистом и Рыбаком улавливает глубинные шумы и тени у корпуса' },
+        { id: 'baker', name: 'Пекарь', deck: 'Камбуз', item: 'Лопата для печи', passive: 'Тёплый хлеб поднимает дух', nightLabel: 'Растопить печь и сохранить жар', clueTag: 'запах ржаной корки и печного дыма', flaw: 'Прячет заначку сухарей в дымоходе' , synergy: 'В связке с Шеф-поваром и Поварёнком греет печь и поддерживает дух экипажа' },
+        { id: 'lookout', name: 'Наблюдатель', deck: 'Мостик', item: 'Бинокль', passive: 'Замечает тени у борта', nightLabel: 'Осмотреть горизонт и палубу', clueTag: 'холодный ветер и потёртость линз', flaw: 'Однажды проглядел огни в тумане' , synergy: 'В связке с Штурманом и Сигнальщиком вовремя замечает угрозы у борта' },
+        { id: 'locksmith', name: 'Слесарь', deck: 'Машинное', item: 'Отмычки', passive: 'Открывает заклинившие люки', nightLabel: 'Проверить засовы на отсеках', clueTag: 'графитовая смазка и лязг металла', flaw: 'Когда-то чинил замки в старой тюрьме' , synergy: 'В связке с Контрабандистом и Комендантом открывает заклинившие люки и замки' },
+        { id: 'herbalist', name: 'Травник', deck: 'Оранжерея', item: 'Ступка', passive: 'Готовит настои от тревоги', nightLabel: 'Растереть целебные травы', clueTag: 'пряный запах мяты и полыни', flaw: 'Знает ядовитые свойства лесных кореньев' , synergy: 'В связке с Психологом и Садовником готовит успокаивающие травяные сборы' },
+        { id: 'helmsman', name: 'Рулевой', deck: 'Мостик', item: 'Штурвал-рукоятка', passive: 'Держит курс на волне', nightLabel: 'Выровнять курс против боковой волны', clueTag: 'мозоли от штурвала и запах кожи', flaw: 'Боится потерять управление в шторм' , synergy: 'В связке с Капитаном и Штурманом выравнивает судно на тяжёлой волне' },
+        { id: 'stoker', name: 'Кочегар', deck: 'Машинное', item: 'Кочерга', passive: 'Поддерживает ровное тепло', nightLabel: 'Пошуровать угли в топке', clueTag: 'сажа на рукавах и запах золы', flaw: 'Видел, как кто-то бросал бумаги в огонь' , synergy: 'В связке с Механиком и Котлочистом держит ровный жар и сжигает лишний мусор' },
+        { id: 'cartographer', name: 'Картограф', deck: 'Мостик', item: 'Циркуль', passive: 'Уточняет путь до острова', nightLabel: 'Сверить карту течений и отмелей', clueTag: 'графитовая крошка и запах бумаги', flaw: 'Скрывает старую пометку о рифах' , synergy: 'В связке с Штурманом и Метеорологом сверяет карты течений и рифов' },
+        { id: 'apothecary', name: 'Аптекарь', deck: 'Медотсек', item: 'Весы', passive: 'Точная дозировка припасов', nightLabel: 'Проверить склянки и бинты', clueTag: 'запах эвкалипта и стекла', flaw: 'Хранит редкий порошок в дальнем шкафу' , synergy: 'В связке с Хирургом и Медсестрой точно дозирует лекарства и припасы' },
+        { id: 'rigger', name: 'Такелажник', deck: 'Палуба', item: 'Трос-карабин', passive: 'Крепит грузы при качке', nightLabel: 'Подтянуть крепления ящиков', clueTag: 'запах пеньки и металлического кольца', flaw: 'Знает, какой узел ослаб перед отплытием' , synergy: 'В связке с Паромщиком и Спасателем надёжно крепит грузы при качке' },
+        { id: 'chronicler', name: 'Летописец', deck: 'Кают-компания', item: 'Тетрадь', passive: 'Фиксирует противоречия', nightLabel: 'Записать ночные слухи и показания', clueTag: 'свежие чернила и мятые страницы', flaw: 'Вносит в записи и личные догадки' , synergy: 'В связке с Детективом и Морским ветераном фиксирует показания и хронологию' },
+        { id: 'boilermaker', name: 'Котлочист', deck: 'Машинное', item: 'Щётка по металлу', passive: 'Бережёт котёл от накипи', nightLabel: 'Очистить стенки котла от нагара', clueTag: 'запах копоти и металлическая пыль', flaw: 'Находит странные обрывки в зольнике' , synergy: 'В связке с Механиком и Кочегаром чистит котёл от нагара и сажи' },
+        { id: 'fisher', name: 'Рыбак', deck: 'Палуба', item: 'Острога', passive: 'Иногда добывает улов', nightLabel: 'Закинуть снасть в тёмную воду', clueTag: 'запах чешуи и солёной воды', flaw: 'Суеверно не называет ночную рыбу вслух' , synergy: 'В связке с Паромщиком и Гидроакустиком добывает улов у борта в тихую ночь' },
+        { id: 'warden', name: 'Комендант', deck: 'Арсенал', item: 'Журнал обхода', passive: 'Следит за порядком в коридорах', nightLabel: 'Пройти с обходом по отсекам', clueTag: 'скрип подошв и запах кожи', flaw: 'Слишком жёстко подозревает новичков' , synergy: 'В связке с Охранником и Слесарем держит порядок в коридорах и у арсенала' },
+        { id: 'glassblower', name: 'Стеклодув', deck: 'Лаборатория', item: 'Горелка-трубка', passive: 'Чинит колбы и линзы', nightLabel: 'Запаять треснувшую колбу', clueTag: 'запах горячего стекла и газа', flaw: 'Обжёг пальцы при ночном опыте' , synergy: 'В связке с Химиком и Сигнальщиком чинит колбы, линзы и фонари' },
+        { id: 'beacon_op', name: 'Сигнальщик', deck: 'Мостик', item: 'Фонарь Морзе', passive: 'Подаёт световые сигналы', nightLabel: 'Проверить сигнальный огонь на мачте', clueTag: 'тёплое стекло лампы и запах масла', flaw: 'Заметил мигание в чужом окне' , synergy: 'В связке с Радистом и Наблюдателем подаёт световые сигналы в тумане' },
+        { id: 'tinker', name: 'Лудильщик', deck: 'Трюм', item: 'Паяльник', passive: 'Герметизирует фляги и банки', nightLabel: 'Запаять протекающую флягу', clueTag: 'запах канифоли и олова', flaw: 'Знает, чья фляга уже текла' , synergy: 'В связке с Гидрологом и Водопроводчиком герметизирует фляги и ёмкости' },
+        { id: 'candlemaker', name: 'Свечник', deck: 'Часовня', item: 'Восковые свечи', passive: 'Мягкий свет бережёт нервы', nightLabel: 'Расставить свечи в тёмных углах', clueTag: 'тёплый запах мёда и воска', flaw: 'Видел силуэт у алтаря в полночь' , synergy: 'В связке с Психологом и Капелланом даёт мягкий свет в тёмных отсеках' },
+        { id: 'orchardist', name: 'Садовник', deck: 'Оранжерея', item: 'Секатор', passive: 'Ухаживает за зеленью', nightLabel: 'Подрезать побеги и проверить влагу', clueTag: 'запах зелёных листьев и влаги', flaw: 'Прячет редкий черенок в кашпо' , synergy: 'В связке с Агрономом и Травником бережёт зелень и ростки в оранжерее' },
+        { id: 'auditor', name: 'Ревизор', deck: 'Трюм', item: 'Счётная доска', passive: 'Замечает пропажу пайков', nightLabel: 'Сверить остатки супа и воды', clueTag: 'пометки карандашом и запах бумаги', flaw: 'Нашёл расхождение в чужой смене' , synergy: 'В связке с Квартирмейстером сверяет остатки пайков и ловит нехватки' },
+        { id: 'sailor_vet', name: 'Морской ветеран', deck: 'Кают-компания', item: 'Компас', passive: 'Хладнокровие в шторм', nightLabel: 'Подбодрить экипаж перед сном', clueTag: 'запах старого табака и морской соли', flaw: 'Помнит похожий рейс, закончившийся бедой' , synergy: 'В связке с Капитаном и Летописцем сохраняет выдержку в критические дни' },
+        { id: 'cannibal_chef', name: 'Повар-людоед (Людоед)', deck: 'Камбуз', item: 'Кровавый половник', passive: 'Маскирует следы под готовку', nightLabel: 'Выбрать жертву и способ скрыть следы', clueTag: 'пряный запах мяса и дыма', flaw: 'Слишком охотно помешивает общий котёл' , synergy: 'Маскирует следы под готовку на камбузе и усиливает эффект котла', nightPerk: 'Мастер котла: ловко прячет следы у камбуза и усиливает прибавку еды при маскировке под котёл.' },
+        { id: 'cannibal_doctor', name: 'Хирург-мясник (Людоед)', deck: 'Медотсек', item: 'Костный пила-нож', passive: 'Действует тихо и хладнокровно', nightLabel: 'Выбрать жертву и способ скрыть следы', clueTag: 'запах спирта и железа', flaw: 'Знает, как не оставить лишних следов' , synergy: 'Действует хладнокровно и оставляет минимум суматохи при ночной расправе', nightPerk: 'Хладнокровный скальпель: действует с минимальной суетой и снижает рост подозрения ночью.' },
+        { id: 'cannibal_shadow', name: 'Тёмный хищник (Людоед)', deck: 'Трюм', item: 'Удавка из троса', passive: 'Скрывается в тенях отсеков', nightLabel: 'Выбрать жертву и способ скрыть следы', clueTag: 'холодный сквозняк и запах сырости', flaw: 'Появляется там, где гаснет свет' , synergy: 'Скрывается в тенях трюма и усиливает скрытный уход от погони', nightPerk: 'Тень трюма: скрывается в мёртвых зонах отсеков и реже попадается на глаза дозору.' },
+        { id: 'cannibal_mimic', name: 'Двойник (Людоед)', deck: 'Каюты', item: 'Поддельный значок', passive: 'Передразнивает чужие повадки', nightLabel: 'Выбрать жертву и способ скрыть следы', clueTag: 'чужой запах и потёртый металл', flaw: 'Иногда сбивается, пересказывая чужие слова' , synergy: 'Перенимает чужие повадки и усиливает путаницу при подбросе улик', nightPerk: 'Двойник: на следующий день перенимает чужое алиби и сбивает след дознания.' },
+        { id: 'cannibal_tide', name: 'Глубинный людоед (Людоед)', deck: 'Палуба', item: 'Гарпунный крюк', passive: 'Охотится у тёмного борта', nightLabel: 'Выбрать жертву и способ скрыть следы', clueTag: 'солёные брызги и запах водорослей', flaw: 'Долго стоит у перил, глядя в воду' , synergy: 'Идеально сочетается со сбросом за борт и смывом следов волнами', nightPerk: 'Глубинный отлив: у борта волны смывают зацепки, сильнее снижая ночное подозрение.' },
+        { id: 'cannibal_furnace', name: 'Печной людоед (Людоед)', deck: 'Машинное', item: 'Клещи из топки', passive: 'Быстро сжигает зацепки', nightLabel: 'Выбрать жертву и способ скрыть следы', clueTag: 'запах гари и раскалённого железа', flaw: 'От него всегда пахнет печным дымом' , synergy: 'Идеально сочетается со сжиганием улик в топке и снижением подозрения', nightPerk: 'Печной жар: быстро сжигает улики в топке и гасит часть ночных подозрений.' },
+        { id: 'cannibal_whisper', name: 'Шёпот в ночи (Людоед)', deck: 'Кают-компания', item: 'Тёмный кинжал', passive: 'Усыпляет бдительность разговорами', nightLabel: 'Выбрать жертву и способ скрыть следы', clueTag: 'приглушённый шёпот и запах бумаги', flaw: 'Задаёт слишком много личных вопросов' , synergy: 'Усыпляет бдительность разговорами и усиливает засады в коридорах', nightPerk: 'Шёпот в ночи: давит на психику и усиливает растерянность при засадах и подставах.' },
+        { id: 'cannibal_scavenger', name: 'Падальщик (Людоед)', deck: 'Холодильник', item: 'Мясницкий крюк', passive: 'Выискивает ослабевших', nightLabel: 'Выбрать жертву и способ скрыть следы', clueTag: 'запах сырости и рассола', flaw: 'Первым замечает тех, кто отстал от группы' , synergy: 'Выискивает ослабевших и усиливает давление на голодный экипаж', nightPerk: 'Падальщик: если жертва была голодной (≥50%), получает +1 еду и меньше палится.' }
+      ];
+
+      const PERSONAL_TRAITS = [
+        { plus: 'Виртуозно играет на пианино', minus: 'Почти ничего не слышит без слухового аппарата' },
+        { plus: 'Читает по губам за тридцать шагов', minus: 'В темноте натыкается на каждый угол и дверь' },
+        { plus: 'Безупречно варит кофе в любой качке', minus: 'Сразу засыпает, стоит присесть на ящик' },
+        { plus: 'Знает наизусть все морские узлы', minus: 'Теряется даже в трёх соседних коридорах' },
+        { plus: 'Умеет успокоить панику одним взглядом', minus: 'Сам вздрагивает от каждого скрипа переборок' },
+        { plus: 'Отлично метает ножи и гаечные ключи', minus: 'Постоянно роняет ложку прямо в суп' },
+        { plus: 'Помнит каждую цитату и дату рейса', minus: 'Забывает, зачем зашёл в отсек минуту назад' },
+        { plus: 'Слышит малейший шорох за переборкой', minus: 'Громко храпит так, что звенят иллюминаторы' },
+        { plus: 'Легко чинит сложные замки и схемы', minus: 'Не может без помощи открыть обычную консервную банку' },
+        { plus: 'Сохраняет железную выдержку на допросах', minus: 'Краснеет и путается в словах при комплиментах' },
+        { plus: 'Умеет торговаться как опытный контрабандист', minus: 'Отдаёт последний паёк на жалостливый взгляд' },
+        { plus: 'Быстро ориентируется в хаосе и драке', minus: 'Напрочь теряется, когда нужно выбрать один из двух супов' },
+        { plus: 'Пишет красивые стихи и заметки в дневник', minus: 'Пишет так, что даже сам не может разобрать почерк' },
+        { plus: 'Держит осанку аристократа даже в робе', minus: 'Спотыкается на ровном палубном настиле' },
+        { plus: 'Замечает малейшую фальшь в голосе', minus: 'Легко верит даже самому нелепому оправданию' },
+        { plus: 'Быстро разжигает огонь даже на сыром ветру', minus: 'Боится замкнутых тёмных отсеков без выхода' },
+        { plus: 'Умеет оказывать первую помощь без аптечки', minus: 'Падает в обморок при виде крови' },
+        { plus: 'Отлично ориентируется по звёздам и волнам', minus: 'Теряет счёт времени в долгих спорах' }
+      ];
+
+      // Типы тайных уз и привязанностей (в основном герои НЕ знают об этом!)
+      const BOND_TEMPLATES = [
+        { relA: 'старший брат / родня', relB: 'младший брат / сестра (не знает о родстве)', secretForA: 'Вы знаете, что {B} — ваш младший родственник, но храните молчание, чтобы не выдать семейную тайну', secretForB: 'Вы чувствуете странную тревогу рядом с {A}, но даже не подозреваете о родстве', publicHint: 'Необъяснимая тяга держаться рядом с {B}' },
+        { relA: 'тайный родитель', relB: 'свой ребёнок (не знает, кто родитель)', secretForA: 'Вы сели на Ковчег ради {B} — это ваш ребёнок, но вы скрываете правду', secretForB: 'Вы знаете лишь о старом медальоне с инициалами {A}, но не знаете правды', publicHint: 'Опекает {B} сильнее остальных' },
+        { relA: 'бывший спаситель', relB: 'спасённый должник (не помнит лица)', secretForA: 'Когда-то вы вытащили {B} из беды, но {B} не знает, что это были вы', secretForB: 'Вы ищете человека, который спас вас в прошлом, не зная, что это {A}', publicHint: 'Странно смотрит на {B} при встрече' },
+        { relA: 'единокровный брат / сестра', relB: 'второй родственник (не знает о связи)', secretForA: 'В семейных бумагах указано, что {B} — ваша родня по отцу, но вы ещё не говорили об этом', secretForB: 'Вы не знаете, что {A} приходится вам близким родственником', publicHint: 'Похожие привычки с {B}' }
+      ];
+
+      const EPISODE_SCENARIOS = [
+        {
+          title: 'ЧЁРНЫЙ ЯЩИК В КАЮТЕ КАПИТАНА',
+          text: 'В вентиляции найден обгоревший бортовой самописец с прошлого рейса. На записи слышен голос: «Один из нас уже пробовал человечину...». Как поступить?',
+          choices: [
+            {
+              label: '1. Огласить запись по громкой связи',
+              hint: '+15% доверия, -12% рассудка, яркая улика',
+              apply: (m) => {
+                m.resources.trust = Math.min(100, m.resources.trust + 15);
+                m.resources.sanity = Math.max(0, m.resources.sanity - 12);
+                const can = m.players.find(p => p.alive && p.alignment === 'cannibal');
+                if (can) m.clues.unshift(`Запись самописца: у хищника замечено — ${can.role.clueTag}.`);
+                return 'Правда шокировала пассажиров, но дала важную зацепку против Людоеда.';
+              }
+            },
+            {
+              label: '2. Передать запись Детективу для проверки',
+              hint: '+8% рассудка, подтверждает алиби пассажира',
+              apply: (m) => {
+                m.resources.sanity = Math.min(100, m.resources.sanity + 8);
+                const hum = pick(m.players.filter(p => p.alive && p.alignment === 'human'));
+                if (hum) {
+                  hum.suspicion = Math.max(0, hum.suspicion - 20);
+                  hum.alibi = 'Подтверждено записью самописца: невиновен';
+                }
+                return 'Анализ записи снял подозрения с одного из пассажиров.';
+              }
+            },
+            {
+              label: '3. Уничтожить кассету в печи',
+              hint: '+10% рассудка, -15% доверия, рост подозрений',
+              apply: (m) => {
+                m.resources.sanity = Math.min(100, m.resources.sanity + 10);
+                m.resources.trust = Math.max(0, m.resources.trust - 15);
+                m.players.filter(p => p.alive).forEach(p => p.suspicion += 8);
+                return 'Кассета сожжена. Команда подозревает утайку правды.';
+              }
+            },
+            {
+              label: '4. Устроить жёсткий допрос у каюты капитана',
+              hint: 'Риск: в давке кто-то может случайно погибнуть!',
+              apply: (m) => {
+                if (Math.random() < 0.65) {
+                  const vic = pick(m.players.filter(p => p.alive));
+                  if (vic) {
+                    killPlayerInDemo(m, vic, 'Случайно сорвался в люк во время потасовки у каюты капитана', `СЛУЧАЙНАЯ ГИБЕЛЬ: ${vic.name}`);
+                    m.resources.sanity = Math.max(0, m.resources.sanity - 12);
+                    return `В суматохе допроса ${vic.name} случайно сорвался в технический люк и погиб!`;
+                  }
+                }
+                m.resources.trust = Math.max(0, m.resources.trust - 10);
+                return 'Допрос прошёл на грани драки, но обошлось без жертв.';
+              }
+            }
+          ]
+        },
+        {
+          title: 'ЗАПЕРТЫЙ КОНТЕЙНЕР В ТРЮМЕ',
+          text: 'Механики наткнулись на опечатанный ящик без маркировки. Изнутри доносится стук, а рядом канистры с пометкой «НЗ».',
+          choices: [
+            {
+              label: '1. Вскрыть ящик автогеном при всех',
+              hint: '+3 еды и +3 воды, -8% корпуса от искр',
+              apply: (m) => {
+                m.resources.food += 3;
+                m.resources.water += 3;
+                m.resources.hull = Math.max(0, m.resources.hull - 8);
+                return 'Внутри оказались пайки и вода! Искры слегка повредили обшивку.';
+              }
+            },
+            {
+              label: '2. Пустить металл ящика на латание борта',
+              hint: '+14% корпуса, но без новых припасов',
+              apply: (m) => {
+                m.resources.hull = Math.min(100, m.resources.hull + 14);
+                return 'Бронелисты пошли на укрепление корпуса Ковчега.';
+              }
+            },
+            {
+              label: '3. Сбросить подозрительный ящик за борт',
+              hint: '+6% рассудка, но без новых припасов',
+              apply: (m) => {
+                m.resources.sanity = Math.min(100, m.resources.sanity + 6);
+                return 'Контейнер ушёл под воду — лишних тревог стало меньше.';
+              }
+            },
+            {
+              label: '4. Вскрыть взрывпакетом на свой страх и риск',
+              hint: '+4 еды, но при взрыве может случайно погибнуть пассажир!',
+              apply: (m) => {
+                m.resources.food += 4;
+                if (Math.random() < 0.7) {
+                  const vic = pick(m.players.filter(p => p.alive));
+                  if (vic) {
+                    killPlayerInDemo(m, vic, 'Случайно погиб от осколков при подрыве контейнера в трюме', `СЛУЧАЙНАЯ СМЕРТЬ В ТРЮМЕ: ${vic.name}`);
+                    m.resources.hull = Math.max(0, m.resources.hull - 10);
+                    return `Взрыв открыл пайки, но разлетевшийся металл случайно убил ${vic.name}!`;
+                  }
+                }
+                return 'Взрыв прошёл шумно, но все уцелели.';
+              }
+            }
+          ]
+        },
+        {
+          title: 'НОЧНОЙ ШАНТАЖ В КАМБУЗЕ',
+          text: 'Под дверь подброшена записка: «Я знаю, кто выходил из отсека жертвы. Дайте двойной паёк, или я назову имя!»',
+          choices: [
+            {
+              label: '1. Отдать шантажисту -2 еды',
+              hint: 'Раскрывает отсек, где прячется Людоед',
+              apply: (m) => {
+                m.resources.food = Math.max(0, m.resources.food - 2);
+                const can = m.players.find(p => p.alive && p.alignment === 'cannibal');
+                if (can) {
+                  can.suspicion += 22;
+                  m.clues.unshift(`Анонимка шантажиста: хищник в отсеке «${can.role.deck}»!`);
+                }
+                return 'Шантажист забрал пайки и оставил точную наводку на отсек хищника.';
+              }
+            },
+            {
+              label: '2. Устроить облаву на вымогателя',
+              hint: '-10% доверия, но снижает подозрение с невиновного',
+              apply: (m) => {
+                m.resources.trust = Math.max(0, m.resources.trust - 10);
+                const suspect = pick(m.players.filter(p => p.alive));
+                if (suspect) {
+                  suspect.alibi = 'Пойман на блефе ради еды, к убийствам не причастен';
+                  suspect.suspicion = Math.max(5, suspect.suspicion - 12);
+                }
+                return 'Выяснилось, что записку подбросил голодный вымогатель.';
+              }
+            },
+            {
+              label: '3. Проигнорировать записку',
+              hint: '-8% доверия, обстановка накаляется',
+              apply: (m) => {
+                m.resources.trust = Math.max(0, m.resources.trust - 8);
+                return 'Записку оставили без ответа — недоверие в кают-компании выросло.';
+              }
+            },
+            {
+              label: '4. Устроить жёсткую засаду с оружием',
+              hint: 'Намеренная расправа: в темноте может погибнуть подозреваемый!',
+              apply: (m) => {
+                const cand = pick(m.players.filter(p => p.alive));
+                if (cand && Math.random() < 0.7) {
+                  const wasCan = cand.alignment === 'cannibal';
+                  if (wasCan) m.cannibalsKilled += 1;
+                  else m.innocentExecuted += 1;
+                  const reason = wasCan
+                    ? 'Уничтожен в засаде на камбузе — оказался Людоедом!'
+                    : 'Случайно застрелен в темноте во время засады на камбузе';
+                  killPlayerInDemo(m, cand, reason, wasCan ? `ЛИКВИДИРОВАН ЛЮДОЕД: ${cand.name}` : `СМЕРТЬ В ЗАСАДЕ: ${cand.name}`);
+                  return `В темноте камбуза прогремел выстрел — погиб ${cand.name} (${cand.role.name}).`;
+                }
+                return 'Засада спугнула тень в темноте, но никто не погиб.';
+              }
+            }
+          ]
+        },
+        {
+          title: 'СИГНАЛ SOS С ДРЕЙФУЮЩЕЙ ШЛЮПКИ',
+          text: 'Радист поймал слабый сигнал бедствия с разбитой шлюпки по правому борту. На борту виден человек и ящики.',
+          choices: [
+            {
+              label: '1. Подобрать припасы со шлюпки (+2 воды, +15% рассудка)',
+              hint: 'Людоед скроет следы в суматохе',
+              apply: (m) => {
+                m.resources.water += 2;
+                m.resources.sanity = Math.min(100, m.resources.sanity + 15);
+                m.players.filter(p => p.alive && p.alignment === 'cannibal').forEach(c => c.suspicion = Math.max(10, c.suspicion - 15));
+                return 'Припасы подняты, дух экипажа вырос, но следы хищника смазались.';
+              }
+            },
+            {
+              label: '2. Пройти мимо на полном ходу',
+              hint: '-12% рассудка, подозрение Людоеда растёт',
+              apply: (m) => {
+                m.resources.sanity = Math.max(0, m.resources.sanity - 12);
+                const can = m.players.find(p => p.alive && p.alignment === 'cannibal');
+                if (can) can.suspicion += 15;
+                return 'Ковчег прошёл мимо, сохранив строгий порядок на борту.';
+              }
+            },
+            {
+              label: '3. Спустить трос только для проверки ящиков',
+              hint: '+1 еда и +1 вода, -5% корпуса',
+              apply: (m) => {
+                m.resources.food += 1;
+                m.resources.water += 1;
+                m.resources.hull = Math.max(0, m.resources.hull - 5);
+                return 'Удалось зацепить часть груза до того, как шлюпку отбросило волной.';
+              }
+            },
+            {
+              label: '4. Втянуть выжившего со шлюпки на борт',
+              hint: 'Риск: при подъёме у борта кто-то может случайно погибнуть!',
+              apply: (m) => {
+                if (Math.random() < 0.55) {
+                  const vic = pick(m.players.filter(p => p.alive));
+                  if (vic) {
+                    killPlayerInDemo(m, vic, 'Унесён ледяной волной при спасении у борта шлюпки', `ТРАГЕДИЯ У БОРТА: ${vic.name}`);
+                    return `Волна ударила в борт — спасая шлюпку, погиб ${vic.name}.`;
+                  }
+                }
+                m.resources.trust = Math.min(100, m.resources.trust + 10);
+                return 'Спасательная операция у борта прошла успешно.';
+              }
+            }
+          ]
+        },
+        {
+          title: 'ОТРАВЛЕННЫЙ КОТЁЛ НА КАМБУЗЕ',
+          text: 'В супе перед обедом почувствовали горький привкус снотворного. Кто-то хотел усыпить команду перед ночью!',
+          choices: [
+            {
+              label: '1. Вылить весь котёл (-3 еды), +10% доверия',
+              hint: 'Никто не уснёт на посту ночью',
+              apply: (m) => {
+                m.resources.food = Math.max(0, m.resources.food - 3);
+                m.resources.trust = Math.min(100, m.resources.trust + 10);
+                return 'Котёл вылили за борт. Еды меньше, но бдительность сохранена.';
+              }
+            },
+            {
+              label: '2. Профильтровать бульон в лаборатории',
+              hint: '-8% рассудка, запасы еды сохранены',
+              apply: (m) => {
+                m.resources.sanity = Math.max(0, m.resources.sanity - 8);
+                return 'Бульон очистили, но паранойя среди пассажиров усилилась.';
+              }
+            },
+            {
+              label: '3. Опечатать камбуз до вечера',
+              hint: '+8% рассудка, -6% доверия',
+              apply: (m) => {
+                m.resources.sanity = Math.min(100, m.resources.sanity + 8);
+                m.resources.trust = Math.max(0, m.resources.trust - 6);
+                return 'Камбуз закрыли под охраной до вечернего совета.';
+              }
+            },
+            {
+              label: '4. Заставить подозреваемого попробовать суп первым',
+              hint: 'Жёсткий исход: если в супе был яд, кто-то может погибнуть!',
+              apply: (m) => {
+                const vic = pick(m.players.filter(p => p.alive));
+                if (vic && Math.random() < 0.6) {
+                  killPlayerInDemo(m, vic, 'Погиб от отравленного бульона на камбузе', `СМЕРТЬ НА КАМБУЗЕ: ${vic.name}`);
+                  return `Отрава оказалась смертельной — ${vic.name} не пережил пробу бульона.`;
+                }
+                m.resources.trust = Math.max(0, m.resources.trust - 12);
+                return 'Суп оказался лишь горьким на вкус, но доверие к руководству рухнуло.';
+              }
+            }
+          ]
+        }
+      ];
+
+      const SECRET_POOL = [
+        'Тайно переписывался с капитаном до отплытия',
+        'Прячет под матрасом чужой билет на Ковчег',
+        'Видел, как кто-то ночью мыл руки в опреснителе',
+        'Имеет крупный долг перед одним из пассажиров',
+        'Скрывает шрам от укуса на левом предплечье',
+        'Тайно подкармливает бездомного кота в трюме',
+        'Украл запасную флягу воды в первый день',
+        'Был свидетелем ссоры в кают-компании перед убийством',
+        'Перепрятал ящик с консервами за фальшпанелью',
+        'Хранит в кармане ключ от закрытого шкафчика',
+        'Слышал приглушённый спор у входа в машинное отделение',
+        'Заметил чужие мокрые следы у иллюминатора',
+        'Прячет в сапоге запасной нож из камбуза',
+        'Подслушал ночной разговор у радиорубки',
+        'Знает, кто тайком менял метки на ящиках',
+        'Хранит старую фотографию с места крушения'
+      ];
+
+      const ALIBI_POOL = [
+        'Весь вечер чистил медные трубки у парового котла — свидетели подтверждают',
+        'Уверяет, что провёл полночь в оранжерее, пересаживая рассаду',
+        'Говорит, что пересчитывал пайки на камбузе и никуда не отлучался',
+        'Слух: якобы видел странную тень у вентиляции, но сам спал в каюте',
+        'Утверждает, что проверял давление в баках с водой до самого утра',
+        'По слухам, долго спорил с кем-то у гермодвери, но вину отрицает',
+        'Говорит, что настраивал радар на мостике и ловил слабые помехи',
+        'Слух: якобы прятал что-то в трюме, но сам настаивает на чистом алиби',
+        'Уверяет, что помогал с перевязкой в медотсеке и никого не оставлял',
+        'По слухам, поздно вечером выходил на палубу подышать морским воздухом',
+        'Говорит, что вел учёт запасов в журнале и всё время был на виду',
+        'Слух: якобы слышал шаги за спиной, но сам не выходил из отсека',
+        'Утверждает, что латал трещину на переборке и руки были в масле',
+        'По слухам, обменялся запиской с другим пассажиром перед отбоем',
+        'Говорит, что тихо читал в кают-компании, пока остальные спорили',
+        'Слух: якобы видел кого-то с фонарём у холодильника глубокой ночью'
+      ];
+
+      const ENDINGS = {
+        1: { code: 'PERFECT_SALVATION', title: 'КОНЦОВКА 1: ТРИУМФ РАЗУМА И ДОБРАЯ ЗЕМЛЯ', desc: 'Людоед разоблачён и казнён по справедливому суду, запасы сохранены, корпус цел — Ковчег благополучно причалил к зелёному берегу!' },
+        2: { code: 'BLOODY_LYNCH_VICTORY', title: 'КОНЦОВКА 2: КРОВАВЫЙ САМОСУД', desc: 'Людоед уничтожен, но перед этим в панике толпа казнила слишком много невиновных. Выжившие с трудом смотрят друг другу в глаза.' },
+        3: { code: 'CANNIBAL_FEAST', title: 'КОНЦОВКА 3: ПЛАВУЧАЯ СКОТОБОЙНЯ', desc: 'Людоед перебил большинство пассажиров и стал единоличным хозяином Ковчега.' },
+        4: { code: 'CULT_OF_FLESH', title: 'КОНЦОВКА 4: КУЛЬТ ПЛОТИ', desc: 'Когда еда закончилась, а хищник остался жив, отчаявшиеся люди приняли его жуткий закон.' },
+        5: { code: 'GREAT_FAMINE', title: 'КОНЦОВКА 5: ТИШИНА ПУСТЫХ КАСТРЮЛЬ', desc: 'Провизия иссякла до дна, и Ковчег превратился в безмолвный дрейфующий склеп.' },
+        6: { code: 'THIRST_MIRAGE', title: 'КОНЦОВКА 6: СОЛЁНЫЙ МИРАЖ', desc: 'Пресная вода закончилась посреди океана.' },
+        7: { code: 'HULL_BREACH', title: 'КОНЦОВКА 7: ПУЧИНА ПОГЛОТИЛА ВСЕХ', desc: 'Корпус Ковчега не выдержал давления и ушёл на дно.' },
+        8: { code: 'ASYLUM_ADRIFT', title: 'КОНЦОВКА 8: КОРАБЛЬ БЕЗУМЦЕВ', desc: 'Паранойя и страх окончательно сломали рассудок всего экипажа.' },
+        9: { code: 'PYRRHIC_DUEL', title: 'КОНЦОВКА 9: ПОСЛЕДНИЙ ВЫСТРЕЛ У ШЛЮЗА', desc: 'В последний момент 1–2 уцелевших сумели сбросить Людоеда за борт у самого берега.' },
+        10: { code: 'RADIO_RESCUE', title: 'КОНЦОВКА 10: СИГНАЛ НАДЕЖДЫ С БЕРЕГА', desc: 'Радист поймал пеленг спасательной флотилии, а Людоед был обезврежен!' }
+      };
+
+      const demoMyId = 'user_me';
+
+      function shuffle(arr) {
+        const a = arr.slice();
+        for (let i = a.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+      }
+      function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+      // Реакция привязанностей при чьей-либо гибели!
+      function killPlayerInDemo(m, vic, reason, modalTitle) {
+        if (!vic || !vic.alive) return;
+        vic.alive = false;
+        vic.deathDay = m.day;
+        vic.deathReason = reason;
+
+        // Проверяем, был ли кто-то связан с погибшим
+        m.players.forEach(other => {
+          if (other.alive && other.bondTargetId === vic.id) {
+            other.bondKnown = true;
+            other.bondRevealed = `Выяснилось, что ${vic.name} был вашим «${other.bondRoleName}»!`;
+            other.bondInfo = `ПРАВДА РАСКРЫТА: ${vic.name} был вашим «${other.bondRoleName}» — его гибель потрясла вас!`;
+            m.resources.sanity = Math.max(0, m.resources.sanity - 14);
+            m.log.unshift(`ТАЙНАЯ СВЯЗЬ РАСКРЫТА: ${other.name} узнал, что погибший ${vic.name} был ему «${other.bondRoleName}»!`);
+          }
+        });
+
+        if (modalTitle) {
+          openDeathModal(m.death = { id: Math.random(),
+            title: modalTitle,
+            subtitle: `${vic.role.name} • Отсек «${vic.role.deck}»`,
+            reason,
+            day: m.day
+          });
+        }
+      }
+
+      function setupSecretBonds(players) {
+        const indices = shuffle(players.map((_, i) => i));
+        for (let i = 0; i + 1 < indices.length; i += 2) {
+          const a = players[indices[i]];
+          const b = players[indices[i + 1]];
+          const tpl = pick(BOND_TEMPLATES);
+          // В 80% случаев они ещё не знают о родстве/связи
+          const unknown = Math.random() < 0.8;
+
+          a.bondTargetId = b.id;
+          a.bondRoleName = tpl.relA;
+          a.bondKnown = !unknown;
+          a.bondInfo = unknown
+            ? tpl.secretForA.replace('{B}', b.name)
+            : `Вы знаете, что ${b.name} — ваш близкий человек (${tpl.relA})`;
+          a.bondPublicHint = tpl.publicHint.replace('{B}', b.name);
+          a.bondRevealed = `Связь с ${b.name}: ${tpl.relA}`;
+
+          b.bondTargetId = a.id;
+          b.bondRoleName = tpl.relB;
+          b.bondKnown = !unknown;
+          b.bondInfo = unknown
+            ? tpl.secretForB.replace('{A}', a.name)
+            : `Вы знаете, что ${a.name} — ваш близкий человек (${tpl.relB})`;
+          b.bondPublicHint = tpl.publicHint.replace('{B}', a.name);
+          b.bondRevealed = `Связь с ${a.name}: ${tpl.relB}`;
+        }
+      }
+
+      function makeEpisode(dayIdx, usedIndices, totalAlive) {
+        const avail = EPISODE_SCENARIOS.map((s, i) => ({ s, i })).filter(x => !usedIndices.includes(x.i));
+        const chosen = avail.length ? pick(avail) : { s: EPISODE_SCENARIOS[dayIdx % EPISODE_SCENARIOS.length], i: dayIdx % EPISODE_SCENARIOS.length };
+        usedIndices.push(chosen.i);
+        const voters = Math.max(3, (totalAlive || 10) - 1);
+        const anonVotes = [0, 0, 0, 0];
+        for (let i = 0; i < voters; i++) {
+          anonVotes[Math.floor(Math.random() * 4)] += 1;
+        }
+        return {
+          title: chosen.s.title,
+          text: chosen.s.text,
+          choices: chosen.s.choices.map(c => ({ label: c.label, hint: c.hint })),
+          rawChoices: chosen.s.choices,
+          anonVotes,
+          resolved: false,
+          pickedIdx: null,
+          outcomeText: ''
+        };
+      }
+
+      function autoAssignBotRations() {
+        if (!demoMeta || demoMeta.phase !== 'day') return;
+        let foodLeft = demoMeta.resources.food - Object.values(demoMeta.rationPlan).filter(x => x.food).length;
+        let waterLeft = demoMeta.resources.water - Object.values(demoMeta.rationPlan).filter(x => x.water).length;
+
+        const bots = demoMeta.players.filter(p => p.alive).sort((a, b) => b.hunger - a.hunger);
+        for (const b of bots) {
+          demoMeta.rationPlan[b.id] = demoMeta.rationPlan[b.id] || { food: false, water: false };
+          if (!demoMeta.rationPlan[b.id].food && foodLeft > 0 && b.hunger >= 30) {
+            demoMeta.rationPlan[b.id].food = true;
+            foodLeft--;
+          }
+          if (!demoMeta.rationPlan[b.id].water && waterLeft > 0 && b.thirst >= 30) {
+            demoMeta.rationPlan[b.id].water = true;
+            waterLeft--;
+          }
+        }
+      }
+
+      function runBotDayVotes() {
+        const alive = demoMeta.players.filter(p => p.alive);
+        alive.filter(p => p.isBot).forEach(bot => {
+          if (demoVotes[bot.id]) return;
+          const suspects = alive.filter(x => x.id !== bot.id && (bot.alignment === 'cannibal' ? x.alignment !== 'cannibal' : true));
+          if (!suspects.length) { demoVotes[bot.id] = 'skip'; return; }
+          suspects.sort((a, b) => b.suspicion - a.suspicion + (Math.random() * 14 - 7));
+          demoVotes[bot.id] = Math.random() < 0.76 ? suspects[0].id : 'skip';
+        });
+      }
+
+      function runBotNightActions() {
+        const alive = demoMeta.players.filter(p => p.alive);
+        alive.filter(p => p.isBot).forEach(bot => {
+          if (demoNightActions[bot.id]) return;
+          if (bot.alignment === 'cannibal') {
+            const victims = alive.filter(x => x.alignment !== 'cannibal');
+            if (victims.length) {
+              demoNightActions[bot.id] = { targetId: pick(victims).id, disguise: pick(['stealth', 'feast', 'frame']) };
+            }
+          } else {
+            const candidates = alive.filter(x => x.id !== bot.id);
+            if (candidates.length) {
+              demoNightActions[bot.id] = { targetId: pick(candidates).id, disguise: 'stealth' };
+            }
+          }
+        });
+      }
+
+      function checkDemoEnding(m) {
+        const alive = m.players.filter(p => p.alive);
+        const aliveCan = alive.filter(p => p.alignment === 'cannibal');
+        const aliveHum = alive.filter(p => p.alignment === 'human');
+        if (m.resources.hull <= 0) { m.phase = 'end'; m.endingId = 7; return true; }
+        if (alive.length === 0 || (m.resources.food <= 0 && alive.every(p => p.hunger >= 85))) { m.phase = 'end'; m.endingId = 5; return true; }
+        if (m.resources.water <= 0 && alive.every(p => p.thirst >= 85)) { m.phase = 'end'; m.endingId = 6; return true; }
+        if (m.resources.sanity <= 0) { m.phase = 'end'; m.endingId = 8; return true; }
+        if (aliveCan.length === 0 && m.cannibalsKilled > 0) {
+          m.phase = 'end';
+          if (aliveHum.length <= 2) m.endingId = 9;
+          else if (m.innocentExecuted >= 2) m.endingId = 2;
+          else if (m.players.some(p => p.alive && p.role.id === 'radioop')) m.endingId = 10;
+          else m.endingId = 1;
+          return true;
+        }
+        if (aliveCan.length >= aliveHum.length) {
+          m.phase = 'end';
+          m.endingId = (m.resources.food <= 1 && alive.length >= 3) ? 4 : 3;
+          return true;
+        }
+        if (m.day >= m.targetDays) {
+          m.phase = 'end';
+          m.endingId = aliveCan.length > 0 ? 3 : 1;
+          return true;
+        }
+        return false;
+      }
+
+      const ARCH = { pragmatist: 'Запасливый (голод и жажда растут медленнее)', observer: 'Внимательный (легче оправдаться при подозрениях)', adventurer: 'Смелый (приносит +1 припас в сюжетных развилках)' };
+
+      function startAdminGame(list, room) {
+        const n = list.length;
+        const roles = shuffle(ROLES), traits = shuffle(PERSONAL_TRAITS), secrets = shuffle(SECRET_POOL), alibis = shuffle(ALIBI_POOL);
+        const cfg = room.cfg || {};
+        const targetDays = room.target_days || 6;
+        const autoCan = n >= 20 ? 3 : (n >= 11 ? 2 : 1);
+        // людоедов не больше трети пассажиров, чтобы у людей оставались шансы
+        const cannibalCount = Math.max(1, Math.min(cfg.cannibals > 0 ? cfg.cannibals : autoCan, Math.floor(n / 3)));
+        const hasAccomplice = cfg.accomplice === 'on' ? (cannibalCount + 1 <= Math.floor(n / 2))
+          : cfg.accomplice === 'off' ? false : (n >= 16 && cannibalCount < 3);
+        const supMul = cfg.supplies === 'low' ? 0.75 : (cfg.supplies === 'high' ? 1.6 : 1.1);
+        const al = Array(n).fill('human');
+        for (let i = 0; i < cannibalCount; i++) al[i] = 'cannibal';
+        if (hasAccomplice) al[cannibalCount] = 'accomplice';
+        const sa = shuffle(al), usedEp = [];
+        const players = list.map((pl, i) => ({
+          id: pl.player_id, isBot: false, name: pl.player_name, gender: pl.gender, alive: true, deathReason: null, deathDay: null,
+          hunger: 15, thirst: 15, sanity: 95, role: roles[i % roles.length], trait: { ...traits[i % traits.length] },
+          secret: secrets[i % secrets.length], alibi: alibis[i % alibis.length], alignment: sa[i],
+          suspicion: sa[i] === 'cannibal' ? Math.floor(16 + Math.random() * 8) : Math.floor(12 + Math.random() * 16),
+          bondTargetId: null, bondRoleName: '', bondKnown: false, bondInfo: '', archetype: pl.archetype, archLabel: ARCH[pl.archetype] || '',
+          bondPublicHint: '', bondRevealed: ''
+        }));
+        if (cfg.bonds !== false) setupSecretBonds(players);
+        demoMeta = {
+          code: room.code, title: room.ark_title, phase: 'day', day: 1, targetDays, usedEpisodes: usedEp,
+          currentEpisode: makeEpisode(1, usedEp, n),
+          resources: { food: Math.max(2, Math.round(n * supMul)), water: Math.max(2, Math.round(n * supMul)), hull: 100, sanity: 95, trust: 75 },
+          players, clues: [`День 1: среди ${n} пассажиров скрывается ${cannibalCount === 2 ? 'двое Людоедов' : (cannibalCount === 3 ? 'трое Людоедов' : 'Людоед')}${hasAccomplice ? ' и тайный Сообщник' : ''}.`],
+          log: [`День 1 начался. Пассажиров на борту: ${n}.`], rationPlan: {}, privateReports: {}, innocentExecuted: 0, cannibalsKilled: 0, endingId: null, reacts: [], death: null
+        };
+        demoVotes = {}; demoNightActions = {}; demoSuspectedByMe = {}; demoStolenByMe = {};
+        demoMeta.dayMin = cfg.dayMin || 0;
+        deadlineAt = demoMeta.dayMin ? Date.now() + demoMeta.dayMin * 60000 : 0;
+        SoundFX.playDawn();
+        syncDemoState();
+      }
+
+      function buildCommon() {
+        const m = demoMeta, isEnd = m.phase === 'end';
+        return {
+          code: m.code, phase: m.phase, day: m.day, targetDays: m.targetDays, title: m.title,
+          currentEpisode: m.currentEpisode ? { title: m.currentEpisode.title, text: m.currentEpisode.text, choices: m.currentEpisode.choices, anonVotes: m.currentEpisode.anonVotes, resolved: m.currentEpisode.resolved, pickedIdx: m.currentEpisode.pickedIdx, outcomeText: m.currentEpisode.outcomeText } : null,
+          resources: m.resources, clues: m.clues.slice(0, 8), log: m.log.slice(0, 10),
+          votedCount: Object.keys(demoVotes).length, nightCount: Object.keys(demoNightActions).length,
+          ending: isEnd ? ENDINGS[m.endingId || 1] : null, allEndingsCatalog: isEnd ? Object.values(ENDINGS) : null,
+          reactions: m.reacts || [], death: m.death || null, timer: roundTimerInfo ? { label: roundTimerInfo.label } : null,
+          dlLeft: (deadlineAt && m.phase === 'day') ? Math.max(0, Math.round((deadlineAt - Date.now()) / 1000)) : null,
+          players: m.players.map(p => ({
+            id: p.id, name: p.name, gender: p.gender, alive: p.alive, hunger: p.hunger, thirst: p.thirst, sanity: p.sanity, suspicion: p.suspicion,
+            trait: p.trait, alibi: p.alibi, bondPublicHint: p.bondKnown ? p.bondRevealed : p.bondPublicHint,
+            bondRevealed: (isEnd || p.bondKnown) ? p.bondRevealed : '', deathReason: p.deathReason, deathDay: p.deathDay,
+            roleName: p.role.name, synergy: p.role.synergy || '', deck: p.role.deck, item: p.role.item, passive: p.role.passive, flaw: p.role.flaw,
+            secret: isEnd ? p.secret : '', ration: m.rationPlan[p.id] || { food: false, water: false },
+            alignment: (!p.alive || isEnd) ? p.alignment : 'unknown'
+          }))
+        };
+      }
+
+      function buildPersonal(pid) {
+        const m = demoMeta, admin = pid === null, me = admin ? null : m.players.find(p => p.id === pid);
+        const al = {};
+        m.players.forEach(p => { if (admin || (me && (p.id === me.id || (me.alignment === 'cannibal' && p.alignment === 'cannibal')))) al[p.id] = p.alignment; });
+        return {
+          host: admin, myVote: demoVotes[pid] || null, nightSubmitted: !!demoNightActions[pid],
+          myPrivateReport: m.privateReports[pid] || [], stolen: demoStolenByMe[pid] || {}, sus: demoSuspectedByMe[pid] || {}, al,
+          me: me ? { id: me.id, name: me.name, gender: me.gender, alive: me.alive, hunger: me.hunger, thirst: me.thirst, alignment: me.alignment, role: me.role, trait: me.trait, secret: me.secret, bondInfo: me.bondInfo, archLabel: me.archLabel } : null
+        };
+      }
+
+      function compose(c, p) {
+        return { ...c, ...p, isBotDemo: false, players: c.players.map(x => ({ ...x, alignment: (p.al && p.al[x.id]) || x.alignment, mySuspected: !!(p.sus && p.sus[x.id]) })) };
+      }
+
+      function publishSoon() {
+        clearTimeout(sendT);
+        sendT = setTimeout(() => {
+          if (!demoMeta || !lobbyData) return;
+          const views = { '*': buildCommon() };
+          lobbyData.players.filter(p => !p.is_host).forEach(p => { views[p.player_id] = buildPersonal(p.player_id); });
+          call('views', { views }).catch(() => {});
+          try { call('snap', { s: window.snapshotHostState() }).catch(() => {}); } catch (e) {}
+        }, 200);
+      }
+
+      function syncDemoState() {
+        if (!demoMeta) return;
+        S = compose(buildCommon(), buildPersonal(null));
+        onNewS();
+        render();
+        publishSoon();
+      }
+
+      function executeEndDay() {
+        if (!demoMeta) return;
+        autoAssignBotRations();
+        runBotDayVotes();
+
+        const tally = {};
+        let skipCnt = 0;
+        demoMeta.players.filter(p => p.alive).forEach(p => {
+          const v = demoVotes[p.id];
+          const w = p.role.id === 'captain' ? 2 : 1;
+          if (!v || v === 'skip') skipCnt += w;
+          else tally[v] = (tally[v] || 0) + w;
+        });
+
+        let topId = null, topV = 0, tie = false;
+        Object.entries(tally).forEach(([id, c]) => {
+          if (c > topV) { topV = c; topId = id; tie = false; }
+          else if (c === topV && c > 0) tie = true;
+        });
+
+        const events = [];
+        let executedVic = null;
+        if (topId && topV > skipCnt && !tie) {
+          const vic = demoMeta.players.find(p => p.id === topId);
+          if (vic && vic.alive) {
+            executedVic = vic;
+            if (vic.alignment === 'cannibal') {
+              demoMeta.cannibalsKilled += 1;
+              demoMeta.resources.sanity = Math.min(100, demoMeta.resources.sanity + 16);
+              events.push(`РАЗВЯЗКА ДНЯ: Казнён ${vic.name} — это был настоящий Людоед!`);
+              killPlayerInDemo(demoMeta, vic, 'Казнён по приговору суда как Людоед!', `ПРИГОВОР ДНЯ: ${vic.name}`);
+            } else {
+              demoMeta.innocentExecuted += 1;
+              demoMeta.resources.sanity = Math.max(0, demoMeta.resources.sanity - 13);
+              events.push(`ТРАГЕДИЯ ДНЯ: Казнён невиновный ${vic.name} (${vic.role.name}).`);
+              killPlayerInDemo(demoMeta, vic, 'Ошибочно казнён на дневном суде', `ПРИГОВОР ДНЯ: ${vic.name}`);
+            }
+          }
+        } else {
+          events.push('Дневной суд завершился без казни.');
+        }
+
+        demoMeta.players.filter(p => p.alive).forEach(p => {
+          const pl = demoMeta.rationPlan[p.id] || {};
+          const hGain = p.archetype === 'pragmatist' ? 14 : 22;
+          const tGain = p.archetype === 'pragmatist' ? 16 : 26;
+          if (pl.food && demoMeta.resources.food > 0) { demoMeta.resources.food--; p.hunger = Math.max(0, p.hunger - 45); }
+          else p.hunger += hGain;
+          if (pl.water && demoMeta.resources.water > 0) { demoMeta.resources.water--; p.thirst = Math.max(0, p.thirst - 50); }
+          else p.thirst += tGain;
+
+          const aliveRoleIds = new Set(demoMeta.players.filter(x => x.alive).map(x => x.role.id));
+          if (p.role.id === 'chef') {
+            const bonus = (aliveRoleIds.has('cook_mate') || aliveRoleIds.has('baker')) ? 3 : 2;
+            demoMeta.resources.food += bonus;
+          }
+          if (p.role.id === 'cook_mate' && aliveRoleIds.has('chef')) p.hunger = Math.max(0, p.hunger - 12);
+          if (p.role.id === 'baker' && aliveRoleIds.has('chef')) demoMeta.resources.sanity = Math.min(100, demoMeta.resources.sanity + 5);
+          if (p.role.id === 'hydrologist') {
+            const bonusW = (aliveRoleIds.has('plumber') || aliveRoleIds.has('tinker')) ? 3 : 2;
+            demoMeta.resources.water += bonusW;
+          }
+          if (p.role.id === 'plumber' && aliveRoleIds.has('hydrologist')) p.thirst = Math.max(0, p.thirst - 12);
+          if (p.role.id === 'engineer') {
+            const bonusH = (aliveRoleIds.has('welder') || aliveRoleIds.has('carpenter')) ? 11 : 7;
+            demoMeta.resources.hull = Math.min(100, demoMeta.resources.hull + bonusH);
+          }
+          if (p.role.id === 'psychologist' && (aliveRoleIds.has('chaplain') || aliveRoleIds.has('herbalist'))) {
+            demoMeta.resources.sanity = Math.min(100, demoMeta.resources.sanity + 6);
+          }
+        });
+
+        demoMeta.resources.hull = Math.max(0, demoMeta.resources.hull - 6);
+        demoMeta.resources.sanity = Math.max(0, demoMeta.resources.sanity - 5);
+        demoMeta.rationPlan = {};
+        demoVotes = {};
+        demoMeta.log.unshift(...events);
+
+        if (!checkDemoEnding(demoMeta)) {
+          demoMeta.phase = 'night';
+          SoundFX.playNightFall();
+        } else {
+          SoundFX.playTwist();
+        }
+        syncDemoState();
+      }
+
+      function executeResolveNight() {
+        if (!demoMeta) return;
+        runBotNightActions();
+        demoMeta.privateReports = {};
+
+        const me = demoMeta.players.find(p => p.id === demoMyId);
+        const myAct = demoNightActions[demoMyId];
+        const protectedIds = new Set();
+
+        demoMeta.players.filter(p => p.alive).forEach(p => {
+          const a = demoNightActions[p.id];
+          if (a?.targetId && (p.role.id === 'guard' || p.role.id === 'surgeon')) {
+            protectedIds.add(a.targetId);
+          }
+        });
+
+        const roleNightLogs = [];
+        const roleNightClues = [];
+
+        demoMeta.players.filter(p => p.alive).forEach(p => {
+          const a = demoNightActions[p.id];
+          const t = a?.targetId ? demoMeta.players.find(x => x.id === a.targetId) : null;
+          const rid = p.role.id;
+
+          if (rid === 'detective' && t) {
+            const rep = `Ночное наблюдение за ${t.name} (${t.role.name}): ${t.alignment === 'cannibal' ? 'ОБНАРУЖЕНЫ НЕОПРОВЕРЖИМЫЕ УЛИКИ ЛЮДОЕДА!' : `замечен в отсеке «${t.role.deck}», прямых улик каннибализма нет.`}`;
+            demoMeta.privateReports[p.id] = demoMeta.privateReports[p.id] || [];
+            demoMeta.privateReports[p.id].push(rep);
+          } else if (rid === 'chemist' && t) {
+            const rep = `Анализ проб ${t.name}: ${t.alignment === 'cannibal' ? 'реактивы выявили следы хищника!' : 'пробы чисты, признаков каннибализма не найдено.'}`;
+            demoMeta.privateReports[p.id] = demoMeta.privateReports[p.id] || [];
+            demoMeta.privateReports[p.id].push(rep);
+          } else if (rid === 'archivist' && t) {
+            const rep = `Архив по ${t.name} (${t.role.name}): отсек «${t.role.deck}», зацепка — «${t.alibi || 'сведений мало'}».`;
+            demoMeta.privateReports[p.id] = demoMeta.privateReports[p.id] || [];
+            demoMeta.privateReports[p.id].push(rep);
+          } else if ((rid === 'hydrologist' || rid === 'plumber' || rid === 'tinker') && t && t.alive) {
+            t.thirst = Math.max(0, t.thirst - 30);
+            if (rid === 'hydrologist') demoMeta.resources.water += 1;
+            demoMeta.privateReports[p.id] = demoMeta.privateReports[p.id] || [];
+            demoMeta.privateReports[p.id].push(`Ночью вы напоили и проверили баки для ${t.name} (жажда −30%).`);
+          } else if ((rid === 'chef' || rid === 'cook_mate' || rid === 'baker' || rid === 'sommelier') && t && t.alive) {
+            t.hunger = Math.max(0, t.hunger - 30);
+            if (rid === 'baker') demoMeta.resources.sanity = Math.min(100, demoMeta.resources.sanity + 4);
+            demoMeta.privateReports[p.id] = demoMeta.privateReports[p.id] || [];
+            demoMeta.privateReports[p.id].push(`Ночью вы передали горячий паёк для ${t.name} (голод −30%).`);
+          } else if ((rid === 'psychologist' || rid === 'chaplain' || rid === 'herbalist' || rid === 'candlemaker') && t && t.alive) {
+            t.sanity = Math.min(100, t.sanity + 20);
+            demoMeta.resources.sanity = Math.min(100, demoMeta.resources.sanity + 6);
+            demoMeta.privateReports[p.id] = demoMeta.privateReports[p.id] || [];
+            demoMeta.privateReports[p.id].push(`Ночью вы поддержали ${t.name} и помогли экипажу сохранить рассудок (+6%).`);
+          } else if ((rid === 'engineer' || rid === 'welder' || rid === 'carpenter' || rid === 'stoker' || rid === 'boilermaker' || rid === 'electrician')) {
+            const gainH = (rid === 'engineer' || rid === 'welder') ? 9 : 6;
+            demoMeta.resources.hull = Math.min(100, demoMeta.resources.hull + gainH);
+            demoMeta.privateReports[p.id] = demoMeta.privateReports[p.id] || [];
+            demoMeta.privateReports[p.id].push(`Ночная работа в отсеках укрепила корпус Ковчега (+${gainH}%).`);
+          } else if ((rid === 'radioop' || rid === 'sonar_op' || rid === 'meteorologist' || rid === 'navigator' || rid === 'lookout' || rid === 'cartographer' || rid === 'beacon_op')) {
+            const canHint = demoMeta.players.find(x => x.alive && x.alignment === 'cannibal');
+            if (canHint) {
+              demoMeta.privateReports[p.id] = demoMeta.privateReports[p.id] || [];
+              demoMeta.privateReports[p.id].push(`Ночной дозор/приборы зафиксировали активность у отсека «${canHint.role.deck}» (${canHint.role.clueTag}).`);
+            }
+          } else if ((rid === 'butcher' || rid === 'botanist' || rid === 'orchardist' || rid === 'fisher' || rid === 'smuggler' || rid === 'quartermaster' || rid === 'auditor')) {
+            if (Math.random() < 0.55) demoMeta.resources.food += 1;
+            else demoMeta.resources.water += 1;
+            demoMeta.privateReports[p.id] = demoMeta.privateReports[p.id] || [];
+            demoMeta.privateReports[p.id].push(`Ночной обход запасов помог сберечь или раздобыть припасы для Ковчега.`);
+          } else if ((rid === 'warden' || rid === 'lifeguard' || rid === 'ferryman' || rid === 'locksmith' || rid === 'rigger' || rid === 'chronicler' || rid === 'sailor_vet') && t && t.alive) {
+            protectedIds.add(t.id);
+            demoMeta.privateReports[p.id] = demoMeta.privateReports[p.id] || [];
+            demoMeta.privateReports[p.id].push(`Ночью вы прикрывали ${t.name} и следили за порядком в коридорах.`);
+          }
+        });
+
+        const alive = demoMeta.players.filter(p => p.alive);
+        const cannibals = alive.filter(p => p.alignment === 'cannibal');
+        const news = [...roleNightLogs];
+        const clues = [...roleNightClues];
+        let lastNightVictim = null;
+
+        cannibals.forEach(can => {
+          const actObj = demoNightActions[can.id];
+          const vic = alive.find(x => x.id === actObj?.targetId && x.alignment !== 'cannibal') || pick(alive.filter(x => x.alignment !== 'cannibal'));
+          if (vic) {
+            const cid = can.role.id;
+            const victimWasHungry = (vic.hunger ?? 0) >= 50;
+
+            if (protectedIds.has(vic.id)) {
+              news.push(`НОЧНАЯ СХВАТКА: Людоед пытался напасть на ${vic.name}, но охрана/дозор отбили атаку!`);
+              clues.push(`След схватки (День ${demoMeta.day}): у двери ${vic.name} осталось — ${can.role.clueTag}.`);
+              can.suspicion += (cid === 'cannibal_shadow' || cid === 'cannibal_doctor') ? 11 : 18;
+            } else {
+              lastNightVictim = vic;
+              const baseSanLoss = cid === 'flesh_stalker' ? 14 : (cid === 'cannibal_whisper' ? 13 : 10);
+              demoMeta.resources.sanity = Math.max(0, demoMeta.resources.sanity - baseSanLoss);
+
+              if (cid === 'cannibal_scavenger' && victimWasHungry) {
+                demoMeta.resources.food += 1;
+                can.suspicion = Math.max(0, can.suspicion - 5);
+                news.push(`ПАССИВКА ПАДАЛЬЩИКА: Ослабевшая от голода жертва ${vic.name} принесла +1 еды и меньше выдала хищника.`);
+              }
+              if (cid === 'cannibal_mimic') {
+                const donorHuman = pick(alive.filter(x => x.alive && x.alignment === 'human' && x.id !== vic.id));
+                if (donorHuman && donorHuman.alibi) {
+                  can.alibi = `Перенятое алиби: «${donorHuman.alibi}»`;
+                  news.push(`ПАССИВКА ДВОЙНИКА: Хищник перенял чужое алиби на следующий день.`);
+                }
+              }
+
+              const isMeatRole = ['meat_cleaver', 'cannibal_chef', 'cannibal_scavenger'].includes(cid);
+              const isMimicRole = ['mimic_hunter', 'cannibal_mimic', 'cannibal_whisper'].includes(cid);
+              const isStealthRole = ['flesh_stalker', 'cannibal_shadow', 'cannibal_doctor'].includes(cid);
+              const isTideRole = ['cannibal_tide'].includes(cid);
+              const isFurnaceRole = ['cannibal_furnace', 'shadow_saboteur'].includes(cid);
+
+              if (actObj?.disguise === 'feast') {
+                const foodGain = (isMeatRole || cid === 'cannibal_chef' || cid === 'meat_cleaver') ? 3 : 2;
+                demoMeta.resources.food += foodGain;
+                can.suspicion += (cid === 'cannibal_chef' || cid === 'meat_cleaver') ? 14 : (isMeatRole ? 16 : 22);
+                news.push(`КОШМАР В КАМБУЗЕ: Утром нашли останки ${vic.name} (${vic.role.name}), а в котле прибавилось мяса (+${foodGain} еды)...`);
+                clues.push(`Яркая улика (День ${demoMeta.day}): у котла замечено — ${can.role.clueTag}.`);
+              } else if (actObj?.disguise === 'frame') {
+                const frameTarget = pick(alive.filter(x => x.alive && x.alignment === 'human')) || can;
+                const frameGain = cid === 'cannibal_mimic' ? 32 : (isMimicRole ? 28 : 20);
+                frameTarget.suspicion += frameGain;
+                news.push(`НОЧНАЯ ТРАГЕДИЯ: ${vic.name} (${vic.role.name}) убит! Рядом нашли личную вещь ${frameTarget.name}...`);
+                clues.push(`Запутанная улика (День ${demoMeta.day}): кто-то подбросил вещь ${frameTarget.name}, но запах выдаёт — ${can.role.clueTag}.`);
+              } else if (actObj?.disguise === 'overboard') {
+                const dropSusp = cid === 'cannibal_tide' ? 15 : (isTideRole ? 12 : 6);
+                can.suspicion = Math.max(0, can.suspicion - dropSusp);
+                news.push(`ПРОПАЖА У БОРТА: Ночью ${vic.name} (${vic.role.name}) исчез у палубы — волны смыли почти все следы.`);
+                clues.push(`Слабый след у борта (День ${demoMeta.day}): прибой оставил — ${can.role.clueTag}.`);
+              } else if (actObj?.disguise === 'hallway_ambush') {
+                const sanLoss = isMimicRole ? 16 : 12;
+                demoMeta.resources.sanity = Math.max(0, demoMeta.resources.sanity - sanLoss);
+                can.suspicion += (cid === 'cannibal_doctor' || cid === 'cannibal_shadow') ? 7 : (isStealthRole ? 10 : 15);
+                news.push(`ЗАСАДА В КОРИДОРЕ: В темноте отсека «${vic.role.deck}» оборвалась жизнь ${vic.name} (${vic.role.name}) — экипаж в ужасе.`);
+                clues.push(`След засады (День ${demoMeta.day}): в коридоре обнаружено — ${can.role.clueTag}.`);
+              } else if (actObj?.disguise === 'furnace_ash') {
+                const ashDrop = cid === 'cannibal_furnace' ? 19 : (isFurnaceRole ? 16 : 10);
+                can.suspicion = Math.max(0, can.suspicion - ashDrop);
+                news.push(`ПЕПЕЛ В ТОПКЕ: Ночью ${vic.name} (${vic.role.name}) погиб; часть улик сгорела в печи, но запах выдаёт хищника.`);
+                clues.push(`След у печи (День ${demoMeta.day}): в золе угадывается — ${can.role.clueTag}.`);
+              } else if (actObj?.disguise === 'sound_mask') {
+                const maskDrop = cid === 'shadow_saboteur' ? 16 : (isFurnaceRole ? 14 : 8);
+                can.suspicion = Math.max(0, can.suspicion - maskDrop);
+                news.push(`ШУМ ОТСЕКОВ: Под гул турбин и плеск воды ночью погиб ${vic.name} (${vic.role.name}).`);
+                clues.push(`Скрытая улика (День ${demoMeta.day}): несмотря на шум, замечено — ${can.role.clueTag}.`);
+              } else {
+                can.suspicion += (cid === 'cannibal_doctor' || cid === 'cannibal_shadow') ? 3 : (isStealthRole ? 5 : 8);
+                news.push(`НОЧЬ: Пассажир ${vic.name} (${vic.role.name}) пал жертвой Людоеда в отсеке «${vic.role.deck}»!`);
+                clues.push(`Улика (День ${demoMeta.day}): в отсеке «${vic.role.deck}» обнаружено — ${can.role.clueTag}.`);
+              }
+              killPlayerInDemo(demoMeta, vic, 'Растерзан Людоедом ночью', `НОЧНАЯ ПОТЕРЯ: ${vic.name}`);
+            }
+          }
+        });
+
+        demoMeta.players.filter(p => p.alive).forEach(p => {
+          if (p.hunger >= 100 || p.thirst >= 100) {
+            const reason = p.hunger >= 100 ? 'Умер от голода' : 'Умер от жажды';
+            if (!lastNightVictim) lastNightVictim = p;
+            news.push(`${p.name} не пережил ночь без пайков.`);
+            killPlayerInDemo(demoMeta, p, reason, `НОЧНАЯ ПОТЕРЯ: ${p.name}`);
+          }
+        });
+
+        demoMeta.log.unshift(...news);
+        demoMeta.clues.unshift(...clues);
+        demoNightActions = {};
+        selectedNightTarget = null;
+
+        const aliveAfter = demoMeta.players.filter(p => p.alive).length;
+        if (!checkDemoEnding(demoMeta)) {
+          demoMeta.day += 1;
+          demoMeta.phase = 'day';
+          demoMeta.currentEpisode = makeEpisode(demoMeta.day, demoMeta.usedEpisodes, aliveAfter);
+          deadlineAt = demoMeta.dayMin ? Date.now() + demoMeta.dayMin * 60000 : 0;
+          SoundFX.playDawn();
+        } else {
+          SoundFX.playTwist();
+        }
+        syncDemoState();
+      }
+
+const _toast = toast;
+      function handleAct(act, btn, actor) {
+        const remote = actor !== null;
+        const quiet = act === 'vote' || act === 'submitNight';
+        const toast = remote
+          ? (msg) => { if (quiet) return; const R = demoMeta.privateReports; (R[actor] = R[actor] || []).unshift(msg); }
+          : _toast;
+        const SUS = () => demoSuspectedByMe[actor] || (demoSuspectedByMe[actor] = {});
+        if (act === 'episodeChoice') {
+          const idx = Number(btn.dataset.idx);
+          const ep = demoMeta.currentEpisode;
+          if (!ep || ep.resolved || !ep.rawChoices[idx]) return;
+          SoundFX.playTwist();
+          ep.resolved = true;
+          ep.pickedIdx = idx;
+          ep.anonVotes = ep.anonVotes || [0, 0, 0, 0];
+          ep.anonVotes[idx] += 1;
+          ep.outcomeText = ep.rawChoices[idx].apply(demoMeta);
+          const mePlayer = demoMeta.players.find(p => p.id === actor);
+          if (mePlayer && mePlayer.alive && mePlayer.archetype === 'adventurer') {
+            demoMeta.resources.food += 1;
+            ep.outcomeText += ' Смелый характер помог раздобыть +1 еду!';
+          }
+          demoMeta.log.unshift(`СЮЖЕТ (${ep.title}): ${ep.outcomeText}`);
+          syncDemoState();
+          return;
+        }
+
+        if (act === 'botAutoRation') {
+          SoundFX.playRation('food');
+          autoAssignBotRations();
+          toast('Боты разобрали остатки пайков');
+          syncDemoState();
+          return;
+        }
+
+        if (act === 'ration') {
+          const tid = btn.dataset.id;
+          const kind = btn.dataset.kind;
+          demoMeta.rationPlan[tid] = demoMeta.rationPlan[tid] || { food: false, water: false };
+          const used = Object.values(demoMeta.rationPlan).filter(x => x[kind]).length;
+          if (!demoMeta.rationPlan[tid][kind]) {
+            if (used >= demoMeta.resources[kind]) { toast('Не хватает запасов!'); return; }
+            demoMeta.rationPlan[tid][kind] = true;
+          } else {
+            demoMeta.rationPlan[tid][kind] = false;
+          }
+          SoundFX.playRation(kind);
+          syncDemoState();
+          return;
+        }
+
+        if (act === 'suspect') {
+          const tid = btn.dataset.id;
+          const target = demoMeta.players.find(p => p.id === tid && p.alive);
+          if (target) {
+            const delta = target.archetype === 'observer' ? 6 : 12;
+            if (!SUS()[tid]) {
+              SUS()[tid] = delta;
+              target.suspicion = Math.min(100, (target.suspicion ?? 20) + delta);
+              SoundFX.playClick();
+              toast(target.archetype === 'observer'
+                ? `Внимательный ${target.name} ловко отбился — подозрение +${delta}% (${target.suspicion}%)`
+                : `Подозрение к ${target.name} выросло до ${target.suspicion}%`);
+            } else {
+              const prevDelta = SUS()[tid];
+              delete SUS()[tid];
+              target.suspicion = Math.max(0, (target.suspicion ?? 20) - prevDelta);
+              SoundFX.playClick();
+              toast(`Подозрение с ${target.name} снято (${target.suspicion}%)`);
+            }
+            syncDemoState();
+          }
+          return;
+        }
+
+        if (act === 'vote') {
+          SoundFX.playStamp();
+          demoVotes[actor] = btn.dataset.id;
+          toast('Ваш голос зафиксирован');
+          syncDemoState();
+          return;
+        }
+
+        if (act === 'endDay') {
+          SoundFX.playStamp();
+          startRoundTimer('Завершение дня и наступление ночи', 3, executeEndDay);
+          return;
+        }
+
+        if (act === 'setMode') {
+          SoundFX.playClick();
+          selectedCannibalMode = btn.dataset.mode;
+          render();
+          return;
+        }
+
+        if (act === 'pickNight') {
+          SoundFX.playClick();
+          selectedNightTarget = btn.dataset.id;
+          render();
+          return;
+        }
+
+        if (act === 'submitNight') {
+          SoundFX.playStamp();
+          demoNightActions[actor] = { targetId: btn.dataset.target || selectedNightTarget, disguise: btn.dataset.mode || selectedCannibalMode };
+          toast('Ваш ночной ход зафиксирован');
+          syncDemoState();
+          return;
+        }
+
+        if (act === 'resolveNight') {
+          SoundFX.playDawn();
+          startRoundTimer(`Рассвет и старт Серии ${demoMeta.day + 1}`, 3, executeResolveNight);
+          return;
+        }
+
+        if (act === 'stealResource') {
+          const kind = btn.dataset.kind;
+          const mePlayer = demoMeta.players.find(p => p.id === actor && p.alive);
+          if (!mePlayer) return;
+          const stolenMap = demoStolenByMe[actor] || (demoStolenByMe[actor] = {});
+          const key = demoMeta.day + '_' + kind;
+          if (stolenMap[key]) {
+            toast('Сегодня вы уже совершали такую кражу!');
+            return;
+          }
+          const isFood = kind === 'food';
+          const canSteal = isFood
+            ? ((mePlayer.hunger ?? 0) >= 65 || (demoMeta.resources.food ?? 0) <= 1)
+            : ((mePlayer.thirst ?? 0) >= 65 || (demoMeta.resources.water ?? 0) <= 1);
+          if (!canSteal) {
+            toast('Хватает сил и припасов — кража не требуется');
+            return;
+          }
+
+          stolenMap[key] = true;
+          const caught = Math.random() < 0.38;
+          const fromPool = (demoMeta.resources[kind] ?? 0) > 0;
+
+          if (fromPool) {
+            demoMeta.resources[kind] = Math.max(0, demoMeta.resources[kind] - 1);
+            if (isFood) mePlayer.hunger = Math.max(0, mePlayer.hunger - 45);
+            else mePlayer.thirst = Math.max(0, mePlayer.thirst - 50);
+
+            if (caught) {
+              mePlayer.suspicion = Math.min(100, (mePlayer.suspicion ?? 20) + 18);
+              demoMeta.resources.trust = Math.max(0, (demoMeta.resources.trust ?? 70) - 8);
+              demoMeta.clues.unshift(`Кража припасов (День ${demoMeta.day}): кто-то тайком стащил ${isFood ? 'суп' : 'воду'} из общего запаса!`);
+              void(`Вас заметили при краже ${isFood ? 'супа' : 'воды'} из запаса (+18% подозрения).`);
+              toast(`Вы стащили ${isFood ? 'суп' : 'воду'}, но вас заметили (+18% подозрения)!`);
+            } else {
+              void(`Вы незаметно раздобыли порцию ${isFood ? 'супа' : 'воды'} из общего запаса.`);
+              toast(`Удалось незаметно раздобыть ${isFood ? 'суп' : 'воду'}!`);
+            }
+          } else {
+            const others = demoMeta.players.filter(p => p.alive && p.id !== actor);
+            const donor = others.length ? others[Math.floor(Math.random() * others.length)] : null;
+            if (isFood) mePlayer.hunger = Math.max(0, mePlayer.hunger - 35);
+            else mePlayer.thirst = Math.max(0, mePlayer.thirst - 40);
+
+            if (donor) {
+              if (isFood) donor.hunger = Math.min(100, donor.hunger + 18);
+              else donor.thirst = Math.min(100, donor.thirst + 20);
+            }
+            if (caught) {
+              mePlayer.suspicion = Math.min(100, (mePlayer.suspicion ?? 20) + 22);
+              demoMeta.resources.trust = Math.max(0, (demoMeta.resources.trust ?? 70) - 10);
+              demoMeta.clues.unshift(`Подозрительная пропажа (День ${demoMeta.day}): у ${donor ? donor.name : 'пассажира'} пропал ${isFood ? 'суп' : 'глоток воды'}!`);
+              toast(`Вы забрали ${isFood ? 'суп' : 'воду'} у ${donor ? donor.name : 'соседа'}, но вас спалили (+22% подозрения)!`);
+            } else {
+              void(`В отчаянии вы стащили ${isFood ? 'суп' : 'воду'} у ${donor ? donor.name : 'соседа'}.`);
+              toast(`Вы украли ${isFood ? 'суп' : 'воду'} у ${donor ? donor.name : 'соседа'}!`);
+            }
+          }
+          SoundFX.playRation(kind);
+          syncDemoState();
+          return;
+        }
+
+        if (act === 'react') {
+          const emoji = btn.dataset.emoji;
+          if (!['😱', '🔪', '🍖', '🕵️', '🔥', '💀'].includes(emoji)) return;
+          const rc = (demoMeta.reacts = demoMeta.reacts || []);
+          rc.push({ i: (rc.length ? rc[rc.length - 1].i : 0) + 1, e: emoji, f: actor });
+          if (rc.length > 12) rc.shift();
+          syncDemoState();
+          return;
+        }
+      }
+
+      function applyRemote(m) {
+        if (!demoMeta || demoMeta.phase === 'end') return;
+        const a = demoMeta.players.find(p => p.id === m.from);
+        if (!a) return;
+        if (m.act === 'react') { handleAct('react', { dataset: m.d || {} }, m.from); return; }
+        if (!a.alive) return;
+        const day = demoMeta.phase === 'day', night = demoMeta.phase === 'night';
+        if (['vote', 'suspect', 'stealResource'].includes(m.act) && day) handleAct(m.act, { dataset: m.d || {} }, m.from);
+        else if (m.act === 'submitNight' && night) handleAct(m.act, { dataset: m.d || {} }, m.from);
+      }
+
+      document.addEventListener('change', e => { if (e.target && e.target.matches && e.target.matches('[data-cfg]') && ses && ses.admin) saveCfg(); });
+
+      document.addEventListener('click', e => {
+        const btn = e.target.closest('[data-act]');
+        if (!btn || btn.disabled) return;
+        const act = btn.dataset.act;
+        const lobbyNow = ses && !ses.admin && lobbyData && lobbyData.room.status === 'waiting';
+
+        if (act === 'pickGender') { SoundFX.playClick(); chosenGender = btn.dataset.g === 'female' ? 'female' : 'male'; if (lobbyNow) call('upd', { gender: chosenGender }).then(poll).catch(() => {}); else render(); return; }
+        if (act === 'pickArch') { SoundFX.playClick(); chosenArchetype = btn.dataset.a; if (lobbyNow) call('upd', { archetype: chosenArchetype }).then(poll).catch(() => {}); else render(); return; }
+        if (act === 'closeDeathModal') { closeDeathModal(); return; }
+        if (act === 'skipTimer') { skipRoundTimer(); return; }
+        if (act === 'toggleSound') { const muted = SoundFX.toggleMute(); toast(muted ? 'Звук выключен' : 'Атмосферный звук включён'); render(); return; }
+        if (act === 'create') { createRoom(); return; }
+        if (act === 'join') { joinRoom(); return; }
+        if (act === 'ready') { toggleReady(); return; }
+        if (act === 'startGame') { startGameBtn(); return; }
+        if (act === 'leave') { SoundFX.playClick(); leaveAll(); return; }
+        if (act === 'kick') { if (confirm('Убрать этого игрока из комнаты?')) kickPlayer(btn.dataset.id); return; }
+        if (act === 'setMode') { SoundFX.playClick(); selectedCannibalMode = btn.dataset.mode; render(); return; }
+        if (act === 'pickNight') { SoundFX.playClick(); selectedNightTarget = btn.dataset.id; render(); return; }
+
+        if (ses && ses.admin && demoMeta) {
+          if (act === 'setDeadline') { const mn = Number(btn.dataset.min); deadlineAt = mn ? Date.now() + mn * 60000 : 0; syncDemoState(); return; }
+          if (['episodeChoice', 'ration', 'endDay', 'resolveNight'].includes(act)) handleAct(act, btn, null);
+          return;
+        }
+        if (ses && !ses.admin && S && ['vote', 'suspect', 'stealResource', 'submitNight', 'react'].includes(act)) {
+          const d = { ...btn.dataset };
+          if (act === 'submitNight') { d.target = selectedNightTarget; d.mode = selectedCannibalMode; S.nightSubmitted = true; SoundFX.playStamp(); render(); }
+          if (act === 'vote') { S.myVote = btn.dataset.id; SoundFX.playStamp(); render(); }
+          if (act === 'react') spawnReaction(btn.dataset.emoji);
+          if (act === 'suspect' || act === 'stealResource') SoundFX.playClick();
+          call('msg', { m: { act, d } }).then(() => { if (act !== 'react') setTimeout(poll, 1500); }).catch(e => toast(e.message));
+        }
+      });
+      // Движок живёт внутри этой функции, а опрос сервера и экраны — снаружи, поэтому выставляем нужное наружу
+      window.startAdminGame = startAdminGame;
+      window.applyRemote = applyRemote;
+      window.compose = compose;
+      window.handleAct = handleAct;
+      window.publishSoon = publishSoon;
+      window.syncDemoState = syncDemoState;
+      window.snapshotHostState = function() {
+        return JSON.stringify({ m: demoMeta, v: demoVotes, n: demoNightActions, s: demoSuspectedByMe, st: demoStolenByMe, dl: deadlineAt ? Math.max(0, deadlineAt - Date.now()) : 0 });
+      };
+      window.restoreHostState = function(raw) {
+        const o = JSON.parse(raw);
+        demoMeta = o.m; demoVotes = o.v || {}; demoNightActions = o.n || {}; demoSuspectedByMe = o.s || {}; demoStolenByMe = o.st || {};
+        const ep = demoMeta.currentEpisode;
+        if (ep) { const sc = EPISODE_SCENARIOS.find(x => x.title === ep.title); if (sc) ep.rawChoices = sc.choices; }
+        deadlineAt = o.dl > 0 ? Date.now() + o.dl : 0;
+        syncDemoState();
+      };
+      render();
+    })();
+  </script>
+</body>
+</html>
